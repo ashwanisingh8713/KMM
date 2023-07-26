@@ -3,6 +3,8 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("com.google.devtools.ksp").version("1.9.0-1.0.11")
+    id("com.rickclephas.kmp.nativecoroutines").version("1.0.0-ALPHA-13")
 }
 
 kotlin {
@@ -26,6 +28,10 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+        }
+
         val ktorVersion = "2.3.2"
 
         val commonMain by getting {
@@ -59,7 +65,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
-                api("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-6")
+                implementation("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-12")
 
 
             }

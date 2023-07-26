@@ -1,0 +1,17 @@
+
+# To implement the ViewModel
+https://github.com/rickclephas/KMM-ViewModel/tree/master
+
+# To implement (iOS) NativeCoroutine and annotation
+https://github.com/rickclephas/KMP-NativeCoroutines/blob/master/README.md
+
+#### Below Plugins has to be added in "settings.gradle", "project root build.gradle" and
+    "shared build.gradle".
+    –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    |   id("com.google.devtools.ksp").version("1.9.0-1.0.11")                   |
+    |   id("com.rickclephas.kmp.nativecoroutines").version("1.0.0-ALPHA-13")    |
+    –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
+
+

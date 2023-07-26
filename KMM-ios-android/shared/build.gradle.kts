@@ -54,6 +54,12 @@ kotlin {
                 // The necessary dependency will be selected at compile time.
                 //implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
+                // ContentNegotiation dependency
+                // Serializing/deserializing the content in a specific format when sending requests and receiving responses.
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+
 
             }
         }

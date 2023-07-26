@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
  */
 abstract class UseCase<Type, in Params> where Type: Any {
 
-    abstract fun run (params: Params): Type
+    abstract suspend fun run (params: Params): Type
 
     fun invoke(scope: CoroutineScope, params: Params, onResult: UseCaseResponse<Type>?) {
 

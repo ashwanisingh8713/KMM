@@ -59,6 +59,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
+                api("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-6")
 
 
             }

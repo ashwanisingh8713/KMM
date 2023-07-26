@@ -23,6 +23,9 @@ pluginManagement {
         id("com.android.library").version(agpVersion)
 
         id("org.jetbrains.compose").version(composeVersion)
+
+        id("com.google.devtools.ksp").version("1.9.0-1.0.11")
+        id("com.rickclephas.kmp.nativecoroutines").version("1.0.0-ALPHA-7")
     }
 }
 

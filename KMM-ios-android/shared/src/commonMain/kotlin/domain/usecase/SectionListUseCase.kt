@@ -9,7 +9,7 @@ import domain.usecase.base.UseCase
  */
 class SectionListUseCase(private val sectionsListRepo: SectionsListRepo): UseCase<SectionList, Any>()  {
 
-    override suspend fun run(params: Any): SectionList {
+    override suspend fun run(params: Any?): SectionList {
         return sectionsListRepo.getSectionList(params)
     }
 

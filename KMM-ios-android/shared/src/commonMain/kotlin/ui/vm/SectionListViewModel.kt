@@ -1,4 +1,4 @@
-package ui
+package ui.vm
 
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import domain.usecase.SectionListUseCase

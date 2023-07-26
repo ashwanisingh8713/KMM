@@ -13,17 +13,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import data.datasource.ApiRequest
+import data.repository.SectionsListRepoImpl
+import domain.repository.SectionsListRepo
+import domain.usecase.SectionListUseCase
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import theme.Material3ComposeTheme
 import ui.pager.HorizPager
+import ui.vm.SectionListViewModel
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
 
     LaunchedEffect(true) {
+        val apiRequest = ApiRequest()
+        val sectionsListRepoImpl = SectionsListRepoImpl(apiRequest)
+        val sectionListUseCase = SectionListUseCase(sectionsListRepoImpl)
+        val sectionListViewModel = SectionListViewModel(sectionListUseCase)
 
+        sectionListViewModel.makeSectionApiRequest()
     }
 
     Material3ComposeTheme {

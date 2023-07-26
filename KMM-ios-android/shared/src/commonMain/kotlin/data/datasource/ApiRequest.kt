@@ -51,7 +51,7 @@ class ApiRequest {
             contentType(ContentType.Application.Json)
             setBody(SectionRequestBody())
         }
-        val sectionList = httpResponse.body<SectionList>()
+        val sectionList:SectionList = httpResponse.body()
         return sectionList
     }
 

@@ -8,8 +8,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class SectionRequestBody(
-    val device: String = "android",
-    val api_key: String = "hindu@9*M",
-    val app_version: String = "78",
-    val os_version: String = "29"
+    val device: String,
+    val api_key: String,
+    val app_version: Int,
+    val os_version: Int
 )

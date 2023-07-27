@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp").version("1.9.0-1.0.11")
     id("com.rickclephas.kmp.nativecoroutines").version("1.0.0-ALPHA-13")
-    kotlin("plugin.serialization").version("1.8.21")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -65,6 +65,8 @@ kotlin {
                 // Serializing/deserializing the content in a specific format when sending requests and receiving responses.
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
                 implementation("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-12")
 

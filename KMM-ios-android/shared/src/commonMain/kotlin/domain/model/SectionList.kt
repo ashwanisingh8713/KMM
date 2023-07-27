@@ -1,6 +1,7 @@
 package domain.model
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 
 /**
@@ -9,9 +10,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SectionList(
-    val data: Data? = null
+    val data: Data
 )
-
 @Serializable
 data class Data(
     val BLink: List<BLink>,
@@ -20,17 +20,19 @@ data class Data(
     val home: Home,
     val section: List<Section>
 )
-
 @Serializable
 data class BLink(
     val custom: Boolean,
     val customScreen: Int,
     val customScreenPri: Int,
-    val explorePriority: Int,
+    @Transient
+    val explorePriority: Int = 0,
     val image: String,
     val image_v2: String,
-    val link: String,
-    val overrideExplore: Int,
+    @Transient
+    val link: String? = null,
+    @Transient
+    val overrideExplore: Int = 0,
     val overridePriority: Int,
     val parentId: String,
     val priority: Int,
@@ -39,21 +41,24 @@ data class BLink(
     val secName: String,
     val show_on_burger: Boolean,
     val show_on_explore: Boolean,
-    val subSections: List<Any>,
+    @Transient
+    val subSections: List<Any>? = null,
     val type: String,
     val webLink: String
 )
-
 @Serializable
 data class Portfolio(
     val custom: Boolean,
     val customScreen: Int,
     val customScreenPri: Int,
-    val explorePriority: Int,
+    @Transient
+    val explorePriority: Int = 0,
     val image: String,
     val image_v2: String,
-    val link: String,
-    val overrideExplore: Int,
+    @Transient
+    val link: String? = null,
+    @Transient
+    val overrideExplore: Int = 0,
     val overridePriority: Int,
     val parentId: String,
     val priority: Int,
@@ -62,11 +67,11 @@ data class Portfolio(
     val secName: String,
     val show_on_burger: Boolean,
     val show_on_explore: Boolean,
-    val subSections: List<Any>,
+    @Transient
+    val subSections: List<Any>? = null,
     val type: String,
     val webLink: String
 )
-
 @Serializable
 data class Home(
     val banner: Banner,
@@ -75,18 +80,20 @@ data class Home(
     val staticPageUrl: StaticPageUrl,
     val widget: List<Widget>
 )
-
 @Serializable
 data class Section(
     val custom: Boolean,
     val customScreen: Int,
     val customScreenPri: Int,
-    val explorePriority: Int,
+    @Transient
+    val explorePriority: Int = 0,
     val image: String,
     val image_v2: String,
     val isNew: Boolean,
-    val link: String,
-    val overrideExplore: Int,
+    @Transient
+    val link: String? = null,
+    @Transient
+    val overrideExplore: Int = 0,
     val overridePriority: Int,
     val parentId: Int,
     val priority: Int,
@@ -98,16 +105,15 @@ data class Section(
     val staticPageUrl: StaticPageUrl,
     val subSections: List<SubSection>,
     val type: String,
-    val webLink: String
+    @Transient
+    val webLink: String? = null
 )
-
 @Serializable
 data class Banner(
     val secId: Int,
     val secName: String,
     val type: String
 )
-
 @Serializable
 data class Explore(
     val homePriority: Int,
@@ -118,7 +124,6 @@ data class Explore(
     val secName: String,
     val type: String
 )
-
 @Serializable
 data class Personalize(
     val homePriority: Int,
@@ -127,17 +132,17 @@ data class Personalize(
     val secName: String,
     val type: String
 )
-
 @Serializable
 data class StaticPageUrl(
     val isEnabled: Boolean,
-    val lastUpdatedOn: String,
+    @Transient
+    val lastUpdatedOn: String? = null,
     val position: String,
     val sectionId: Int,
     val url: String,
-    val youtubeId: String
+    @Transient
+    val youtubeId: String? = null
 )
-
 @Serializable
 data class Widget(
     val homePriority: Int,
@@ -148,18 +153,20 @@ data class Widget(
     val type: String,
     val viewAllCTA: Boolean
 )
-
 @Serializable
 data class SubSection(
     val custom: Boolean,
     val customScreen: Int,
     val customScreenPri: Int,
-    val explorePriority: Int,
+    @Transient
+    val explorePriority: Int = 0,
     val image: String,
     val image_v2: String,
     val isNew: Boolean,
-    val link: String,
-    val overrideExplore: Int,
+    @Transient
+    val link: String? = null,
+    @Transient
+    val overrideExplore: Int = 0,
     val overridePriority: Int,
     val parentId: Int,
     val priority: Int,

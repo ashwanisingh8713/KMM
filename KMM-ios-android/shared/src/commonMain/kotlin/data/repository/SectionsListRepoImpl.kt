@@ -1,6 +1,7 @@
 package data.repository
 
 import data.datasource.ApiRequest
+import data.datasource.SectionRequestBody
 import domain.model.SectionList
 import domain.repository.SectionsListRepo
 
@@ -10,6 +11,6 @@ import domain.repository.SectionsListRepo
 class SectionsListRepoImpl(private val apiRequest: ApiRequest):SectionsListRepo {
 
     override suspend fun getSectionList(params: Any?): SectionList {
-        return apiRequest.getSectionList()
+        return apiRequest.getSectionList(params)
     }
 }

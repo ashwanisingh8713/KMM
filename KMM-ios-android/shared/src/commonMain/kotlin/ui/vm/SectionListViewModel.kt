@@ -5,6 +5,7 @@ import domain.usecase.SectionListUseCase
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import data.datasource.SectionRequestBody
 import domain.model.SectionList
 import domain.usecase.base.UseCaseResponse
 import io.ktor.util.logging.Logger
@@ -21,9 +22,10 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase): 
     val successState: StateFlow<SectionList?> get() = _sectionList
 
     fun makeSectionApiRequest() {
-        sectionListUseCase.invoke(scope = viewModelScope.coroutineScope, null, onResult = object : UseCaseResponse<SectionList> {
+        val params = SectionRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78, os_version = 29)
+        sectionListUseCase.invoke(scope = viewModelScope.coroutineScope, params, onResult = object : UseCaseResponse<SectionList> {
             override fun onSuccess(type: SectionList) {
-                println("Request is successful")
+                println("Request is successful :: $type")
             }
 
             override fun onError(apiError: String) {

@@ -40,6 +40,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -66,8 +67,10 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
+                // Json Serialisation
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
+                // ViewModel - Multiplatform
                 implementation("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-12")
 
 

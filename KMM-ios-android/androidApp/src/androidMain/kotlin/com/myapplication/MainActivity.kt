@@ -4,6 +4,9 @@ import MainView
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import data.datasource.ApiRequest
 import data.repository.SectionsListRepoImpl
 import domain.usecase.SectionListUseCase
@@ -22,4 +25,10 @@ class MainActivity : AppCompatActivity() {
             MainView(sectionListViewModel)
         }
     }
+}
+
+@Composable
+fun test() {
+    val dd = LocalConfiguration.current
+    val context = LocalContext.current
 }

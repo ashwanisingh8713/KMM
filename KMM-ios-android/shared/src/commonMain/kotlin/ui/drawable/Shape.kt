@@ -1,8 +1,9 @@
-package theme
+package ui.drawable
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Shapes
+import ui.theme.Theme
 
 val Shapes = Shapes(
     extraSmall = RoundedCornerShape(2.dp),
@@ -13,8 +14,3 @@ val Shapes = Shapes(
 
 )
 
-val Shape = Shapes(
-    small = RoundedCornerShape(Spacing.size_4),
-    medium = RoundedCornerShape(Spacing.size_8),
-    large = RoundedCornerShape(Spacing.size_12)
-)

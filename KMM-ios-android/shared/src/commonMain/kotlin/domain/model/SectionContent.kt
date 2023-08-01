@@ -17,7 +17,7 @@ data class SectionContentData(
     val imc: Int,
     val media: List<Me>,
     val s: Int,
-    val sid: String,
+    val sid: Int,
     val sname: String,
     val yd: String
 )
@@ -53,7 +53,8 @@ data class Article(
     val parentName: String,
     val pd: String,
     val pid: String,
-    val rn: List<Article>,
+    @Transient
+    val rn: List<Article>? = null,
     @Transient
     val sections: List<Any>? = null,
     val short_de: String,

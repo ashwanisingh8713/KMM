@@ -66,9 +66,11 @@ fun HomeContent(viewModel: SectionListViewModel) {
                 SectionTabItem(tabId = it.secId.toString(),
                     secName = it.secName,
                     isSelected = false,
-                    secId = it.secId.toString(),
+                    secId = it.secId,
                     secType = it.type,
-                    screen = { SectionContentUI(secId = it.secId, viewModel = viewModel) })
+                    screen = {
+                        SectionContentUI(secId = it.secId, secName = it.secName, type= it.type, viewModel = viewModel)
+                    })
             }
         }
 
@@ -78,17 +80,13 @@ fun HomeContent(viewModel: SectionListViewModel) {
             }
             val currentTabIndex by remember { derivedStateOf { pagerState.currentPage } }
 
-            // Working on Divider
-            // SECTIon api, listing screen
             ScrollableTabRow(
-//                containerColor = Color(0xff1E76DA),
                 selectedTabIndex = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth(),
                 edgePadding = 0.dp,
                 indicator = { tabPositions ->
                     CustomIndicator(tabPositions = tabPositions, pagerState = pagerState)
                 },
-//                divider = {VerticalDivider()},
 
             ) {
                 tabRowItems.forEachIndexed { index, tabItem ->
@@ -130,6 +128,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
                 state = pagerState,
             ) {
                 tabRowItems[pagerState.currentPage].screen()
+
             }
         }
     }

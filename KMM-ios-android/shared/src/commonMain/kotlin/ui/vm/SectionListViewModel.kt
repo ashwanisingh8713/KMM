@@ -23,23 +23,28 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     @NativeCoroutinesState
     val successSectionList: StateFlow<SectionList?> get() = _sectionList
 
-    data class SectionContentState(
-        var isSuccess : Boolean = false,
-        var isLoading: Boolean = false,
-        val sectionContent: SectionContent? = null,
-        val error: String? = null
-    )
 
-    val _sectionContentState = MutableStateFlow<SectionContentState?>(viewModelScope, null)
+    val _sectionContentMapState = MutableStateFlow<Map<String, SectionContent>?>(viewModelScope, null)
+    val sectionContentMapState: StateFlow<Map<String, SectionContent>?> get() = _sectionContentMapState
+
+    val _sectionContentState = MutableStateFlow<SectionContent?>(viewModelScope, null)
     @NativeCoroutinesState
-    val sectionContentState: StateFlow<SectionContentState?> get() = _sectionContentState
+    val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState
+
+    val _sectionContentLoading = MutableStateFlow<Boolean>(viewModelScope, true)
+    @NativeCoroutinesState
+    val sectionContentLoading: StateFlow<Boolean> get() = _sectionContentLoading
+
+    val _sectionContentError = MutableStateFlow<String?>(viewModelScope, null)
+    @NativeCoroutinesState
+    val sectionContentError: StateFlow<String?> get() = _sectionContentError
 
     fun makeSectionListApiRequest() {
         val params = SectionListRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78, os_version = 29)
         sectionListUseCase.invoke(scope = viewModelScope.coroutineScope, params, onResult = object : UseCaseResponse<SectionList> {
-            override fun onSuccess(type: SectionList) {
-                println("Request is successful :: $type")
-                _sectionList.update { type }
+            override fun onSuccess(content: SectionList) {
+                println("Request is successful :: $content")
+                _sectionList.update { content }
             }
 
             override fun onError(apiError: String) {
@@ -47,27 +52,26 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
             }
 
             override fun onLoading(isLoading: Boolean) {
-                println("Request is loading :: $isLoading")
+                println("Request is Loading :: $isLoading")
             }
 
         })
     }
 
-    fun makeSectionContentApiRequest(secId: Int, page: Int = 1, lut: Int = 0) {
+    fun makeSectionContentApiRequest(secId: Int, secName: String, type:String, page: Int = 1, lut: Int = 0) {
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
-            os_version = 29, id = secId, lut = 0, type = "section", page = page )
+            os_version = 29, id = secId, lut = 0, type = type, page = page )
         sectionContentUseCase.invoke(scope = viewModelScope.coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
-            override fun onSuccess(type: SectionContent) {
-                println("Request is successful :: $type")
-                _sectionContentState.update { SectionContentState(sectionContent = type, isSuccess = true, isLoading = false, error = null) }
+            override fun onSuccess(content: SectionContent) {
+                _sectionContentState.update { content }
             }
 
             override fun onError(apiError: String) {
-                _sectionContentState.update { SectionContentState(isLoading = false, isSuccess = false, error = apiError) }
+                _sectionContentError.update { apiError }
             }
 
             override fun onLoading(isLoading: Boolean) {
-                _sectionContentState.update { SectionContentState(isLoading = true) }
+                _sectionContentLoading.update { isLoading }
             }
 
         })

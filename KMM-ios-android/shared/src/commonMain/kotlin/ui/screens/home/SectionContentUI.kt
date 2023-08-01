@@ -1,5 +1,6 @@
 package ui.screens.home
 
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -11,11 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import domain.model.SectionContent
-import ui.model.SectionTabItem
+import kotlinx.coroutines.flow.distinctUntilChanged
 import ui.vm.SectionListViewModel
 
 /**
@@ -23,35 +25,70 @@ import ui.vm.SectionListViewModel
  */
 
 @Composable
-fun SectionContentUI(secId: Int, viewModel: SectionListViewModel) {
+fun SectionContentUI(sectionContent: SectionContent? = null, isLoading: Boolean = false, error: String?=null, secId: Int, secName: String, type: String, viewModel: SectionListViewModel) {
 
     var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
-    var isSuccess by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf<String?>("") }
+    var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(true) {
-        viewModel.makeSectionContentApiRequest(secId = secId, page = 1)
+        snapshotFlow {
+            secId
+        }.distinctUntilChanged().collect {
+            viewModel.makeSectionContentApiRequest(
+                secId = secId,
+                secName = secName,
+                type = type,
+                page = 1
+            )
+        }
     }
 
     viewModel.sectionContentState.collectAsState().value?.let { it ->
-        isSuccess = it.isSuccess
-        sectionContent = it.sectionContent
-        isLoading = it.isLoading
-        error = it.error
+        sectionContent = it
+    }
+
+    viewModel.sectionContentLoading.collectAsState().value?.let { it ->
+        isLoading = it
+    }
+
+    viewModel.sectionContentError.collectAsState().value?.let { it ->
+        error = it
     }
 
 
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            modifier = Modifier,
-            text = "Tab N $secId",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Start,
-        )
+    if (isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Loading...",
+                style = MaterialTheme.typography.displayMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        if (sectionContent != null) {
+            sectionContent?.let {
+                Text(
+                    text = it.data.sname,
+                    style = MaterialTheme.typography.displayMedium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else if(error != null && error!!.isNotEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = error ?: "Something went wrong",
+                    style = MaterialTheme.typography.displayMedium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }

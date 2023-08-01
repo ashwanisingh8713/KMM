@@ -10,6 +10,7 @@ import domain.model.SectionList
 import domain.usecase.base.UseCaseResponse
 import io.ktor.util.logging.Logger
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Created by Ashwani Kumar Singh on 26,July,2023.
@@ -26,6 +27,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase): 
         sectionListUseCase.invoke(scope = viewModelScope.coroutineScope, params, onResult = object : UseCaseResponse<SectionList> {
             override fun onSuccess(type: SectionList) {
                 println("Request is successful :: $type")
+                _sectionList.update { type }
             }
 
             override fun onError(apiError: String) {

@@ -41,6 +41,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
+                implementation(compose.materialIconsExtended)
+
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -73,6 +75,14 @@ kotlin {
                 // ViewModel - Multiplatform
                 implementation("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-12")
 
+                // voyager Navigation Dependency
+                val voyagerVersion = "1.0.0-rc05"
+                // Navigator
+                implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+                // TabNavigator
+                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+                // Transitions
+                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
 
             }
         }
@@ -84,6 +94,9 @@ kotlin {
 
                 // Ktor Client
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
+                // Compose Preview
+                implementation(compose.preview)
             }
         }
         val iosX64Main by getting

@@ -1,7 +1,6 @@
 package ui.model
 
 import androidx.compose.runtime.Composable
-import domain.model.SectionContent
 
 /**
  * Created by Ashwani Kumar Singh on 31,July,2023.
@@ -12,7 +11,6 @@ data class SectionTabItem(
     val isSelected: Boolean = false,
     val secId: Int,
     val secType: String,
-    var sectionContent: SectionContent? = null,
     val screen: @Composable () -> Unit,
 
 )

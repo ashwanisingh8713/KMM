@@ -1,6 +1,5 @@
-package ui.screens.home
+package ui.screens.home.pages
 
-import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +24,7 @@ import ui.vm.SectionListViewModel
  */
 
 @Composable
-fun SectionContentUI(sectionContent: SectionContent? = null, isLoading: Boolean = false, error: String?=null, secId: Int, secName: String, type: String, viewModel: SectionListViewModel) {
+fun SectionContentUI_8(secId: Int, secName: String, type: String, viewModel: SectionListViewModel) {
 
     var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
     var isLoading by remember { mutableStateOf(true) }

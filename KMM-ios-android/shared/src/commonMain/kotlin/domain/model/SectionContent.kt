@@ -57,7 +57,7 @@ data class Article(
     val rn: List<Article>? = null,
     @Transient
     val sections: List<Any>? = null,
-    val short_de: String,
+    val short_de: String? = null,
     val sid: String,
     val sname: String,
     val ti: String,

@@ -11,6 +11,7 @@ import domain.model.SectionContent
 import domain.model.SectionList
 import domain.usecase.SectionContentUseCase
 import domain.usecase.base.UseCaseResponse
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
@@ -30,6 +31,10 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     val _sectionContentState = MutableStateFlow<SectionContent?>(viewModelScope, null)
     @NativeCoroutinesState
     val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState
+
+    /*val _sectionContentState = MutableSharedFlow<SectionContent?>()
+    @NativeCoroutinesState
+    val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState*/
 
     val _sectionContentLoading = MutableStateFlow<Boolean>(viewModelScope, true)
     @NativeCoroutinesState
@@ -59,6 +64,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     }
 
     fun makeSectionContentApiRequest(secId: Int, secName: String, type:String, page: Int = 1, lut: Int = 0) {
+        println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
             os_version = 29, id = secId, lut = 0, type = type, page = page )
         sectionContentUseCase.invoke(scope = viewModelScope.coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
@@ -67,14 +73,17 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
             }
 
             override fun onError(apiError: String) {
-                _sectionContentError.update { apiError }
+                _sectionContentError.update { "$secName -> $apiError" }
             }
 
             override fun onLoading(isLoading: Boolean) {
                 _sectionContentLoading.update { isLoading }
             }
-
         })
+    }
+
+    fun clearSectionContent() {
+        _sectionContentState.update { null }
     }
 
 }

@@ -36,8 +36,21 @@ import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.unit.dp
+import domain.model.SectionContent
+import kotlinx.coroutines.flow.distinctUntilChanged
 import ui.model.SectionTabItem
+import ui.screens.home.pages.SectionContentUI_0
+import ui.screens.home.pages.SectionContentUI_1
+import ui.screens.home.pages.SectionContentUI_2
+import ui.screens.home.pages.SectionContentUI_3
+import ui.screens.home.pages.SectionContentUI_4
+import ui.screens.home.pages.SectionContentUI_5
+import ui.screens.home.pages.SectionContentUI_6
+import ui.screens.home.pages.SectionContentUI_7
+import ui.screens.home.pages.SectionContentUI_8
+import ui.screens.home.pages.SectionContentUI_9
 import ui.theme.Theme
 import ui.vm.SectionListViewModel
 
@@ -53,6 +66,7 @@ fun HomeScreen(viewModel: SectionListViewModel) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(viewModel: SectionListViewModel) {
+    println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
     Column(modifier = Modifier.fillMaxSize()) {
         LaunchedEffect(true) {
              viewModel.makeSectionListApiRequest()
@@ -62,14 +76,14 @@ fun HomeContent(viewModel: SectionListViewModel) {
 
         viewModel.successSectionList.collectAsState().value?.let { it ->
             val secList = it.data.section
-            tabRowItems = secList.map {
+            tabRowItems = secList.filter { it.type != "static" }.map {
                 SectionTabItem(tabId = it.secId.toString(),
                     secName = it.secName,
                     isSelected = false,
                     secId = it.secId,
                     secType = it.type,
                     screen = {
-                        SectionContentUI(secId = it.secId, secName = it.secName, type= it.type, viewModel = viewModel)
+//                        SectionContentUI(secId = it.secId, secName = it.secName, type= it.type, viewModel = viewModel)
                     })
             }
         }
@@ -122,18 +136,71 @@ fun HomeContent(viewModel: SectionListViewModel) {
                     )
                 }
             }
-
-
-            HorizontalPager(
-                state = pagerState,
-            ) {
-                tabRowItems[pagerState.currentPage].screen()
-
-            }
+            // Pager
+            Pager(pagerState = pagerState, tabRowItems = tabRowItems, viewModel = viewModel)
         }
     }
 
     }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun Pager(pagerState: PagerState, tabRowItems: List<SectionTabItem>, viewModel: SectionListViewModel) {
+//    println("makeSectionContentApiRequest - HorizontalPager ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
+
+    var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    var type by remember { mutableStateOf<String>("") }
+    var secId by remember { mutableStateOf<Int>(0) }
+    var secName by remember { mutableStateOf<String>("") }
+
+    println("makeSectionContentApiRequest - SectionContentUI :: secId= $secId, secName= $secName, type= $type")
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow {
+            pagerState.currentPage
+        }.distinctUntilChanged().collect {
+            viewModel.makeSectionContentApiRequest(
+                secId = secId,
+                secName = secName,
+                type = type,
+                page = 1
+            )
+        }
+    }
+
+    viewModel.sectionContentState.collectAsState().value?.let { it ->
+        sectionContent = it
+    }
+
+    viewModel.sectionContentLoading.collectAsState().value?.let { it ->
+        isLoading = it
+    }
+
+    viewModel.sectionContentError.collectAsState().value?.let { it ->
+        error = it
+        println(error)
+    }
+
+    HorizontalPager(
+        state = pagerState,
+    ) {index->
+//                tabRowItems[pagerState.currentPage].screen()
+
+        val pageState = tabRowItems[pagerState.currentPage]
+        type = pageState.secType
+        secId = pageState.secId
+        secName = pageState.secName
+
+        SectionContentUI_0(sectionContent = sectionContent, isLoading= isLoading, error= error,
+            secId = secId, secName = secName, type= type, viewModel = viewModel)
+
+
+
+    }
+}
 
 
 

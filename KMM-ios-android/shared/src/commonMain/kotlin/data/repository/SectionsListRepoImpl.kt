@@ -1,7 +1,6 @@
 package data.repository
 
 import data.datasource.ApiRequest
-import data.datasource.SectionRequestBody
 import domain.model.SectionList
 import domain.repository.SectionsListRepo
 

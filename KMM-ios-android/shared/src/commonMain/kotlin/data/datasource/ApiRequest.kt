@@ -1,5 +1,6 @@
 package data.datasource
 
+import domain.model.SectionContent
 import domain.model.SectionList
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -52,13 +53,22 @@ class ApiRequest {
 
     suspend fun getSectionList(params: Any?):SectionList {
         val httpResponse = httpClient.post("https://app.thehindubusinessline.com/hinduBL/service/api_v2/sectionList_v4.php") {
-//        val httpResponse = httpClient.get("https://appsearch.thehindu.com/hindu/service/api_v3/mobiles/newsLetter.php") {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             setBody(params)
         }
         val sectionList:SectionList = httpResponse.body()
         return sectionList
+    }
+
+    suspend fun getSectionContent(params: Any?): SectionContent {
+        val httpResponse = httpClient.post("hhttps://app.thehindubusinessline.com/hinduBL/service/api_v2/section-content.php") {
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(params)
+        }
+        val sectionContent: SectionContent = httpResponse.body()
+        return sectionContent
     }
 
 }

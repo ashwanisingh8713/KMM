@@ -18,7 +18,7 @@ https://material-foundation.github.io/material-theme-builder/#/custom
 
 val LightThemeColors = ColorScheme(
 // Window color and text color(OnPrimary)
-    primary = Color(0xFF333333),
+    primary = Color(0xFF853929),
     onPrimary = Color(0xFF55AB60),
 
     primaryContainer = Color(0xFFF3FFF5),
@@ -42,7 +42,7 @@ val LightThemeColors = ColorScheme(
     onSurface = Color(0xFF410002),
 
     surfaceVariant = Color(0xFFFFFBFF),
-    onSurfaceVariant = Color(0xFF853929),
+    onSurfaceVariant = Color(0xFF333333),
     surfaceTint = Color(0xFF000000),
 
     inverseSurface = Color(0xFF000000),

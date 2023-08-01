@@ -8,7 +8,12 @@ struct ComposeView: UIViewControllerRepresentable {
         var apiRequest = ApiRequest()
         var sectionsListRepoImpl = SectionsListRepoImpl(apiRequest: apiRequest)
         var sectionListUseCase = SectionListUseCase(sectionsListRepo: sectionsListRepoImpl)
-        var sectionListViewModel = SectionListViewModel(sectionListUseCase: sectionListUseCase)
+
+        var sectionContentRepoImpl = SectionContentRepoImpl(apiRequest: apiRequest)
+        var sectionContentUseCase = SectionContentUseCase(sectionContentRepo: sectionContentRepoImpl)
+
+        var sectionListViewModel = SectionListViewModel(sectionListUseCase: sectionListUseCase,
+                    sectionContentUseCase: sectionContentUseCase)
         return sectionListViewModel
     }
     
@@ -18,14 +23,7 @@ struct ComposeView: UIViewControllerRepresentable {
         Main_iosKt.MainViewController(sectionListViewModel: createViewModel())
     }
     
-    func myFunc() -> Void {
-        var apiRequestt = ApiRequest()
-        var sectionsListRepoImpl = SectionsListRepoImpl(apiRequest: apiRequestt)
-        var sectionListUseCase = SectionListUseCase(sectionsListRepo: sectionsListRepoImpl)
-        var sectionListViewModel = SectionListViewModel(sectionListUseCase: sectionListUseCase)
-        Test_iosKt.CreateApiRequest()
-    }
-
+    
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 

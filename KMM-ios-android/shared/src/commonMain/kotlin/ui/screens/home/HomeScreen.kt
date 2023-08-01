@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.runtime.rememberCoroutineScope
@@ -16,40 +15,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.material3.Text
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DividerDefaults.color
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabPosition
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ui.model.SectionTabItem
 import ui.theme.Theme
@@ -67,17 +53,14 @@ fun HomeScreen(viewModel: SectionListViewModel) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(viewModel: SectionListViewModel) {
-    Column(
-
-    ) {
-
+    Column(modifier = Modifier.fillMaxSize()) {
         LaunchedEffect(true) {
-             viewModel.makeSectionApiRequest()
+             viewModel.makeSectionListApiRequest()
         }
 
         var tabRowItems by remember { mutableStateOf(listOf<SectionTabItem>()) }
 
-        viewModel.successState.collectAsState().value?.let { it ->
+        viewModel.successSectionList.collectAsState().value?.let { it ->
             val secList = it.data.section
             tabRowItems = secList.map {
                 SectionTabItem(tabId = it.secId.toString(),
@@ -85,7 +68,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
                     isSelected = false,
                     secId = it.secId.toString(),
                     secType = it.type,
-                    screen = { SectionList(it.secId) })
+                    screen = { SectionContentUI(secId = it.secId, viewModel = viewModel) })
             }
         }
 
@@ -135,7 +118,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
                                 text = tabItem.secName.uppercase(),
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
-                                color = if (selected) Theme.colors.onSurfaceVariant else Theme.colors.primary,
+                                color = if (selected) Theme.colors.primary else Theme.colors.onSurfaceVariant,
                             )
                         }
                     )
@@ -189,7 +172,7 @@ private fun CustomIndicator(tabPositions: List<TabPosition>, pagerState: PagerSt
             .wrapContentSize(align = Alignment.BottomStart)
             .width(indicatorEnd - indicatorStart)
             .fillMaxSize()
-            .border(BorderStroke(2.dp, Theme.colors.onSurfaceVariant), RoundedCornerShape(30))
+            .border(BorderStroke(2.dp, Theme.colors.primary), RoundedCornerShape(30))
             .padding(25.dp)
     )
 }

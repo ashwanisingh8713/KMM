@@ -1,64 +1,27 @@
 package ui.screens.home.pages
 
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import domain.model.SectionContent
-import kotlinx.coroutines.flow.distinctUntilChanged
-import ui.vm.SectionListViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 31,July,2023.
  */
 
 @Composable
-fun SectionContentUI_0(sectionContent: SectionContent?, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String, viewModel: SectionListViewModel) {
-
-//    var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
-//    var isLoading by remember { mutableStateOf(true) }
-//    var error by remember { mutableStateOf<String?>(null) }
-//
-//    println("makeSectionContentApiRequest - SectionContentUI :: secId= $secId, secName= $secName, type= $type")
-//
-//    LaunchedEffect(true) {
-//        snapshotFlow {
-//            secId
-//        }.distinctUntilChanged().collect {
-//            viewModel.makeSectionContentApiRequest(
-//                secId = secId,
-//                secName = secName,
-//                type = type,
-//                page = 1
-//            )
-//        }
-//    }
-//
-//    viewModel.sectionContentState.collectAsState().value?.let { it ->
-//        sectionContent = it
-//    }
-//
-//    viewModel.sectionContentLoading.collectAsState().value?.let { it ->
-//        isLoading = it
-//    }
-//
-//    viewModel.sectionContentError.collectAsState().value?.let { it ->
-//        error = it
-//    }
-
-
-
+fun SectionContentUI_0(sectionContent: SectionContent?, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
     if (isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -72,12 +35,18 @@ fun SectionContentUI_0(sectionContent: SectionContent?, isLoading: Boolean, erro
         }
     } else {
         if (sectionContent != null) {
+            val listState = rememberLazyListState()
             sectionContent?.let {
-                Text(
-                    text = it.data.sname,
-                    style = MaterialTheme.typography.displayMedium,
-                    textAlign = TextAlign.Center
-                )
+                // LazyColumn
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier,
+                    contentPadding = PaddingValues(0.dp),
+                ) {
+                    items(items = sectionContent.data.article, key = {it.aid}) { article ->
+                        PostCard(isLoading = isLoading, article = article)
+                    }
+                }
             }
         } else if(error != null && error!!.isNotEmpty()) {
             Box(

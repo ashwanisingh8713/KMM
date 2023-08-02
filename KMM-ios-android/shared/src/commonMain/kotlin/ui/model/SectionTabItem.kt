@@ -11,6 +11,5 @@ data class SectionTabItem(
     val isSelected: Boolean = false,
     val secId: Int,
     val secType: String,
-    val screen: @Composable () -> Unit,
 
 )

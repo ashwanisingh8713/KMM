@@ -42,15 +42,6 @@ import domain.model.SectionContent
 import kotlinx.coroutines.flow.distinctUntilChanged
 import ui.model.SectionTabItem
 import ui.screens.home.pages.SectionContentUI_0
-import ui.screens.home.pages.SectionContentUI_1
-import ui.screens.home.pages.SectionContentUI_2
-import ui.screens.home.pages.SectionContentUI_3
-import ui.screens.home.pages.SectionContentUI_4
-import ui.screens.home.pages.SectionContentUI_5
-import ui.screens.home.pages.SectionContentUI_6
-import ui.screens.home.pages.SectionContentUI_7
-import ui.screens.home.pages.SectionContentUI_8
-import ui.screens.home.pages.SectionContentUI_9
 import ui.theme.Theme
 import ui.vm.SectionListViewModel
 
@@ -69,7 +60,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
     println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
     Column(modifier = Modifier.fillMaxSize()) {
         LaunchedEffect(true) {
-             viewModel.makeSectionListApiRequest()
+            viewModel.makeSectionListApiRequest()
         }
 
         var tabRowItems by remember { mutableStateOf(listOf<SectionTabItem>()) }
@@ -77,19 +68,18 @@ fun HomeContent(viewModel: SectionListViewModel) {
         viewModel.successSectionList.collectAsState().value?.let { it ->
             val secList = it.data.section
             tabRowItems = secList.filter { it.type != "static" }.map {
-                SectionTabItem(tabId = it.secId.toString(),
+                SectionTabItem(
+                    tabId = it.secId.toString(),
                     secName = it.secName,
                     isSelected = false,
                     secId = it.secId,
                     secType = it.type,
-                    screen = {
-//                        SectionContentUI(secId = it.secId, secName = it.secName, type= it.type, viewModel = viewModel)
-                    })
+                )
             }
         }
 
-        if(tabRowItems.isNotEmpty()) {
-            val pagerState = rememberPagerState(initialPage = 0,) {
+        if (tabRowItems.isNotEmpty()) {
+            val pagerState = rememberPagerState(initialPage = 0) {
                 tabRowItems.size
             }
             val currentTabIndex by remember { derivedStateOf { pagerState.currentPage } }
@@ -102,7 +92,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
                     CustomIndicator(tabPositions = tabPositions, pagerState = pagerState)
                 },
 
-            ) {
+                ) {
                 tabRowItems.forEachIndexed { index, tabItem ->
                     val selected = currentTabIndex == index
                     val coroutineScope = rememberCoroutineScope()
@@ -141,11 +131,15 @@ fun HomeContent(viewModel: SectionListViewModel) {
         }
     }
 
-    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Pager(pagerState: PagerState, tabRowItems: List<SectionTabItem>, viewModel: SectionListViewModel) {
+private fun Pager(
+    pagerState: PagerState,
+    tabRowItems: List<SectionTabItem>,
+    viewModel: SectionListViewModel
+) {
 //    println("makeSectionContentApiRequest - HorizontalPager ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
 
     var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
@@ -186,22 +180,20 @@ private fun Pager(pagerState: PagerState, tabRowItems: List<SectionTabItem>, vie
 
     HorizontalPager(
         state = pagerState,
-    ) {index->
-//                tabRowItems[pagerState.currentPage].screen()
-
+    ) { index ->
         val pageState = tabRowItems[pagerState.currentPage]
         type = pageState.secType
         secId = pageState.secId
         secName = pageState.secName
 
-        SectionContentUI_0(sectionContent = sectionContent, isLoading= isLoading, error= error,
-            secId = secId, secName = secName, type= type, viewModel = viewModel)
-
+        SectionContentUI_0(
+            sectionContent = sectionContent, isLoading = isLoading, error = error,
+            secId = secId, secName = secName, type = type
+        )
 
 
     }
 }
-
 
 
 @OptIn(ExperimentalFoundationApi::class)

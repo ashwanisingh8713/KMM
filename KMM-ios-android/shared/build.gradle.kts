@@ -84,6 +84,9 @@ kotlin {
                 // Transitions
                 implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
 
+                // Image Caching
+                implementation("media.kamel:kamel-image:0.7.1")
+
             }
         }
         val androidMain by getting {
@@ -97,6 +100,7 @@ kotlin {
 
                 // Compose Preview
                 implementation(compose.preview)
+
             }
         }
         val iosX64Main by getting
@@ -129,10 +133,10 @@ android {
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(11)
+        jvmToolchain(17)
     }
 }

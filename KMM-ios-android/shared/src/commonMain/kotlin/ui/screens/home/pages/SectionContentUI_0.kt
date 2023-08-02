@@ -1,6 +1,5 @@
 package ui.screens.home.pages
 
-import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn

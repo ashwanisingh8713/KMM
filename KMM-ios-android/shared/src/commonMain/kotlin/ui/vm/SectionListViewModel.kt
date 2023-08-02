@@ -25,10 +25,10 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     val successSectionList: StateFlow<SectionList?> get() = _sectionList
 
 
-    val _sectionContentMapState = MutableStateFlow<Map<String, SectionContent>?>(viewModelScope, null)
+    private val _sectionContentMapState = MutableStateFlow<Map<String, SectionContent>?>(viewModelScope, null)
     val sectionContentMapState: StateFlow<Map<String, SectionContent>?> get() = _sectionContentMapState
 
-    val _sectionContentState = MutableStateFlow<SectionContent?>(viewModelScope, null)
+    private val _sectionContentState = MutableStateFlow<SectionContent?>(viewModelScope, null)
     @NativeCoroutinesState
     val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState
 
@@ -36,11 +36,11 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     @NativeCoroutinesState
     val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState*/
 
-    val _sectionContentLoading = MutableStateFlow<Boolean>(viewModelScope, true)
+    private val _sectionContentLoading = MutableStateFlow<Boolean>(viewModelScope, true)
     @NativeCoroutinesState
     val sectionContentLoading: StateFlow<Boolean> get() = _sectionContentLoading
 
-    val _sectionContentError = MutableStateFlow<String?>(viewModelScope, null)
+    private val _sectionContentError = MutableStateFlow<String?>(viewModelScope, null)
     @NativeCoroutinesState
     val sectionContentError: StateFlow<String?> get() = _sectionContentError
 

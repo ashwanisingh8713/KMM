@@ -46,7 +46,6 @@ fun PostCard(isLoading: Boolean, article: Article, modifier: Modifier = Modifier
                 Text(
                     text = "~ ${article.au}",
                     style = MaterialTheme.typography.labelMedium.copy(
-                        color = Color.Gray,
                         fontStyle = FontStyle.Italic,
                         fontWeight = FontWeight.Light,
                     ),

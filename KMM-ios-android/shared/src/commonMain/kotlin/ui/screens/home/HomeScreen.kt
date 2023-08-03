@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabPosition
 
@@ -38,25 +40,64 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import domain.model.SectionContent
 import kotlinx.coroutines.flow.distinctUntilChanged
 import ui.model.SectionTabItem
 import ui.screens.home.pages.SectionContentUI_0
 import ui.theme.Theme
 import ui.vm.SectionListViewModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import domain.model.Article
+import ui.screens.detail.DetailScreen
 
 /**
  * Created by Ashwani Kumar Singh on 31,July,2023.
  */
 
+
+class HomeScreen(private val viewModel: SectionListViewModel): Screen {
+
+    override val key: ScreenKey = uniqueScreenKey
+    @Composable
+    override fun Content() {
+        HomeContent(viewModel)
+    }
+
+
+}
+
 @Composable
-fun HomeScreen(viewModel: SectionListViewModel) {
-    HomeContent(viewModel)
+fun HomeContent(viewModel: SectionListViewModel) {
+    val navigator = LocalNavigator.currentOrThrow
+
+    val onArticleClick: (article: Article) -> Unit = { article ->
+        navigator.push(DetailScreen(article))
+    }
+
+    Scaffold(
+        bottomBar = {
+            HomeBottomBar()
+        },
+        topBar = {
+            HomeTopBar()
+        },
+    ) {
+        BoxWithConstraints(
+            Modifier.padding(it),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            HomeNavAndTabs(viewModel, onArticleClick)
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeContent(viewModel: SectionListViewModel) {
+fun HomeNavAndTabs(viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit) {
     println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
     Column(modifier = Modifier.fillMaxSize()) {
         LaunchedEffect(true) {
@@ -127,7 +168,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
                 }
             }
             // Pager
-            Pager(pagerState = pagerState, tabRowItems = tabRowItems, viewModel = viewModel)
+            Pager(pagerState = pagerState, tabRowItems = tabRowItems, viewModel = viewModel, onArticleClick = onArticleClick)
         }
     }
 
@@ -138,7 +179,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
 private fun Pager(
     pagerState: PagerState,
     tabRowItems: List<SectionTabItem>,
-    viewModel: SectionListViewModel
+    viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit
 ) {
 //    println("makeSectionContentApiRequest - HorizontalPager ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
 
@@ -188,7 +229,7 @@ private fun Pager(
 
         SectionContentUI_0(
             sectionContent = sectionContent, isLoading = isLoading, error = error,
-            secId = secId, secName = secName, type = type
+            secId = secId, secName = secName, type = type, onArticleClick = onArticleClick
         )
 
 

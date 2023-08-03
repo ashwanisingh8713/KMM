@@ -6,6 +6,15 @@ plugins {
     id("com.google.devtools.ksp").version("1.9.0-1.0.11")
     id("com.rickclephas.kmp.nativecoroutines").version("1.0.0-ALPHA-13")
     kotlin("plugin.serialization")
+    id("app.cash.sqldelight") version "2.0.0-alpha05"
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("database")
+        }
+    }
 }
 
 kotlin {
@@ -101,6 +110,9 @@ kotlin {
                 // Compose Preview
                 implementation(compose.preview)
 
+                // SQLDelight
+                implementation("app.cash.sqldelight:android-driver:2.0.0")
+
             }
         }
         val iosX64Main by getting
@@ -115,6 +127,9 @@ kotlin {
             dependencies {
                 // Ktor Client
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+
+                // SQLDelight
+                implementation("app.cash.sqldelight:native-driver:2.0.0")
             }
         }
     }

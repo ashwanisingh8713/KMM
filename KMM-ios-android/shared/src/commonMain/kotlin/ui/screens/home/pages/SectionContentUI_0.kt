@@ -1,11 +1,13 @@
 package ui.screens.home.pages
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import domain.model.Article
 import domain.model.SectionContent
 
 /**
@@ -20,8 +23,8 @@ import domain.model.SectionContent
  */
 
 @Composable
-fun SectionContentUI_0(sectionContent: SectionContent?, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
-    if (isLoading) {
+fun SectionContentUI_0(sectionContent: SectionContent?, onArticleClick: (article: Article) -> Unit, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
+    if (isLoading) { // Loading Block
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -32,32 +35,45 @@ fun SectionContentUI_0(sectionContent: SectionContent?, isLoading: Boolean, erro
                 textAlign = TextAlign.Center
             )
         }
-    } else {
-        if (sectionContent != null) {
-            val listState = rememberLazyListState()
-            sectionContent?.let {
-                // LazyColumn
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier,
-                    contentPadding = PaddingValues(0.dp),
-                ) {
-                    items(items = sectionContent.data.article, key = {it.aid}) { article ->
-                        PostCard(isLoading = isLoading, article = article)
-                    }
+    } else if (error != null) { // Error Block
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = error,
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Left,
+            )
+        }
+    }
+    else if (sectionContent != null) { // Data Block
+        val listState = rememberLazyListState()
+        sectionContent?.let {
+            // LazyColumn
+            LazyColumn(
+                state = listState,
+                modifier = Modifier,
+                contentPadding = PaddingValues(0.dp),
+                verticalArrangement = Arrangement.Top
+            ) {
+                items(items = sectionContent.data.article, key = {it.aid}) { article ->
+                    PostCard(isLoading = isLoading, article = article, onArticleClick = onArticleClick)
                 }
             }
-        } else if(error != null && error!!.isNotEmpty()) {
+        }
+    }
+    else {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = error ?: "Something went wrong",
+                    text = "No Data",
                     style = MaterialTheme.typography.displayMedium,
                     textAlign = TextAlign.Center
                 )
             }
         }
     }
-}

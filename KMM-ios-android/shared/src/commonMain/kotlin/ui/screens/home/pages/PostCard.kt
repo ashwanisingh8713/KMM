@@ -1,6 +1,7 @@
 
 package ui.screens.home.pages
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,10 +21,13 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
 import io.kamel.core.Resource
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import ui.screens.detail.DetailScreen
 
 /**
  * Displays Articles
@@ -32,8 +36,9 @@ import io.kamel.image.asyncPainterResource
  * @param article Post to be displayed
  */
 @Composable
-fun PostCard(isLoading: Boolean, article: Article, modifier: Modifier = Modifier) {
-    Card(modifier.padding(vertical = 1.dp)) {
+fun PostCard(isLoading: Boolean, article: Article, modifier: Modifier = Modifier, onArticleClick: (article: Article) -> Unit) {
+
+    Card(modifier.padding(vertical = 1.dp).clickable(onClick = {onArticleClick(article)} )) {
         Row(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth(0.7f).padding(end = 24.dp)) {
                 Text(

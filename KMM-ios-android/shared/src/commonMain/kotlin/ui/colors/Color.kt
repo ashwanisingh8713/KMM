@@ -38,7 +38,7 @@ val LightThemeColors = ColorScheme(
     background = Color(0xFFFBFCF8),  // View Pager - Window background,
     onBackground = Color(0xFF003366), // TextLabel Color,
 
-    surface = Color(0xFFFFFFFF),
+    surface = Color(0xFFB0E0E6), // TopAppbar-Background Color, NavigationBar-Background Color, TabBar-Background Color
     onSurface = Color(0xFF012169), // TopAppbar-RightIcon-Title Color, NavigationBar-Selected Text Color
 
     surfaceVariant = Color(0xFFFBFCF8), // Card background

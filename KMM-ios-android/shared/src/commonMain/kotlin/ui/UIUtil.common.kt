@@ -1,5 +1,8 @@
 package ui
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
 /**
  * Created by Ashwani Kumar Singh on 31,July,2023.
  */
@@ -31,3 +34,9 @@ expect fun getScreenWidth(): Int
 expect fun getPlatform(): String
 expect fun getModelName(): String
 expect fun getOSVersion(): String
+
+// Common
+expect fun randomUUID(): String
+
+@Composable
+expect fun htmlDescription(description: String, modifier: Modifier)

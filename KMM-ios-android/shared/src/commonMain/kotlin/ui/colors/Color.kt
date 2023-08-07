@@ -33,7 +33,7 @@ val LightThemeColors = ColorScheme(
     tertiary = Color(0xFF555555), // Davy’s Gray
     onTertiary = Color(0xFF696969), // Dim Gray
     tertiaryContainer = Color(0xFFFF00FF), // Magenta
-    onTertiaryContainer = Color(0xFFFF00FF), // Turquoise
+    onTertiaryContainer = Color(0xFFFF00FF), // Magenta
 
     background = Color(0xFFFBFCF8),  // View Pager - Window background,
     onBackground = Color(0xFF003366), // TextLabel Color,

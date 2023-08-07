@@ -52,6 +52,7 @@ import ui.vm.SectionListViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
+import ui.randomUUID
 import ui.screens.detail.DetailScreen
 
 /**
@@ -99,6 +100,7 @@ fun HomeContent(viewModel: SectionListViewModel) {
 @Composable
 fun HomeNavAndTabs(viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit) {
     println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
+    var indicator by remember { mutableStateOf<(@Composable() (List<TabPosition>) -> Unit)?>(null) }
     Column(modifier = Modifier.fillMaxSize()) {
         LaunchedEffect(true) {
             viewModel.makeSectionListApiRequest()
@@ -219,8 +221,14 @@ private fun Pager(
         println(error)
     }
 
+
     HorizontalPager(
         state = pagerState,
+        beyondBoundsPageCount = 0,
+        userScrollEnabled = false,
+        key = {
+            randomUUID()
+        }
     ) { index ->
         val pageState = tabRowItems[pagerState.currentPage]
         type = pageState.secType

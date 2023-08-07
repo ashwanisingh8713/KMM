@@ -96,6 +96,8 @@ kotlin {
                 // Image Caching
                 implementation("media.kamel:kamel-image:0.7.1")
 
+                implementation("de.charlex.compose:html-text:1.3.1")
+
             }
         }
         val androidMain by getting {

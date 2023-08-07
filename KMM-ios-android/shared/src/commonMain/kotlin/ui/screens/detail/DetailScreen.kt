@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -45,6 +47,8 @@ import domain.model.Article
 import io.kamel.core.Resource
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.util.Platform
+import ui.htmlDescription
 import ui.widgets.parallax.ListWithParallaxImageScreen
 
 /**
@@ -175,30 +179,38 @@ private fun ArticleDetailBody(article: Article) {
     val list = (0..100).map{ "Item $it" }.toList()
     LazyColumn(state = lazyListState) {
         item {
-            val painterResource: Resource<Painter> = asyncPainterResource(article.im_thumbnail)
-            KamelImage(
-                alignment = Alignment.TopCenter,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(232.dp)
-                    .graphicsLayer {
-                        alpha = 1f - visibility
-                        translationY = firstItemTranslationY
-                    },
-                contentScale = ContentScale.FillBounds,
-                resource = painterResource,
-                contentDescription = "Top image",
-                onLoading = { progress -> CircularProgressIndicator(progress) },
-                onFailure = { exception ->
+            Column(modifier = Modifier.fillMaxWidth()) {
 
-                }
-            )
+                val painterResource: Resource<Painter> = asyncPainterResource(article.im_thumbnail)
+                KamelImage(
+                    alignment = Alignment.TopCenter,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(232.dp)
+                        .graphicsLayer {
+                            alpha = 1f - visibility
+                            translationY = firstItemTranslationY
+                        },
+                    contentScale = ContentScale.FillBounds,
+                    resource = painterResource,
+                    contentDescription = "Top image",
+                    onLoading = { progress -> CircularProgressIndicator(progress) },
+                    onFailure = { exception ->
+
+                    }
+                )
+
+                htmlDescription(article.de, modifier = Modifier.fillMaxSize())
+
+            }
+
         }
-        items(list) { item ->
-            Text(text = item)
-        }
+
+
     }
 }
+
+
 
 
 

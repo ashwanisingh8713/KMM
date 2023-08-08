@@ -24,9 +24,13 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     @NativeCoroutinesState
     val successSectionList: StateFlow<SectionList?> get() = _sectionList
 
+    val _sectionListLoading = MutableStateFlow<Boolean>(viewModelScope, true)
+    @NativeCoroutinesState
+    val sectionListLoading: StateFlow<Boolean> get() = _sectionListLoading
 
-    private val _sectionContentMapState = MutableStateFlow<Map<String, SectionContent>?>(viewModelScope, null)
-    val sectionContentMapState: StateFlow<Map<String, SectionContent>?> get() = _sectionContentMapState
+    val _sectionListError = MutableStateFlow<String?>(viewModelScope, null)
+    @NativeCoroutinesState
+    val sectionListError: StateFlow<String?> get() = _sectionListError
 
     private val _sectionContentState = MutableStateFlow<SectionContent?>(viewModelScope, null)
     @NativeCoroutinesState
@@ -54,10 +58,12 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
 
             override fun onError(apiError: String) {
                 println("Request is Failed :: $apiError")
+                _sectionListError.update { "SectionListLoading -> $apiError" }
             }
 
             override fun onLoading(isLoading: Boolean) {
                 println("Request is Loading :: $isLoading")
+                _sectionListLoading.update { isLoading }
             }
 
         })

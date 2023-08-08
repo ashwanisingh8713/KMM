@@ -22,15 +22,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabPosition
@@ -39,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -52,6 +56,8 @@ import ui.vm.SectionListViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 import ui.randomUUID
 import ui.screens.detail.DetailScreen
 
@@ -60,53 +66,17 @@ import ui.screens.detail.DetailScreen
  */
 
 
-class HomeScreen(private val viewModel: SectionListViewModel): Screen {
+class HomeScreen(private val viewModel: SectionListViewModel, private val tabRowItems: List<SectionTabItem>,
+                 private val sectionListLoading: Boolean, private val sectionListError: String?): Screen {
 
     override val key: ScreenKey = uniqueScreenKey
+
     @Composable
     override fun Content() {
-        HomeContent(viewModel)
-    }
-
-
-}
-
-@Composable
-fun HomeContent(viewModel: SectionListViewModel) {
-    val navigator = LocalNavigator.currentOrThrow
-
-    val onArticleClick: (article: Article) -> Unit = { article ->
-        navigator.push(DetailScreen(article))
-    }
-
-    Scaffold(
-        bottomBar = {
-            HomeBottomBar()
-        },
-        topBar = {
-            HomeTopBar()
-        },
-    ) {
-        BoxWithConstraints(
-            Modifier.padding(it),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            HomeNavAndTabs(viewModel, onArticleClick)
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HomeNavAndTabs(viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit) {
-    println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
-    var indicator by remember { mutableStateOf<(@Composable() (List<TabPosition>) -> Unit)?>(null) }
-    Column(modifier = Modifier.fillMaxSize()) {
-        LaunchedEffect(true) {
-            viewModel.makeSectionListApiRequest()
-        }
-
         var tabRowItems by remember { mutableStateOf(listOf<SectionTabItem>()) }
+        var sectionListLoading by remember { mutableStateOf(true) }
+        var sectionListError by remember { mutableStateOf<String?>(null) }
+
 
         viewModel.successSectionList.collectAsState().value?.let { it ->
             val secList = it.data.section
@@ -121,10 +91,94 @@ fun HomeNavAndTabs(viewModel: SectionListViewModel, onArticleClick: (article: Ar
             }
         }
 
-        if (tabRowItems.isNotEmpty()) {
-            val pagerState = rememberPagerState(initialPage = 0) {
-                tabRowItems.size
+        viewModel.sectionListLoading.collectAsState().value?.let { it ->
+            sectionListLoading = it
+        }
+
+        viewModel.sectionListError.collectAsState().value?.let { it ->
+            sectionListError = it
+        }
+
+        HomeContent(viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading, sectionListError= sectionListError)
+    }
+
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeContent(viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
+                sectionListLoading: Boolean, sectionListError: String?) {
+    val navigator = LocalNavigator.currentOrThrow
+
+    val onArticleClick: (article: Article) -> Unit = { article ->
+        navigator.push(DetailScreen(article))
+    }
+
+    val pagerState = rememberPagerState(initialPage = 0) {
+        tabRowItems.size
+    }
+
+    Scaffold(
+        bottomBar = {
+            HomeBottomBar()
+        },
+        topBar = {
+            HomeTopBar()
+        },
+    ) {
+        BoxWithConstraints(
+            Modifier.padding(it),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            HomeNavAndTabs(pagerState= pagerState, viewModel = viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading, sectionListError= sectionListError,  onArticleClick= onArticleClick)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+@Composable
+fun HomeNavAndTabs(pagerState: PagerState, viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
+                   sectionListLoading: Boolean, sectionListError: String?,
+                   onArticleClick: (article: Article) -> Unit) {
+    println("makeSectionContentApiRequest - HomeContent ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
+
+    var indicator by remember { mutableStateOf<(@Composable() (List<TabPosition>) -> Unit)?>(null) }
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        if(sectionListLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Loading Sections ...",
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center
+                )
             }
+        } else if(sectionListError != null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column {
+                    Image(
+                        painter = painterResource("no_network.png"),
+                        contentDescription = null,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                    Text(
+                        text = if(sectionListError.contains("Unable to resolve host")) "No Internet Connection" else sectionListError,
+                        style = MaterialTheme.typography.headlineMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+            }
+        }
+        else if (tabRowItems.isNotEmpty()) {
+
             val currentTabIndex by remember { derivedStateOf { pagerState.currentPage } }
 
             ScrollableTabRow(
@@ -171,6 +225,27 @@ fun HomeNavAndTabs(viewModel: SectionListViewModel, onArticleClick: (article: Ar
             }
             // Pager
             Pager(pagerState = pagerState, tabRowItems = tabRowItems, viewModel = viewModel, onArticleClick = onArticleClick)
+        } else {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column {
+                    Image(
+                        painter = painterResource("no_network.png"),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(50.dp)
+
+                    )
+                    Text(
+                        text = "No Sections Found",
+                        style = MaterialTheme.typography.displayMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+            }
         }
     }
 
@@ -183,7 +258,7 @@ private fun Pager(
     tabRowItems: List<SectionTabItem>,
     viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit
 ) {
-//    println("makeSectionContentApiRequest - HorizontalPager ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
+    println("makeSectionContentApiRequest - HorizontalPager ::  ::  ::  ::  ::  ::  ::  ::  ::  ::  :: ")
 
     var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
     var isLoading by remember { mutableStateOf(true) }

@@ -13,12 +13,10 @@ fun App(viewModel: SectionListViewModel, screenWidthDp: Int) {
         viewModel.makeSectionListApiRequest()
     }
 
-
-
-
-
     AppTheme(screenWidthDp = screenWidthDp) {
-    Navigator(HomeScreen(viewModel))
+    Navigator(
+        HomeScreen(viewModel)
+    )
     }
 }
 

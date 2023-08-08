@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +24,7 @@ import domain.model.SectionContent
  */
 
 @Composable
-fun SectionContentUI_0(sectionContent: SectionContent?, onArticleClick: (article: Article) -> Unit, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
+fun SectionContentUI_0(listState: LazyListState, sectionContent: SectionContent?, onArticleClick: (article: Article) -> Unit, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
     if (isLoading) { // Loading Block
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -49,7 +50,7 @@ fun SectionContentUI_0(sectionContent: SectionContent?, onArticleClick: (article
         }
     }
     else if (sectionContent != null) { // Data Block
-        val listState = rememberLazyListState()
+
         sectionContent?.let {
             // LazyColumn
             LazyColumn(

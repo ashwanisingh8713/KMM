@@ -31,6 +31,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -185,6 +187,7 @@ fun HomeNavAndTabs(viewModel: SectionListViewModel, tabRowItems: List<SectionTab
             val pagerState = rememberPagerState(initialPage = 0) {
                 tabRowItems.size
             }
+
             // Tab Row
             TabLayout(pagerState= pagerState, tabRowItems = tabRowItems)
             // Pager
@@ -250,14 +253,17 @@ private fun Pager(pagerState: PagerState,
         }
     }
 
+    // To handle list state for each page, it should have same size as pagerState.pageCount
+    val listState: List<LazyListState> = List(pagerState.pageCount) { rememberLazyListState() }
 
     HorizontalPager(
         state = pagerState,
-        beyondBoundsPageCount = 0,
+        beyondBoundsPageCount = 4,
         userScrollEnabled = false,
         key = {
             randomUUID()
-        }
+        },
+
     ) { index ->
         val pageState = tabRowItems[pagerState.currentPage]
         sectionType = pageState.secType
@@ -265,11 +271,19 @@ private fun Pager(pagerState: PagerState,
         sectionName = pageState.secName
 
         SectionContentUI_0(
+            listState = listState[index],
             sectionContent = sectionContent, isLoading = isLoading, error = error,
             secId = sectionId, secName = sectionName, type = sectionType, onArticleClick = onArticleClick
         )
     }
 }
+
+@Composable
+fun listStates(): LazyListState {
+
+    return rememberLazyListState()
+}
+
 
 
 

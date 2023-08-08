@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
  */
 data class SectionTabItem(
     val tabId: String,
-    val secName: String,
+    var secName: String,
     val isSelected: Boolean = false,
-    val secId: Int,
-    val secType: String,
+    var secId: Int,
+    var secType: String,
 
-)
+    )

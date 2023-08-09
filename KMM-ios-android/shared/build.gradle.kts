@@ -92,6 +92,8 @@ kotlin {
                 implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
                 // Transitions
                 implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+                // BottomSheetNavigator
+                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
 
                 // Image Caching
                 implementation("media.kamel:kamel-image:0.7.1")

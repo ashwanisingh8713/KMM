@@ -1,21 +1,12 @@
 package ui.screens.home
 
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
-import kotlinx.coroutines.launch
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.material3.Text
-import androidx.compose.material3.Tab
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,31 +14,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TabPosition
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +37,6 @@ import domain.model.SectionContent
 import kotlinx.coroutines.flow.distinctUntilChanged
 import ui.model.SectionTabItem
 import ui.screens.home.pages.SectionContentUI_0
-import ui.theme.Theme
 import ui.vm.SectionListViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -77,9 +54,7 @@ import ui.screens.util.NoNetworkUI
  */
 
 
-class HomeScreen(): Screen {
-
-
+object HomeScreen: Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
@@ -89,7 +64,7 @@ class HomeScreen(): Screen {
 
         val viewModel = getScreenModel<SectionListViewModel>()
 
-        LaunchedEffect(true) {
+        LaunchedEffect(key1 = Unit) {
             viewModel.makeSectionListApiRequest()
         }
 

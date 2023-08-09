@@ -14,64 +14,11 @@ data class SectionList(
 )
 @Serializable
 data class Data(
-    val BLink: List<BLink>,
-    val Portfolio: List<Portfolio>,
     val date: Int,
     val home: Home,
     val section: List<Section>
 )
-@Serializable
-data class BLink(
-    val custom: Boolean,
-    val customScreen: Int,
-    val customScreenPri: Int,
-    @Transient
-    val explorePriority: Int = 0,
-    val image: String,
-    val image_v2: String,
-    @Transient
-    val link: String? = null,
-    @Transient
-    val overrideExplore: Int = 0,
-    val overridePriority: Int,
-    val parentId: String,
-    val priority: Int,
-    val secColorRgb: String,
-    val secId: Int,
-    val secName: String,
-    val show_on_burger: Boolean,
-    val show_on_explore: Boolean,
-    @Transient
-    val subSections: List<Any>? = null,
-    val type: String,
-    val webLink: String
-)
-@Serializable
-data class Portfolio(
-    val custom: Boolean,
-    val customScreen: Int,
-    val customScreenPri: Int,
-    @Transient
-    val explorePriority: Int = 0,
-    val image: String,
-    val image_v2: String,
-    @Transient
-    val link: String? = null,
-    @Transient
-    val overrideExplore: Int = 0,
-    val overridePriority: Int,
-    val parentId: String,
-    val priority: Int,
-    val secColorRgb: String,
-    val secId: Int,
-    val secName: String,
-    val show_on_burger: Boolean,
-    val show_on_explore: Boolean,
-    @Transient
-    val subSections: List<Any>? = null,
-    val type: String,
-    val webLink: String
-)
+
 @Serializable
 data class Home(
     val banner: Banner,
@@ -88,7 +35,7 @@ data class Section(
     @Transient
     val explorePriority: Int = 0,
     val image: String,
-    val image_v2: String,
+    val image_v2: String? = "",
     val isNew: Boolean,
     @Transient
     val link: String? = null,

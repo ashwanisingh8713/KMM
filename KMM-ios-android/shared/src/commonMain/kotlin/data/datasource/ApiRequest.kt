@@ -52,7 +52,7 @@ class ApiRequest {
     }
 
     suspend fun getSectionList(params: Any?):SectionList {
-        val httpResponse = httpClient.post("https://app.thehindubusinessline.com/hinduBL/service/api_v2/sectionList_v4.php") {
+        val httpResponse = httpClient.post("https://app.thehindu.com/hindu/service/api_v1.006/sectionList_v4.php") {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             setBody(params)
@@ -62,7 +62,7 @@ class ApiRequest {
     }
 
     suspend fun getSectionContent(params: Any?): SectionContent {
-        val httpResponse = httpClient.post("https://app.thehindubusinessline.com/hinduBL/service/api_v2/section-content.php") {
+        val httpResponse = httpClient.post("https://app.thehindu.com/hindu/service/api_v1.006/section-content.php") {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             setBody(params)

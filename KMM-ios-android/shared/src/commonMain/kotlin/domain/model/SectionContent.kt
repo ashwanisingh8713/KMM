@@ -32,7 +32,6 @@ data class Article(
     val audioLink: String,
     val bk: String,
     val comm_count: String,
-    val created_date: String,
     val de: String,
     val gmt: String,
     val hi: Int,
@@ -69,5 +68,4 @@ data class Article(
 data class Me(
     val ca: String,
     val im: String,
-    val im_v2: String
 )

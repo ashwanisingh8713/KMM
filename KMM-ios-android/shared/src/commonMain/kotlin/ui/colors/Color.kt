@@ -18,7 +18,7 @@ https://material-foundation.github.io/material-theme-builder/#/custom
 // Black Color Variant - https://www.color-meanings.com/shades-of-black-color-names-html-hex-rgb-codes/
 val LightThemeColors = ColorScheme(
 // Window color and text color(OnPrimary)
-    primary = Color(0xFF003366), // Tab-text selected
+    primary = Color(0xff6c281b), // Tab-text selected
     onPrimary = Color(0xFF494F55), // Abbey
 
     primaryContainer = Color(0xFF666362), // Ash
@@ -31,14 +31,14 @@ val LightThemeColors = ColorScheme(
     onSecondaryContainer = Color(0xFF003366), // NavigationBar-Selected Vector Color
 
     tertiary = Color(0xFF555555), // Davy’s Gray
-    onTertiary = Color(0xFF696969), // Dim Gray
+    onTertiary = Color(0xff1a1313), // Dim Gray
     tertiaryContainer = Color(0xFFFF00FF), // Magenta
     onTertiaryContainer = Color(0xFFFF00FF), // Magenta
 
     background = Color(0xFFFBFCF8),  // View Pager - Window background,
-    onBackground = Color(0xFF003366), // TextLabel Color,
+    onBackground = Color(0xff6c281b), // TextLabel Color,
 
-    surface = Color(0xFFB0E0E6), // TopAppbar-Background Color, NavigationBar-Background Color, TabBar-Background Color
+    surface = Color(0xFFFFFFFF), // TopAppbar-Background Color, NavigationBar-Background Color, TabBar-Background Color
     onSurface = Color(0xFF012169), // TopAppbar-RightIcon-Title Color, NavigationBar-Selected Text Color
 
     surfaceVariant = Color(0xFFFBFCF8), // Card background
@@ -57,7 +57,12 @@ val LightThemeColors = ColorScheme(
     outlineVariant = Color(0xFF003366), // TabBar-Bottom-Indicator Divider Color
     scrim = Color(0xFF7C0A02), // Barn Red,
 
+
+
 )
+
+
+
 
 val DarkThemeColors = ColorScheme(
 // Window color and text color(OnPrimary)

@@ -54,7 +54,7 @@ fun TabLayout(pagerState: PagerState, tabRowItems: List<SectionTabItem>) {
         modifier = Modifier.fillMaxWidth(),
         edgePadding = 0.dp,
         indicator = { tabPositions ->
-            CustomIndicator(tabPositions = tabPositions, pagerState = pagerState)
+            //CustomIndicator(tabPositions = tabPositions, pagerState = pagerState)
         },
 
         ) {

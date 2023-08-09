@@ -25,6 +25,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -35,9 +37,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TabPosition
 
 import androidx.compose.runtime.Composable
@@ -123,14 +128,24 @@ fun HomeContent(viewModel: SectionListViewModel, tabRowItems: List<SectionTabIte
         navigator.push(DetailScreen(article))
     }
 
+    val pagerState = rememberPagerState(initialPage = 0) {
+        tabRowItems.size
+    }
+
     Scaffold(
         bottomBar = {
-            println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: bottomBar:")
-            HomeBottomBar()
+            BottomAppBar(
+                tonalElevation = 10.dp,
+            ) {
+                HomeBottomBar()
+
+            }
         },
         topBar = {
             println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: topBar:")
-            HomeTopBar()
+            Surface(shadowElevation = 3.dp) {
+                HomeTopBar()
+            }
         },
     ) {
         println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: BoxWithConstraints:")
@@ -138,7 +153,7 @@ fun HomeContent(viewModel: SectionListViewModel, tabRowItems: List<SectionTabIte
             Modifier.padding(it),
             contentAlignment = Alignment.TopCenter
         ) {
-            HomeNavAndTabs(viewModel = viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading,
+            HomeNavAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading,
                 sectionListError= sectionListError, onArticleClick= onArticleClick)
         }
     }
@@ -146,7 +161,7 @@ fun HomeContent(viewModel: SectionListViewModel, tabRowItems: List<SectionTabIte
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
 @Composable
-fun HomeNavAndTabs(viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
+fun HomeNavAndTabs(pagerState: PagerState, viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
                    sectionListLoading: Boolean, sectionListError: String?,
                    onArticleClick: (article: Article) -> Unit) {
 
@@ -184,15 +199,9 @@ fun HomeNavAndTabs(viewModel: SectionListViewModel, tabRowItems: List<SectionTab
 
             }
         } else if (tabRowItems.isNotEmpty()) {
-            val pagerState = rememberPagerState(initialPage = 0) {
-                tabRowItems.size
-            }
-
             // Tab Row
             TabLayout(pagerState= pagerState, tabRowItems = tabRowItems)
             // Pager
-
-
             Pager(
                 pagerState= pagerState,
                 tabRowItems = tabRowItems,

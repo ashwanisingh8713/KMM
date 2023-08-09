@@ -98,6 +98,10 @@ kotlin {
 
                 implementation("de.charlex.compose:html-text:1.3.1")
 
+                // Koin
+                implementation("io.insert-koin:koin-core:3.4.2")
+                implementation("io.insert-koin:koin-compose:1.0.3")
+
             }
         }
         val androidMain by getting {
@@ -111,9 +115,13 @@ kotlin {
 
                 // Compose Preview
                 implementation(compose.preview)
+                implementation(compose.uiTooling)
 
                 // SQLDelight
                 implementation("app.cash.sqldelight:android-driver:2.0.0")
+
+                // Koin
+                implementation("io.insert-koin:koin-android:3.4.2")
 
             }
         }

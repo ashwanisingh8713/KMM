@@ -1,6 +1,12 @@
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import androidx.compose.runtime.Composable
+
 import ui.getScreenWidth
-import ui.vm.SectionListViewModel
+//import ui.vm.SectionListViewModel
 
 
-@Composable fun MainView(sectionListViewModel: SectionListViewModel) = App(sectionListViewModel, getScreenWidth())
+
+fun Context.isDebug() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
+
+@Composable fun MainView() = App(getScreenWidth())

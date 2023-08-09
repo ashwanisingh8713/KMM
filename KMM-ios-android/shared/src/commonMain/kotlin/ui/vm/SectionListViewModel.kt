@@ -1,5 +1,6 @@
 package ui.vm
 
+import cafe.adriel.voyager.core.model.ScreenModel
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import domain.usecase.SectionListUseCase
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
@@ -14,11 +15,13 @@ import domain.usecase.base.UseCaseResponse
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import org.koin.core.component.KoinComponent
 
 /**
  * Created by Ashwani Kumar Singh on 26,July,2023.
  */
-class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, val sectionContentUseCase: SectionContentUseCase): KMMViewModel() {
+class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, val sectionContentUseCase: SectionContentUseCase): KMMViewModel(),
+    ScreenModel, KoinComponent {
 
     val _sectionList = MutableStateFlow<SectionList?>(viewModelScope, null)
     @NativeCoroutinesState

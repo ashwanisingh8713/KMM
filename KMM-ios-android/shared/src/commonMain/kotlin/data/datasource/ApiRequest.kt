@@ -51,24 +51,8 @@ class ApiRequest {
         }
     }
 
-    suspend fun getSectionList(params: Any?):SectionList {
-        val httpResponse = httpClient.post("https://app.thehindu.com/hindu/service/api_v1.006/sectionList_v4.php") {
-            contentType(ContentType.Application.Json)
-            accept(ContentType.Application.Json)
-            setBody(params)
-        }
-        val sectionList:SectionList = httpResponse.body()
-        return sectionList
-    }
 
-    suspend fun getSectionContent(params: Any?): SectionContent {
-        val httpResponse = httpClient.post("https://app.thehindu.com/hindu/service/api_v1.006/section-content.php") {
-            contentType(ContentType.Application.Json)
-            accept(ContentType.Application.Json)
-            setBody(params)
-        }
-        val sectionContent: SectionContent = httpResponse.body()
-        return sectionContent
-    }
+
+
 
 }

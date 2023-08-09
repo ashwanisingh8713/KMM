@@ -7,15 +7,13 @@ import ui.screens.home.HomeScreen
 import ui.vm.SectionListViewModel
 
 @Composable
-fun App(viewModel: SectionListViewModel, screenWidthDp: Int) {
+fun App(screenWidthDp: Int) {
 
-    LaunchedEffect(true) {
-        viewModel.makeSectionListApiRequest()
-    }
+
 
     AppTheme(screenWidthDp = screenWidthDp) {
     Navigator(
-        HomeScreen(viewModel)
+        HomeScreen()
     )
     }
 }

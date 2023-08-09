@@ -64,6 +64,7 @@ import ui.vm.SectionListViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
+import ext.getScreenModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.randomUUID
@@ -76,13 +77,21 @@ import ui.screens.util.NoNetworkUI
  */
 
 
-class HomeScreen(private val viewModel: SectionListViewModel): Screen {
+class HomeScreen(): Screen {
+
+
 
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
         println("$ComposeTag: HomeScreen: Content:")
+
+        val viewModel = getScreenModel<SectionListViewModel>()
+
+        LaunchedEffect(true) {
+            viewModel.makeSectionListApiRequest()
+        }
 
         var tabRowItems by remember { mutableStateOf(mutableListOf<SectionTabItem>()) }
         var sectionListLoading by remember { mutableStateOf(true) }
@@ -292,12 +301,3 @@ fun listStates(): LazyListState {
 
     return rememberLazyListState()
 }
-
-
-
-
-
-
-
-
-

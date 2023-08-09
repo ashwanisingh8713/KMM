@@ -18,16 +18,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val apiRequest = ApiRequest()
-        val sectionsListRepoImpl = SectionsListRepoImpl(apiRequest = apiRequest)
-        val sectionListUseCase = SectionListUseCase(sectionsListRepo = sectionsListRepoImpl)
-        val sectionContentRepoImpl = SectionContentRepoImpl(apiRequest = apiRequest)
-        val sectionContentUseCase = SectionContentUseCase(sectionContentRepo = sectionContentRepoImpl)
-        val sectionListViewModel = SectionListViewModel(sectionListUseCase = sectionListUseCase,
-            sectionContentUseCase = sectionContentUseCase)
-
         setContent {
-            MainView(sectionListViewModel)
+            MainView()
         }
     }
 }

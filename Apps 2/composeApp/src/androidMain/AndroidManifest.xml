@@ -3,12 +3,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:name=".AndroidApp"
+        android:name="daniel.avila.rnm.kmm.AndroidApp"
         android:icon="@android:drawable/ic_menu_compass"
         android:label="Rick N Morty KMM"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".AppActivity"
+            android:name="daniel.avila.rnm.kmm.AppActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize"

@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.characters
+package ui.tabNavigation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.BottomAppBar

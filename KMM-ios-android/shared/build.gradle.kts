@@ -50,6 +50,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
+                implementation(compose.animation)
+                implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
 
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
@@ -85,15 +87,19 @@ kotlin {
                 implementation("com.rickclephas.kmm:kmm-viewmodel-core:1.0.0-ALPHA-12")
 
                 // voyager Navigation Dependency
-                val voyagerVersion = "1.0.0-rc05"
+                val voyagerVersion = "1.0.0-rc06"
                 // Navigator
                 implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-                // TabNavigator
-                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
-                // Transitions
-                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+
                 // BottomSheetNavigator
                 implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
+
+                // TabNavigator
+                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+
+                // Transitions
+                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+
 
                 // Image Caching
                 implementation("media.kamel:kamel-image:0.7.1")

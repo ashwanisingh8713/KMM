@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import ui.tabNavigation.tabContents.home.HomeTabContent
 
 object HomeTab : Tab {
 
@@ -18,7 +19,7 @@ object HomeTab : Tab {
             return remember {
                 TabOptions(
                     index = 0u,
-                    title = "Home",
+                    title = "Homee",
                     icon = icon
                 )
             }
@@ -26,6 +27,6 @@ object HomeTab : Tab {
 
     @Composable
     override fun Content() {
-        TabContent()
+        HomeTabContent()
     }
 }

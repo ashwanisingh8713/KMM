@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
@@ -63,10 +64,14 @@ import ui.vm.SectionListViewModel
 /**
  * Created by Ashwani Kumar Singh on 11,August,2023.
  */
-data class HomeNavigationScreen(val index: Int,
-                                val wrapContent: Boolean = false,
-                                var tabRowItems:List<SectionTabItem>, var lamdaValue: (Int) -> Unit): Screen {
+class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(val index: Int,
+                                                                                     val wrapContent: Boolean = false,
+                                                                                     var tabRowItems:List<SectionTabItem>,
+                                                                                     var lamdaValue: (Int) -> Unit,
+                                                                                     var pagerState: PagerState): Screen {
+    override val key = uniqueScreenKey
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
 
@@ -84,30 +89,23 @@ data class HomeNavigationScreen(val index: Int,
 
         val viewModel = getScreenModel<SectionListViewModel>()
 
-        HomeTabPagerUI(viewModel, tabRowItems = tabRowItems)
+        println("$ComposeTag: HomeNavigationScreen: Content: HomeTabPagerUI:")
+
+        val navigator = LocalNavigator.currentOrThrow
+
+        val onArticleClick: (article: Article) -> Unit = { article ->
+            navigator.push(DetailScreen(article))
+        }
+
+
+        HomeNavigationAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, onArticleClick= onArticleClick)
     }
 
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun HomeTabPagerUI(viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>) {
-
-    println("$ComposeTag: HomeNavigationScreen: Content: HomeTabPagerUI:")
-
-    val navigator = LocalNavigator.currentOrThrow
-
-    val onArticleClick: (article: Article) -> Unit = { article ->
-        navigator.push(DetailScreen(article))
-    }
-
-    val pagerState = rememberPagerState(initialPage = 0)
-
-    HomeNavigationAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, onArticleClick= onArticleClick)
-}
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeNavigationAndTabs(pagerState: PagerState, viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
                    onArticleClick: (article: Article) -> Unit) {
@@ -134,27 +132,16 @@ private fun HomeNavigationPager(pagerState: PagerState,
 ) {
     println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager:")
 
-    var sectionContent by remember { mutableStateOf<SectionContent?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf<String?>(null) }
+
+    val sectionContent by viewModel.sectionContentState.collectAsState()
+    val isLoading by viewModel.sectionContentLoading.collectAsState()
+    val error by viewModel.sectionContentError.collectAsState()
 
 
     var sectionId by remember { mutableStateOf<Int>(0) }
     var sectionName by remember { mutableStateOf<String>("") }
     var sectionType by remember { mutableStateOf<String>("") }
 
-    viewModel.sectionContentState.collectAsState().value?.let { it ->
-        sectionContent = it
-    }
-
-    viewModel.sectionContentLoading.collectAsState().value?.let { it ->
-        isLoading = it
-    }
-
-    viewModel.sectionContentError.collectAsState().value?.let { it ->
-        error = it
-        println(error)
-    }
 
     LaunchedEffect(pagerState) {
         snapshotFlow {

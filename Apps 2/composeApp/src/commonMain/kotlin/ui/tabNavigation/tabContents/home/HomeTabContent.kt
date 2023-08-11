@@ -4,6 +4,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +31,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.transitions.SlideTransition
+import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersScreen
 import ext.getScreenModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -42,7 +45,9 @@ import ui.tabNavigation.tabs.HomeTab
 import ui.tabNavigation.tabs.ProfileTab
 import ui.vm.SectionListViewModel
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun Tab.HomeTabContent() {
     val tabTitle = options.title
@@ -128,22 +133,15 @@ fun Tab.HomeTabContent() {
             }
 
             println("$ComposeTag: HomeNavigationScreen: HomeNavigationAndTabs: tabRowItems: ${tabRowItems.size} count")
-            Navigator(HomeNavigationScreen(index = index, wrapContent = wrap, tabRowItems= tabRowItems, lamdaValue= lamdaValue)) { navigator ->
+            val pagerState = rememberPagerState(initialPage = 0)
+            Navigator(
+//                CharactersScreen()
+                HomeNavigationScreen(index = index, wrapContent = wrap,
+                tabRowItems= tabRowItems, lamdaValue= lamdaValue, pagerState= pagerState)
+            ) { navigator ->
                 SlideTransition(navigator) { screen ->
 
-                    Column {
-                        ElevatedButton(
-                            onClick = {
-                                wrap = !wrap
-                                index.inc()
-                            }
-                        ) {
-                            Text(text = "Text $index")
-                        }
-
-                        screen.Content()
-//                Log.d("Navigator", "Last Event: ${navigator.lastEvent}")
-                    }
+                    screen.Content()
                 }
             }
         } else {

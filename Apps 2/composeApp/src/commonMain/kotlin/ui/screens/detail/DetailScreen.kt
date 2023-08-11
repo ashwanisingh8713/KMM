@@ -50,6 +50,7 @@ import domain.model.Article
  */
 
 data class DetailScreen(private val article: Article) : Screen {
+
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable

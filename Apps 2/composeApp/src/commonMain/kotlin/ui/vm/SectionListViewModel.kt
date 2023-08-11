@@ -70,15 +70,15 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
             os_version = 29, id = secId, lut = 0, type = type, page = page )
         sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
             override fun onSuccess(content: SectionContent) {
-                _sectionContentState.update { content }
+                _sectionContentState.value = content
             }
 
             override fun onError(apiError: String) {
-                _sectionContentError.update { "$secName -> $apiError" }
+                _sectionContentError.value = apiError
             }
 
             override fun onLoading(isLoading: Boolean) {
-                _sectionContentLoading.update { isLoading }
+                _sectionContentLoading.value = isLoading
             }
         })
     }

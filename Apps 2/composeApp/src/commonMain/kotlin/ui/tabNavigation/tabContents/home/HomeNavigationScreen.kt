@@ -31,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -46,6 +47,7 @@ import domain.model.Article
 import domain.model.SectionContent
 import ext.getScreenModel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
@@ -67,7 +69,6 @@ import ui.vm.SectionListViewModel
 class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(val index: Int,
                                                                                      val wrapContent: Boolean = false,
                                                                                      var tabRowItems:List<SectionTabItem>,
-                                                                                     var lamdaValue: (Int) -> Unit,
                                                                                      var pagerState: PagerState): Screen {
     override val key = uniqueScreenKey
 
@@ -98,56 +99,46 @@ class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(
         }
 
 
-        HomeNavigationAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, onArticleClick= onArticleClick)
+
+
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Tab Row
+            TabLayout(pagerState= pagerState, tabRowItems = tabRowItems)
+            // Pager
+            HomeNavigationPager(
+                pagerState= pagerState,
+                tabRowItems = tabRowItems,
+                viewModel = viewModel,
+                onArticleClick = onArticleClick
+            )
+        }
     }
 
 }
 
 
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HomeNavigationAndTabs(pagerState: PagerState, viewModel: SectionListViewModel, tabRowItems: List<SectionTabItem>,
-                   onArticleClick: (article: Article) -> Unit) {
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        // Tab Row
-        TabLayout(pagerState= pagerState, tabRowItems = tabRowItems)
-        // Pager
-        HomeNavigationPager(
-            pagerState= pagerState,
-            tabRowItems = tabRowItems,
-            viewModel = viewModel,
-            onArticleClick = onArticleClick,
-        )
-    }
-
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeNavigationPager(pagerState: PagerState,
                   tabRowItems: List<SectionTabItem>,
-                  viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit,
+                  viewModel: SectionListViewModel, onArticleClick: (article: Article)-> Unit,
 ) {
     println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager:")
-
-
-    val sectionContent by viewModel.sectionContentState.collectAsState()
-    val isLoading by viewModel.sectionContentLoading.collectAsState()
-    val error by viewModel.sectionContentError.collectAsState()
-
 
     var sectionId by remember { mutableStateOf<Int>(0) }
     var sectionName by remember { mutableStateOf<String>("") }
     var sectionType by remember { mutableStateOf<String>("") }
 
+    val sectionContent by viewModel.sectionContentState.collectAsState()
+    val isLoading by viewModel.sectionContentLoading.collectAsState()
+    val error by viewModel.sectionContentError.collectAsState()
 
     LaunchedEffect(pagerState) {
         snapshotFlow {
             pagerState.currentPage
         }.distinctUntilChanged().collect {
-            println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager: LaunchedEffect -> secId = $sectionId, secName = $sectionName, secType = $sectionType")
+//                println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager: LaunchedEffect -> secId = $sectionId, secName = $sectionName, secType = $sectionType")
 //            println("Section Pager - $it")
 //            println("Section Pager tabRowItems size - ${tabRowItems.size}")
             viewModel.makeSectionContentApiRequest(
@@ -181,10 +172,11 @@ private fun HomeNavigationPager(pagerState: PagerState,
         sectionId = pageState.secId
         sectionName = pageState.secName
 
+
         SectionContentUI_0(
             listState = listState[index],
             sectionContent = sectionContent, isLoading = isLoading, error = error,
-            secId = sectionId, secName = sectionName, type = sectionType, onArticleClick = onArticleClick
+            secId = pageState.secId, secName = pageState.secName, type = pageState.secType, onArticleClick = onArticleClick
         )
     }
 }

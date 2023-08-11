@@ -1,5 +1,6 @@
 package ui.tabNavigation.tabContents.home
 
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.material3.ElevatedButton
@@ -22,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +35,8 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.transitions.SlideTransition
 import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersScreen
 import ext.getScreenModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
@@ -90,6 +94,12 @@ fun Tab.HomeTabContent() {
         sectionListError = it
     }
 
+
+
+    val pagerState = rememberPagerState(initialPage = 0)
+
+
+
     Column(modifier = Modifier.fillMaxSize()) {
         if (sectionListLoading) {
             println("$ComposeTag: HomeNavigationScreen: HomeNavigationAndTabs: sectionListLoading:")
@@ -133,11 +143,11 @@ fun Tab.HomeTabContent() {
             }
 
             println("$ComposeTag: HomeNavigationScreen: HomeNavigationAndTabs: tabRowItems: ${tabRowItems.size} count")
-            val pagerState = rememberPagerState(initialPage = 0)
+
             Navigator(
 //                CharactersScreen()
                 HomeNavigationScreen(index = index, wrapContent = wrap,
-                tabRowItems= tabRowItems, lamdaValue= lamdaValue, pagerState= pagerState)
+                tabRowItems= tabRowItems, pagerState= pagerState)
             ) { navigator ->
                 SlideTransition(navigator) { screen ->
 

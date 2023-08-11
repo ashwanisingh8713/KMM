@@ -49,7 +49,7 @@ import domain.model.Article
  * Created by Ashwani Kumar Singh on 03,August,2023.
  */
 
-class DetailScreen(private val article: Article) : Screen {
+data class DetailScreen(private val article: Article) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable

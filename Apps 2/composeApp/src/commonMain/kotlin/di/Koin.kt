@@ -1,5 +1,6 @@
 package di
 
+import androidx.compose.runtime.key
 import daniel.avila.rnm.kmm.data_cache.CacheDataImp
 import daniel.avila.rnm.kmm.data_cache.sqldelight.SharedDatabase
 import daniel.avila.rnm.kmm.data_remote.RemoteDataImp
@@ -33,8 +34,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import ui.vm.SectionListViewModel
@@ -85,11 +88,11 @@ val repositoryModule = module {
     ////////// Danial
     single<IRepository> { RepositoryImp(get(), get()) }
     single<ICacheData> { CacheDataImp(get()) }
-    single<IRemoteData> { RemoteDataImp(get(), get(), get()) }
+    single<IRemoteData> { RemoteDataImp(get(named("daniel")), get(), get()) }
 
     //////////
-    single<SectionContentRepo> { SectionContentRepoImpl(get(), get()) }
-    single<SectionsListRepo> { SectionsListRepoImpl(get(), get()) }
+    single<SectionContentRepo> { SectionContentRepoImpl(get(named("thg")), get()) }
+    single<SectionsListRepo> { SectionsListRepoImpl(get(named("thg")), get()) }
 
 }
 
@@ -123,8 +126,8 @@ val ktorModule = module {
         }
     }
 
-    single { "https://app.thehindu.com/hindu/service/api_v1.006" }
-//    single { "https://rickandmortyapi.com" }
+    single<String>(named("thg")) {  "https://app.thehindu.com/hindu/service/api_v1.006" }
+    single<String>(named("daniel")) { "https://rickandmortyapi.com" }
 }
 
 

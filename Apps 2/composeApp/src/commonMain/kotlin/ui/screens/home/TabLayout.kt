@@ -34,8 +34,8 @@ import ui.screens.util.ComposeTag
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabLayout(pagerState: PagerState, tabRowItems: List<SectionTabItem>) {
-    println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: BoxWithConstraints: HomeNavAndTabs: TabLayout: ")
-    val currentTabIndex by remember { derivedStateOf { pagerState.currentPage } }
+    println("$ComposeTag: HomeNavigationScreen: TabLayout: pagerState.currentPage: ${pagerState.currentPage}")
+//    val currentTabIndex by remember { derivedStateOf { pagerState.currentPage } }
     ScrollableTabRow(
         selectedTabIndex = pagerState.currentPage,
         modifier = Modifier.fillMaxWidth(),
@@ -46,7 +46,8 @@ fun TabLayout(pagerState: PagerState, tabRowItems: List<SectionTabItem>) {
 
         ) {
         tabRowItems.forEachIndexed { index, tabItem ->
-            val selected = currentTabIndex == index
+//            val selected = currentTabIndex == index
+            val selected = pagerState.currentPage == index
             val coroutineScope = rememberCoroutineScope()
             Tab(
                 /*modifier = if (selected) Modifier

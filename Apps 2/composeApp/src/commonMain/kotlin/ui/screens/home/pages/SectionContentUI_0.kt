@@ -27,6 +27,7 @@ import domain.model.SectionContent
 @Composable
 fun SectionContentUI_0(listState: LazyListState, sectionContent: SectionContent?, onArticleClick: (article: Article) -> Unit, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
     if (isLoading) { // Loading Block
+
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

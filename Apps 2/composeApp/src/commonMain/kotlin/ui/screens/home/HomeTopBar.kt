@@ -25,16 +25,16 @@ import org.jetbrains.compose.resources.painterResource
 fun HomeTopBar() {
     TopAppBar(
         title = {
-            Row {
-                Image(
-                    painter = painterResource("splash_logo.webp"),
-                    contentDescription = null,
-                    modifier = androidx.compose.ui.Modifier
-                        .height(50.dp)
-
-                )
-
-            }
+//            Row {
+//                Image(
+//                    painter = painterResource("splash_logo.webp"),
+//                    contentDescription = null,
+//                    modifier = androidx.compose.ui.Modifier
+//                        .height(50.dp)
+//
+//                )
+//
+//            }
         },
         actions = {
             IconButton(onClick = { /* doSomething() */ }) {

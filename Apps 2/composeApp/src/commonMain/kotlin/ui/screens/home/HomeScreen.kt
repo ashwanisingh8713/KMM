@@ -256,9 +256,9 @@ private fun Pager(pagerState: PagerState,
         state = pagerState,
         beyondBoundsPageCount = 4,
         userScrollEnabled = false,
-        key = {
-//            randomUUID()
-        },
+//        key = {
+////            randomUUID()
+//        },
 
     ) { index ->
         val pageState = tabRowItems[pagerState.currentPage]

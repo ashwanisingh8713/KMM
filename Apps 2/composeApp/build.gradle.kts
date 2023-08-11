@@ -42,6 +42,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {

@@ -123,8 +123,8 @@ val ktorModule = module {
         }
     }
 
-//    single { "https://app.thehindu.com/hindu/service/api_v1.006" }
-    single { "https://rickandmortyapi.com" }
+    single { "https://app.thehindu.com/hindu/service/api_v1.006" }
+//    single { "https://rickandmortyapi.com" }
 }
 
 

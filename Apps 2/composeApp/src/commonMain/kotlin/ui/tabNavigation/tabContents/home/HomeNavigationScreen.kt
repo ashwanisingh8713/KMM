@@ -115,21 +115,6 @@ fun HomeTabPagerUI(viewModel: SectionListViewModel, tabRowItems: List<SectionTab
 
     val pagerState = rememberPagerState(initialPage = 0)
 
-    Scaffold(
-        topBar = {
-            println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: topBar:")
-            Surface(shadowElevation = 3.dp) {
-                HomeTopBar()
-            }
-        },
-    ) {
-        println("$ComposeTag: HomeScreen: Content: HomeContent: Scaffold: BoxWithConstraints:")
-        BoxWithConstraints(
-            Modifier.padding(it),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            HomeNavAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading,
-                sectionListError= sectionListError, onArticleClick= onArticleClick)
-        }
-    }
+    HomeNavAndTabs(pagerState = pagerState, viewModel = viewModel, tabRowItems = tabRowItems, sectionListLoading = sectionListLoading,
+        sectionListError= sectionListError, onArticleClick= onArticleClick)
 }

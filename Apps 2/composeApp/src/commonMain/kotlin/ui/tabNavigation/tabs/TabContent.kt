@@ -20,21 +20,24 @@ import cafe.adriel.voyager.transitions.SlideTransition
 import ui.tabNavigation.tabs.BasicNavigationScreen
 
 //https://proandroiddev.com/the-state-of-navigation-in-jetpack-compose-cc13eb6ac3d9
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Tab.TabContent() {
     val tabTitle = options.title
 
-//    LifecycleEffect(
-//        onStarted = { Log.d("Navigator", "Start tab $tabTitle") },
-//        onDisposed = { Log.d("Navigator", "Dispose tab $tabTitle") },
-//    )
+    LifecycleEffect(
+        onStarted = {
+//            Log.d("Navigator", "Start tab $tabTitle")
+                    },
+        onDisposed = {
+//            Log.d("Navigator", "Dispose tab $tabTitle")
+                     },
+    )
 
     Navigator(BasicNavigationScreen(index = 0)) { navigator ->
         SlideTransition(navigator) { screen ->
             Column {
-//                InnerTabNavigation()
+                InnerTabNavigation()
                 screen.Content()
 //                Log.d("Navigator", "Last Event: ${navigator.lastEvent}")
             }

@@ -16,6 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -29,59 +32,62 @@ import ui.tabNavigation.tabs.MoreTab
  * Created by Ashwani Kumar Singh on 10,August,2023.
  */
 
+class StartingScreen : Screen {
+    override val key: ScreenKey = uniqueScreenKey
 
-@OptIn(ExperimentalVoyagerApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun Content() {
-    TabNavigator(
-        HomeTab,
-        tabDisposable = {
-            TabDisposable(
-                navigator = it,
-                tabs = listOf(HomeTab, FavoritesTab, MoreTab)
-            )
-        }
-    ) { tabNavigator ->
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Surface(shadowElevation = 3.dp) {
-                            Text(text = tabNavigator.current.options.title)
+    @OptIn(ExperimentalVoyagerApi::class, ExperimentalMaterial3Api::class)
+    @Composable
+    override fun Content() {
+        TabNavigator(
+            HomeTab,
+            tabDisposable = {
+                TabDisposable(
+                    navigator = it,
+                    tabs = listOf(HomeTab, FavoritesTab, MoreTab)
+                )
+            }
+        ) { tabNavigator ->
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Surface(shadowElevation = 3.dp) {
+                                Text(text = tabNavigator.current.options.title)
 //                            Row {
 //                                HomeTopBar()
 //                                Text(text = tabNavigator.current.options.title)
 //                            }
+                            }
                         }
+                    )
+                },
+                content = {
+                    BoxWithConstraints(
+                        Modifier.padding(it),
+                        contentAlignment = Alignment.TopCenter
+                    ) {
+                        CurrentTab()
                     }
-                )
-            },
-            content = {
-                BoxWithConstraints(
-                    Modifier.padding(it),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    CurrentTab()
+                },
+                bottomBar = {
+                    BottomAppBar {
+                        TabNavigationItem(HomeTab)
+                        TabNavigationItem(FavoritesTab)
+                        TabNavigationItem(MoreTab)
+                    }
                 }
-            },
-            bottomBar = {
-                BottomAppBar {
-                    TabNavigationItem(HomeTab)
-                    TabNavigationItem(FavoritesTab)
-                    TabNavigationItem(MoreTab)
-                }
-            }
+            )
+        }
+    }
+
+    @Composable
+    private fun RowScope.TabNavigationItem(tab: Tab) {
+        val tabNavigator = LocalTabNavigator.current
+
+        NavigationBarItem(
+            selected = tabNavigator.current.key == tab.key,
+            onClick = { tabNavigator.current = tab },
+            icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) }
         )
     }
-}
-
-@Composable
-private fun RowScope.TabNavigationItem(tab: Tab) {
-    val tabNavigator = LocalTabNavigator.current
-
-    NavigationBarItem(
-        selected = tabNavigator.current.key == tab.key,
-        onClick = { tabNavigator.current = tab },
-        icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) }
-    )
 }

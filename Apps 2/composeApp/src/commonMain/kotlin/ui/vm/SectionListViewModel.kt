@@ -23,7 +23,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     ScreenModel, KoinComponent {
 
 
-    val _sectionList = MutableStateFlow<SectionList?>(null)
+    val _sectionList = MutableStateFlow<SectionList>(SectionList())
     val successSectionList: StateFlow<SectionList?> get() = _sectionList
 
     val _sectionListLoading = MutableStateFlow<Boolean>( true)

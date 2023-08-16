@@ -46,21 +46,11 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
 import domain.model.SectionContent
 import ext.getScreenModel
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
 import ui.screens.detail.DetailScreen
-import ui.screens.home.HomeBottomBar
-import ui.screens.home.HomeContent
-import ui.screens.home.HomeNavAndTabs
-import ui.screens.home.HomeTopBar
 import ui.screens.home.TabLayout
 import ui.screens.home.pages.SectionContentUI_0
 import ui.screens.util.ComposeTag
-import ui.screens.util.NoNetworkUI
-import ui.tabNavigation.tabs.BasicNavigationScreen
 import ui.vm.SectionListViewModel
 
 /**
@@ -78,7 +68,9 @@ class HomeNavigationScreen constructor(
     @Composable
     override fun Content() {
 
-        val pagerState = rememberPagerState(initialPage = 0)
+        var selectedPage by remember { mutableStateOf<Int>(0) }
+
+        val pagerState = rememberPagerState(initialPage = selectedPage)
 
         println("$ComposeTag: HomeNavigationScreen: Content: HomeContent:")
 
@@ -103,85 +95,63 @@ class HomeNavigationScreen constructor(
 
 
         Column(modifier = Modifier.fillMaxSize()) {
+
+            var sectionId by remember { mutableStateOf<Int>(0) }
+            var sectionName by remember { mutableStateOf<String>("") }
+            var sectionType by remember { mutableStateOf<String>("") }
+
+            val sectionContent by viewModel.sectionContentState.collectAsState()
+            val isLoading by viewModel.sectionContentLoading.collectAsState()
+            val error by viewModel.sectionContentError.collectAsState()
+
+            LaunchedEffect(pagerState.currentPage) {
+                if (sectionContent == null || sectionContent?.data?.sid != sectionId) {
+                    viewModel.makeSectionContentApiRequest(
+                        secId = sectionId,
+                        secName = sectionName,
+                        type = sectionType,
+                        page = 1
+                    )
+                }
+            }
+
+            // To handle list state for each page, it should have same size as pagerState.pageCount
+            val listState: List<LazyListState> = List(tabRowItems.size) { rememberLazyListState() }
+
             // Tab Row
             TabLayout(pagerState = pagerState, tabRowItems = tabRowItems)
+
             // Pager
-            HomeNavigationPager(
-                pagerState = pagerState,
-                tabRowItems = tabRowItems,
-                viewModel = viewModel,
-                onArticleClick = onArticleClick
+            HorizontalPager(
+                pageCount = tabRowItems.size,
+                state = pagerState,
+                beyondBoundsPageCount = 0,
+                userScrollEnabled = false,
+//                key = {
+//                    uniqueScreenKey
+//                },
             )
+            { index ->
+                val pageState = tabRowItems[pagerState.currentPage]
+                sectionType = pageState.secType
+                sectionId = pageState.secId
+                sectionName = pageState.secName
+
+                selectedPage = pagerState.currentPage
+
+                SectionContentUI_0(
+                    listState = listState[index],
+                    sectionContent = sectionContent,
+                    isLoading = isLoading,
+                    error = error,
+                    secId = pageState.secId,
+                    secName = pageState.secName,
+                    type = pageState.secType,
+                    onArticleClick = onArticleClick
+                )
+            }
         }
     }
 
 }
 
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun HomeNavigationPager(
-    pagerState: PagerState,
-    tabRowItems: List<SectionTabItem>,
-    viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit,
-) {
-    println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager:")
-
-    var sectionId by remember { mutableStateOf<Int>(0) }
-    var sectionName by remember { mutableStateOf<String>("") }
-    var sectionType by remember { mutableStateOf<String>("") }
-
-    var selectedPage by remember { mutableStateOf<Int>(-1) }
-
-    val sectionContent by viewModel.sectionContentState.collectAsState()
-    val isLoading by viewModel.sectionContentLoading.collectAsState()
-    val error by viewModel.sectionContentError.collectAsState()
-
-
-    LaunchedEffect(pagerState.currentPage) {
-        if(sectionContent == null || sectionContent?.data?.sid != sectionId) {
-            viewModel.makeSectionContentApiRequest(
-                secId = sectionId,
-                secName = sectionName,
-                type = sectionType,
-                page = 1
-            )
-        }
-    }
-
-    // To handle list state for each page, it should have same size as pagerState.pageCount
-    val listState: List<LazyListState> = List(tabRowItems.size) { rememberLazyListState() }
-
-    HorizontalPager(pageCount = tabRowItems.size) {
-
-    }
-
-    HorizontalPager(
-        pageCount = 10,
-        state = pagerState,
-        beyondBoundsPageCount = 0,
-        userScrollEnabled = false,
-//        key = {
-////            randomUUID()
-//        },
-
-    ) { index ->
-        val pageState = tabRowItems[pagerState.currentPage]
-        sectionType = pageState.secType
-        sectionId = pageState.secId
-        sectionName = pageState.secName
-
-        selectedPage = pagerState.currentPage
-
-        SectionContentUI_0(
-            listState = listState[index],
-            sectionContent = sectionContent,
-            isLoading = isLoading,
-            error = error,
-            secId = pageState.secId,
-            secName = pageState.secName,
-            type = pageState.secType,
-            onArticleClick = onArticleClick
-        )
-    }
-}

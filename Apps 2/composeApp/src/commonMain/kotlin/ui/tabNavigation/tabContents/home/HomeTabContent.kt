@@ -30,7 +30,6 @@ import ui.screens.util.NoNetworkUI
 import ui.vm.SectionListViewModel
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class,
-    ExperimentalFoundationApi::class
 )
 @Composable
 fun Tab.HomeTabContent() {
@@ -44,18 +43,20 @@ fun Tab.HomeTabContent() {
 
     val viewModel = getScreenModel<SectionListViewModel>()
 
-    LaunchedEffect(key1 = Unit) {
-        println("$ComposeTag: HomeNavigationScreen: TabLayout: LaunchedEffect:")
-        viewModel.makeSectionListApiRequest()
-    }
-
     var tabRowItems by remember { mutableStateOf(mutableListOf<SectionTabItem>()) }
     var sectionListLoading by remember { mutableStateOf(true) }
     var sectionListError by remember { mutableStateOf<String?>(null) }
 
+    LaunchedEffect(true) {
+        println("$ComposeTag: HomeNavigationScreen: TabLayout: LaunchedEffect:")
+        viewModel.makeSectionListApiRequest()
+    }
+
+
+
     viewModel.successSectionList.collectAsState().value?.let { it ->
-        val secList = it.data.section
-        tabRowItems = secList.filter { it.type != "static" }.map {
+        val secList = it.data?.section
+        tabRowItems = if(secList == null) mutableListOf<SectionTabItem>() else secList?.filter { it.type != "static" }?.map {
             SectionTabItem(
                 tabId = it.secId.toString(),
                 secName = it.secName,
@@ -63,7 +64,16 @@ fun Tab.HomeTabContent() {
                 secId = it.secId,
                 secType = it.type,
             )
-        }.toMutableList()
+        }!!.toMutableList()
+        /*tabRowItems = secList?.filter { it.type != "static" }?.map {
+            SectionTabItem(
+                tabId = it.secId.toString(),
+                secName = it.secName,
+                isSelected = false,
+                secId = it.secId,
+                secType = it.type,
+            )
+        }!!.toMutableList()*/
     }
 
     viewModel.sectionListLoading.collectAsState().value?.let { it ->
@@ -73,6 +83,16 @@ fun Tab.HomeTabContent() {
     viewModel.sectionListError.collectAsState().value?.let { it ->
         sectionListError = it
     }
+
+    /*Navigator(
+        HomeNavigationScreen(wrapContent = false,
+            tabRowItems= tabRowItems)
+    ) { navigator ->
+        SlideTransition(navigator) { screen ->
+
+            screen.Content()
+        }
+    }*/
 
 
 

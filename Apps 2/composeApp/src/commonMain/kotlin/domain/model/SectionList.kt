@@ -10,7 +10,7 @@ import kotlinx.serialization.Transient
 
 @Serializable
 data class SectionList(
-    val data: Data
+    val data: Data? = null
 )
 @Serializable
 data class Data(

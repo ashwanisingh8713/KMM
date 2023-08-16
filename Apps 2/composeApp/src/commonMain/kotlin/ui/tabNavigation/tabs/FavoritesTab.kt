@@ -27,6 +27,6 @@ internal object FavoritesTab : Tab {
 
     @Composable
     override fun Content() {
-
+        FavoriteTabContent()
     }
 }

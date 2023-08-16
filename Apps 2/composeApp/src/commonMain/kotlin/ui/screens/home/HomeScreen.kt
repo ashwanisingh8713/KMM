@@ -1,4 +1,4 @@
-package ui.tabNavigation.tabContents.home
+package ui.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -21,20 +21,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import cafe.adriel.voyager.transitions.SlideTransition
 import domain.model.Article
 import ext.getScreenModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
 import ui.screens.detail.DetailScreen
-import ui.screens.home.TabLayout
 import ui.screens.home.pages.SectionContentUI_0
 import ui.screens.util.ComposeTag
 import ui.screens.util.NoNetworkUI
@@ -45,7 +41,7 @@ import ui.vm.SectionListViewModel
  */
 
 @OptIn(ExperimentalFoundationApi::class)
-class HomeNavigationScreen constructor(
+class HomeScreen constructor(
     val wrapContent: Boolean = false,
 ) : Screen {
     override val key = uniqueScreenKey

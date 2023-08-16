@@ -32,7 +32,7 @@ import ui.tabNavigation.tabs.MoreTab
  * Created by Ashwani Kumar Singh on 10,August,2023.
  */
 
-class StartingScreen : Screen {
+internal class StartingScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalVoyagerApi::class, ExperimentalMaterial3Api::class)

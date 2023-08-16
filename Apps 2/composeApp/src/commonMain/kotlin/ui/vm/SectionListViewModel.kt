@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import ui.screens.util.ComposeTag
 
 /**
  * Created by Ashwani Kumar Singh on 26,July,2023.
@@ -66,11 +67,13 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     }
 
     fun makeSectionContentApiRequest(secId: Int, secName: String, type:String, page: Int = 1, lut: Int = 0) {
-        println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
+        println("$ComposeTag: LaunchedEffect -> secId = $secId, secName = $secName, secType = $type")
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
             os_version = 29, id = secId, lut = 0, type = type, page = page )
         sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
             override fun onSuccess(content: SectionContent) {
+                println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
+                println("$ComposeTag: Success Result -> secId = ${content.data.sid}, secName = ${content.data.sname}")
                 _sectionContentState.value = content
             }
 

@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.ScrollableTabRow
@@ -25,9 +27,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import colors.LocalAppColors
+import colors.ProvideAppColors
 import kotlinx.coroutines.launch
+import theme.AppTheme
+import theme.Theme
 import ui.model.SectionTabItem
 import ui.screens.util.ComposeTag
 
@@ -53,14 +61,11 @@ fun TabLayout(pagerState: PagerState, tabRowItems: List<SectionTabItem>) {
                 /*modifier = if (selected) Modifier
                     .clip(RoundedCornerShape(50))
                     .background(
-                        Color.White
+                        Color(0xff1E76DA)
                     )
                 else Modifier
-                    .clip(RoundedCornerShape(50))
                     .background(
-                        Color(
-                            0xff1E76DA
-                        )
+                        Color.White
                     ),*/
                 selected = selected,
                 onClick = {
@@ -73,7 +78,7 @@ fun TabLayout(pagerState: PagerState, tabRowItems: List<SectionTabItem>) {
                         text = tabItem.secName.uppercase(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-//                        color = if (selected) Theme.colors.primary else Theme.colors.onSurfaceVariant,
+                        color = if (selected) Theme.colors.primary else Theme.colors.onPrimary,
                     )
                 }
             )

@@ -1,4 +1,4 @@
-package ui.dimens
+package dimens
 
 /**
  * Created by Ashwani Kumar Singh on 31,July,2023.
@@ -8,8 +8,6 @@ package ui.dimens
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-
 
 
 class Dimensions(

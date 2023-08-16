@@ -2,6 +2,7 @@ package theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -14,32 +15,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import colors.DarkColorScheme_2
+import colors.LightColorScheme_2
+import colors.LocalAppColors
+import colors.ProvideAppColors
+import dimens.Dimensions
+import dimens.LocalAppDimens
+import dimens.ProvideDimens
+import dimens.smallDimensions
+import dimens.sw360Dimensions
 
-private val LightColorScheme = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    secondary = md_theme_light_secondary,
-    onSecondary = md_theme_light_onSecondary,
-    error = md_theme_light_error,
-    onError = md_theme_light_onError,
-    background = md_theme_light_background,
-    onBackground = md_theme_light_onBackground,
-    surface = md_theme_light_surface,
-    onSurface = md_theme_light_onSurface,
-)
-
-private val DarkColorScheme = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
-    secondary = md_theme_dark_secondary,
-    onSecondary = md_theme_dark_onSecondary,
-    error = md_theme_dark_error,
-    onError = md_theme_dark_onError,
-    background = md_theme_dark_background,
-    onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
-    onSurface = md_theme_dark_onSurface,
-)
 
 private val AppShapes = Shapes(
     extraSmall = RoundedCornerShape(2.dp),
@@ -58,22 +43,40 @@ private val AppTypography = Typography(
 )
 
 @Composable
-internal fun AppTheme(
+fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
-        LightColorScheme
+        LightColorScheme_2
     } else {
-        DarkColorScheme
+        DarkColorScheme_2
     }
 
-    MaterialTheme(
-        colorScheme = colors,
-        typography = AppTypography,
-        shapes = AppShapes,
-        content = {
-            Surface(content = content)
+    val screenWidthDp:Int = 360
+
+    val dimensions = if (screenWidthDp <= 360) smallDimensions else sw360Dimensions
+
+    ProvideDimens(dimensions = dimensions) {
+        ProvideAppColors(colors = colors) {
+            MaterialTheme(
+                colorScheme = colors,
+                typography = AppTypography,
+                shapes = AppShapes,
+                content = {
+                    Surface(content = content)
+                }
+            )
         }
-    )
+    }
+}
+
+object Theme {
+    val colors: ColorScheme
+        @Composable
+        get() = LocalAppColors.current
+
+    val dimens: Dimensions
+        @Composable
+        get() = LocalAppDimens.current
 }

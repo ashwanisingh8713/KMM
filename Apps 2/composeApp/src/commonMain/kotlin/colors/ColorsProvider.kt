@@ -1,5 +1,6 @@
-package ui.dimens
+package colors
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -10,15 +11,14 @@ import androidx.compose.runtime.staticCompositionLocalOf
  */
 
 @Composable
-fun ProvideDimens(
-    dimensions: Dimensions,
+fun ProvideAppColors(
+    colors: ColorScheme,
     content: @Composable () -> Unit
 ) {
-    val dimensionSet = remember { dimensions }
-    CompositionLocalProvider(LocalAppDimens provides dimensionSet, content = content)
+    val colorPalette = remember { colors }
+    CompositionLocalProvider(LocalAppColors provides colorPalette, content = content)
 }
 
-val LocalAppDimens = staticCompositionLocalOf {
-    smallDimensions
+val LocalAppColors = staticCompositionLocalOf {
+    LightColorScheme_2
 }
-

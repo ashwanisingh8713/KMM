@@ -1,7 +1,11 @@
-package ui.colors
+package colors
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
+
+/**
+ * Created by Ashwani Kumar Singh on 16,August,2023.
+ */
 
 /*
 https://www.boltuix.com/
@@ -16,7 +20,7 @@ https://material-foundation.github.io/material-theme-builder/#/custom
 
 
 // Black Color Variant - https://www.color-meanings.com/shades-of-black-color-names-html-hex-rgb-codes/
-val LightThemeColors = ColorScheme(
+val LightColorScheme_2 = ColorScheme(
 // Window color and text color(OnPrimary)
     primary = Color(0xff6c281b), // Tab-text selected
     onPrimary = Color(0xFF494F55), // Abbey
@@ -64,7 +68,7 @@ val LightThemeColors = ColorScheme(
 
 
 
-val DarkThemeColors = ColorScheme(
+val DarkColorScheme_2 = ColorScheme(
 // Window color and text color(OnPrimary)
     primary = Color(0xFF55AB60),
     onPrimary = Color(0xFF55AB60),
@@ -106,4 +110,3 @@ val DarkThemeColors = ColorScheme(
     scrim = Color(0xFF362F2E),
 
     )
-

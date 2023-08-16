@@ -96,10 +96,6 @@ fun Tab.HomeTabContent() {
 
 
 
-
-
-
-
     Column(modifier = Modifier.fillMaxSize()) {
         if (sectionListLoading) {
             println("$ComposeTag: HomeNavigationScreen: HomeNavigationAndTabs: sectionListLoading:")
@@ -145,7 +141,6 @@ fun Tab.HomeTabContent() {
             println("$ComposeTag: HomeNavigationScreen: HomeNavigationAndTabs: tabRowItems: ${tabRowItems.size} count")
 
             Navigator(
-//                CharactersScreen()
                 HomeNavigationScreen(wrapContent = wrap,
                 tabRowItems= tabRowItems)
             ) { navigator ->

@@ -138,16 +138,16 @@ private fun HomeNavigationPager(
     val isLoading by viewModel.sectionContentLoading.collectAsState()
     val error by viewModel.sectionContentError.collectAsState()
 
-    println("$ComposeTag: HomeNavigationScreen: Comp :: trigger: $trigger")
 
-    LaunchedEffect(trigger) {
-        println("$ComposeTag: HomeNavigationScreen: LaunchedEffect -> secId = $sectionId, secName = $sectionName, secType = $sectionType")
-        viewModel.makeSectionContentApiRequest(
-            secId = sectionId,
-            secName = sectionName,
-            type = sectionType,
-            page = 1
-        )
+    LaunchedEffect(pagerState.currentPage) {
+        if(sectionContent == null || sectionContent?.data?.sid != sectionId) {
+            viewModel.makeSectionContentApiRequest(
+                secId = sectionId,
+                secName = sectionName,
+                type = sectionType,
+                page = 1
+            )
+        }
     }
 
     // To handle list state for each page, it should have same size as pagerState.pageCount
@@ -173,7 +173,7 @@ private fun HomeNavigationPager(
         sectionName = pageState.secName
 
         selectedPage = pagerState.currentPage
-//        trigger = true
+        trigger = true
 
         println("$ComposeTag: HomeNavigationScreen: trigger: $trigger")
 

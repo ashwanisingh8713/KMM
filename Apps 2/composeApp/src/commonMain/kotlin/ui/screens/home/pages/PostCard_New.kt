@@ -16,7 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
+import ui.screens.detail.DetailScreen
 
 /**
  * Displays Articles
@@ -32,8 +35,11 @@ fun PostCard_New(
     modifier: Modifier = Modifier,
     onArticleClick: (article: Article) -> Unit
 ) {
-
-    Card(modifier = Modifier.padding(vertical = 1.dp), onClick = { onArticleClick(article) }) {
+    val navigator = LocalNavigator.currentOrThrow
+    Card(modifier = Modifier.padding(vertical = 1.dp), onClick = {
+        onArticleClick(article)
+//        navigator.push(DetailScreen(article))
+    }) {
         Column(modifier = modifier) {
             Box(
                 modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),

@@ -96,7 +96,7 @@ fun Tab.HomeTabContent() {
 
 
 
-    val pagerState = rememberPagerState(initialPage = 0)
+
 
 
 
@@ -146,8 +146,8 @@ fun Tab.HomeTabContent() {
 
             Navigator(
 //                CharactersScreen()
-                HomeNavigationScreen(index = index, wrapContent = wrap,
-                tabRowItems= tabRowItems, pagerState= pagerState)
+                HomeNavigationScreen(wrapContent = wrap,
+                tabRowItems= tabRowItems)
             ) { navigator ->
                 SlideTransition(navigator) { screen ->
 

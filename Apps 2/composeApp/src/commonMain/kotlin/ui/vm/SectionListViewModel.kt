@@ -12,6 +12,7 @@ import domain.usecase.base.UseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 /**
@@ -74,7 +75,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
             }
 
             override fun onError(apiError: String) {
-                _sectionContentError.value = apiError
+                    _sectionContentError.value = apiError
             }
 
             override fun onLoading(isLoading: Boolean) {

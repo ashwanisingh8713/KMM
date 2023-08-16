@@ -1,5 +1,6 @@
 package ui.screens.home.pages
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import cafe.adriel.voyager.core.screen.Screen
 import domain.model.Article
 import domain.model.SectionContent
 
@@ -28,51 +30,53 @@ import domain.model.SectionContent
 fun SectionContentUI_0(listState: LazyListState, sectionContent: SectionContent?, onArticleClick: (article: Article) -> Unit, isLoading: Boolean, error: String?, secId: Int, secName: String, type: String) {
     if (isLoading) { // Loading Block
 
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Loading...",
-                style = MaterialTheme.typography.displayMedium,
-                textAlign = TextAlign.Center
-            )
-        }
-    } else if (error != null) { // Error Block
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = error,
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.labelMedium,
-                textAlign = TextAlign.Left,
-            )
-        }
-    }
-    else if (sectionContent != null) { // Data Block
-
-        sectionContent?.let {
-            var itemsList = sectionContent.data.article
-            // LazyColumn
-            LazyColumn(
-                state = listState,
-                modifier = Modifier,
-                contentPadding = PaddingValues(8.dp),
-//                verticalArrangement = Arrangement.Top,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
+                Text(
+                    text = "Loading...",
+                    style = MaterialTheme.typography.displayMedium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else if (error != null && sectionContent?.data?.article!!.isEmpty()) { // Error Block
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = error,
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    textAlign = TextAlign.Left,
+                )
+            }
+        } else if (sectionContent != null) { // Data Block
 
-                items(items = sectionContent.data.article, key = {it.aid}) { article ->
-                    PostCard_New(isLoading = isLoading, article = article, onArticleClick = onArticleClick)
-                    Divider(color = Color.Black, thickness = 1.dp)
+            sectionContent?.let {
+                var itemsList = sectionContent.data.article
+                // LazyColumn
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier,
+                    contentPadding = PaddingValues(8.dp),
+//                verticalArrangement = Arrangement.Top,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+
+                ) {
+
+                    items(items = sectionContent.data.article, key = { it.aid }) { article ->
+                        PostCard_New(
+                            isLoading = isLoading,
+                            article = article,
+                            onArticleClick = onArticleClick
+                        )
+                        Divider(color = Color.Black, thickness = 1.dp)
+                    }
                 }
             }
-        }
-    }
-    else {
+        } else {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

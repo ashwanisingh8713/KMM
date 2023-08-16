@@ -66,17 +66,20 @@ import ui.vm.SectionListViewModel
 /**
  * Created by Ashwani Kumar Singh on 11,August,2023.
  */
-class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(val index: Int,
-                                                                                     val wrapContent: Boolean = false,
-                                                                                     var tabRowItems:List<SectionTabItem>,
-                                                                                     var pagerState: PagerState): Screen {
+
+@OptIn(ExperimentalFoundationApi::class)
+class HomeNavigationScreen constructor(
+    val wrapContent: Boolean = false,
+    var tabRowItems: List<SectionTabItem>,
+) : Screen {
     override val key = uniqueScreenKey
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
 
-        println("$ComposeTag ---------------  WrapContent: $wrapContent and index $index -----------------")
+        val pagerState = rememberPagerState(initialPage = 0)
+
         println("$ComposeTag: HomeNavigationScreen: Content: HomeContent:")
 
         LifecycleEffect(
@@ -99,14 +102,12 @@ class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(
         }
 
 
-
-
         Column(modifier = Modifier.fillMaxSize()) {
             // Tab Row
-            TabLayout(pagerState= pagerState, tabRowItems = tabRowItems)
+            TabLayout(pagerState = pagerState, tabRowItems = tabRowItems)
             // Pager
             HomeNavigationPager(
-                pagerState= pagerState,
+                pagerState = pagerState,
                 tabRowItems = tabRowItems,
                 viewModel = viewModel,
                 onArticleClick = onArticleClick
@@ -117,12 +118,12 @@ class HomeNavigationScreen @OptIn(ExperimentalFoundationApi::class) constructor(
 }
 
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HomeNavigationPager(pagerState: PagerState,
-                  tabRowItems: List<SectionTabItem>,
-                  viewModel: SectionListViewModel, onArticleClick: (article: Article)-> Unit,
+private fun HomeNavigationPager(
+    pagerState: PagerState,
+    tabRowItems: List<SectionTabItem>,
+    viewModel: SectionListViewModel, onArticleClick: (article: Article) -> Unit,
 ) {
     println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager:")
 
@@ -130,24 +131,23 @@ private fun HomeNavigationPager(pagerState: PagerState,
     var sectionName by remember { mutableStateOf<String>("") }
     var sectionType by remember { mutableStateOf<String>("") }
 
+    var selectedPage by remember { mutableStateOf<Int>(-1) }
+    var trigger by remember { mutableStateOf (false) }
+
     val sectionContent by viewModel.sectionContentState.collectAsState()
     val isLoading by viewModel.sectionContentLoading.collectAsState()
     val error by viewModel.sectionContentError.collectAsState()
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow {
-            pagerState.currentPage
-        }.distinctUntilChanged().collect {
-//                println("$ComposeTag: HomeNavigationScreen: HomeNavigationPager: LaunchedEffect -> secId = $sectionId, secName = $sectionName, secType = $sectionType")
-//            println("Section Pager - $it")
-//            println("Section Pager tabRowItems size - ${tabRowItems.size}")
-            viewModel.makeSectionContentApiRequest(
-                secId = sectionId,
-                secName = sectionName,
-                type = sectionType,
-                page = 1
-            )
-        }
+    println("$ComposeTag: HomeNavigationScreen: Comp :: trigger: $trigger")
+
+    LaunchedEffect(trigger) {
+        println("$ComposeTag: HomeNavigationScreen: LaunchedEffect -> secId = $sectionId, secName = $sectionName, secType = $sectionType")
+        viewModel.makeSectionContentApiRequest(
+            secId = sectionId,
+            secName = sectionName,
+            type = sectionType,
+            page = 1
+        )
     }
 
     // To handle list state for each page, it should have same size as pagerState.pageCount
@@ -172,11 +172,21 @@ private fun HomeNavigationPager(pagerState: PagerState,
         sectionId = pageState.secId
         sectionName = pageState.secName
 
+        selectedPage = pagerState.currentPage
+//        trigger = true
+
+        println("$ComposeTag: HomeNavigationScreen: trigger: $trigger")
+
 
         SectionContentUI_0(
             listState = listState[index],
-            sectionContent = sectionContent, isLoading = isLoading, error = error,
-            secId = pageState.secId, secName = pageState.secName, type = pageState.secType, onArticleClick = onArticleClick
+            sectionContent = sectionContent,
+            isLoading = isLoading,
+            error = error,
+            secId = pageState.secId,
+            secName = pageState.secName,
+            type = pageState.secType,
+            onArticleClick = onArticleClick
         )
     }
 }

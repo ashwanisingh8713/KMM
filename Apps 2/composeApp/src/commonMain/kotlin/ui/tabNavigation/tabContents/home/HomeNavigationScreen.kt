@@ -132,7 +132,6 @@ private fun HomeNavigationPager(
     var sectionType by remember { mutableStateOf<String>("") }
 
     var selectedPage by remember { mutableStateOf<Int>(-1) }
-    var trigger by remember { mutableStateOf (false) }
 
     val sectionContent by viewModel.sectionContentState.collectAsState()
     val isLoading by viewModel.sectionContentLoading.collectAsState()
@@ -173,10 +172,6 @@ private fun HomeNavigationPager(
         sectionName = pageState.secName
 
         selectedPage = pagerState.currentPage
-        trigger = true
-
-        println("$ComposeTag: HomeNavigationScreen: trigger: $trigger")
-
 
         SectionContentUI_0(
             listState = listState[index],

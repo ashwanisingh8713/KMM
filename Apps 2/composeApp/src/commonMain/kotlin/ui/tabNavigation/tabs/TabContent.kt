@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,7 +14,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.transitions.SlideTransition
-import ui.tabNavigation.tabs.BasicNavigationScreen
 
 //https://proandroiddev.com/the-state-of-navigation-in-jetpack-compose-cc13eb6ac3d9
 @OptIn(ExperimentalAnimationApi::class)
@@ -58,7 +54,7 @@ private fun InnerTabNavigation() {
 
         Spacer(modifier = Modifier.weight(.05f))
 
-        TabNavigationButton(ProfileTab)
+        TabNavigationButton(MoreTab)
     }
 }
 

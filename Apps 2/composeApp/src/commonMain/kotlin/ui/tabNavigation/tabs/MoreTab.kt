@@ -9,7 +9,7 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import ui.tabNavigation.tabContents.more.MoreTabContent
 
-internal object ProfileTab : Tab {
+internal object MoreTab : Tab {
 
     override val options: TabOptions
         @Composable
@@ -19,7 +19,7 @@ internal object ProfileTab : Tab {
             return remember {
                 TabOptions(
                     index = 2u,
-                    title = "Profile",
+                    title = "More",
                     icon = icon
                 )
             }
@@ -27,6 +27,7 @@ internal object ProfileTab : Tab {
 
     @Composable
     override fun Content() {
-        MoreTabContent()
+//        MoreTabContent()
+        TabContent()
     }
 }

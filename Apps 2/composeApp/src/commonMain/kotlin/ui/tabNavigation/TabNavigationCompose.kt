@@ -1,7 +1,6 @@
 package ui.tabNavigation
 
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -22,10 +21,9 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import ui.screens.home.HomeTopBar
 import ui.tabNavigation.tabs.FavoritesTab
 import ui.tabNavigation.tabs.HomeTab
-import ui.tabNavigation.tabs.ProfileTab
+import ui.tabNavigation.tabs.MoreTab
 
 /**
  * Created by Ashwani Kumar Singh on 10,August,2023.
@@ -40,7 +38,7 @@ fun Content() {
         tabDisposable = {
             TabDisposable(
                 navigator = it,
-                tabs = listOf(HomeTab, FavoritesTab, ProfileTab)
+                tabs = listOf(HomeTab, FavoritesTab, MoreTab)
             )
         }
     ) { tabNavigator ->
@@ -70,7 +68,7 @@ fun Content() {
                 BottomAppBar {
                     TabNavigationItem(HomeTab)
                     TabNavigationItem(FavoritesTab)
-                    TabNavigationItem(ProfileTab)
+                    TabNavigationItem(MoreTab)
                 }
             }
         )

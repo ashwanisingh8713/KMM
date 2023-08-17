@@ -50,7 +50,7 @@ private fun InnerTabNavigation() {
 
         Spacer(modifier = Modifier.weight(.05f))
 
-        TabNavigationButton(FavoritesTab)
+        TabNavigationButton(PremiumTab)
 
         Spacer(modifier = Modifier.weight(.05f))
 

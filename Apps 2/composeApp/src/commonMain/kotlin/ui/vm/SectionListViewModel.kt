@@ -12,7 +12,6 @@ import domain.usecase.base.UseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import ui.screens.util.ComposeTag
 
@@ -23,13 +22,13 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     ScreenModel, KoinComponent {
 
 
-    val _sectionList = MutableStateFlow<SectionList>(SectionList())
+    private val _sectionList = MutableStateFlow<SectionList>(SectionList())
     val successSectionList: StateFlow<SectionList?> get() = _sectionList
 
-    val _sectionListLoading = MutableStateFlow<Boolean>( true)
+    private val _sectionListLoading = MutableStateFlow<Boolean>( true)
     val sectionListLoading: StateFlow<Boolean> get() = _sectionListLoading
 
-    val _sectionListError = MutableStateFlow<String?>( null)
+    private val _sectionListError = MutableStateFlow<String?>( null)
     val sectionListError: StateFlow<String?> get() = _sectionListError
 
     private val _sectionContentState = MutableStateFlow<SectionContent?>( null)

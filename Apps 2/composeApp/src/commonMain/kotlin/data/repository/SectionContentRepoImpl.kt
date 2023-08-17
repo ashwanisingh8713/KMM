@@ -1,6 +1,5 @@
 package data.repository
 
-import data.datasource.ApiRequest
 import domain.model.SectionContent
 import domain.repository.SectionContentRepo
 import io.ktor.client.HttpClient
@@ -25,7 +24,6 @@ class SectionContentRepoImpl(private val endPoint: String, private val httpClien
             accept(ContentType.Application.Json)
             setBody(params)
         }
-        val sectionContent: SectionContent = httpResponse.body()
-        return sectionContent
+        return httpResponse.body()
     }
 }

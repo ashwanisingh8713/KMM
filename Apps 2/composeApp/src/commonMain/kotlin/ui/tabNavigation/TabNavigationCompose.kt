@@ -24,7 +24,7 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import ui.tabNavigation.tabs.FavoritesTab
+import ui.tabNavigation.tabs.PremiumTab
 import ui.tabNavigation.tabs.HomeTab
 import ui.tabNavigation.tabs.MoreTab
 
@@ -43,7 +43,7 @@ internal class StartingScreen : Screen {
             tabDisposable = {
                 TabDisposable(
                     navigator = it,
-                    tabs = listOf(HomeTab, FavoritesTab, MoreTab)
+                    tabs = listOf(HomeTab, PremiumTab, MoreTab)
                 )
             }
         ) { tabNavigator ->
@@ -72,7 +72,7 @@ internal class StartingScreen : Screen {
                 bottomBar = {
                     BottomAppBar {
                         TabNavigationItem(HomeTab)
-                        TabNavigationItem(FavoritesTab)
+                        TabNavigationItem(PremiumTab)
                         TabNavigationItem(MoreTab)
                     }
                 }

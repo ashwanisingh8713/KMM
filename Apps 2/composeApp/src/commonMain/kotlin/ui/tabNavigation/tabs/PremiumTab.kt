@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import ui.tabNavigation.tabContents.favorite.FavoriteTabContent
+import ui.tabNavigation.tabContents.premium.PremiumTabContent
 
-internal object FavoritesTab : Tab {
+internal object PremiumTab : Tab {
 
     override val options: TabOptions
         @Composable
@@ -27,6 +27,6 @@ internal object FavoritesTab : Tab {
 
     @Composable
     override fun Content() {
-        FavoriteTabContent()
+//        PremiumTabContent()
     }
 }

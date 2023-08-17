@@ -18,10 +18,13 @@ import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.Charac
 import daniel.avila.rnm.kmm.repository.ICacheData
 import daniel.avila.rnm.kmm.repository.IRemoteData
 import daniel.avila.rnm.kmm.repository.RepositoryImp
+import data.repository.PremiumContentRepoImpl
 import data.repository.SectionContentRepoImpl
 import data.repository.SectionsListRepoImpl
+import domain.repository.PremiumContentRepo
 import domain.repository.SectionContentRepo
 import domain.repository.SectionsListRepo
+import domain.usecase.PremiumContentUseCase
 import domain.usecase.SectionContentUseCase
 import domain.usecase.SectionListUseCase
 import io.ktor.client.HttpClient
@@ -40,6 +43,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import ui.vm.PremiumContentViewModel
 import ui.vm.SectionListViewModel
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
@@ -68,6 +72,7 @@ val viewModelModule = module {
 
 
     factory { SectionListViewModel(get(), get()) }
+    factory { PremiumContentViewModel(get()) }
 
 }
 
@@ -82,6 +87,7 @@ val useCasesModule: Module = module {
     //////////
     factory { SectionContentUseCase(get()) }
     factory { SectionListUseCase(get()) }
+    factory { PremiumContentUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -93,6 +99,7 @@ val repositoryModule = module {
     //////////
     single<SectionContentRepo> { SectionContentRepoImpl(get(named("thg")), get()) }
     single<SectionsListRepo> { SectionsListRepoImpl(get(named("thg")), get()) }
+    single<PremiumContentRepo> { PremiumContentRepoImpl(get(named("premium")), get()) }
 
 }
 
@@ -128,6 +135,7 @@ val ktorModule = module {
 
     single<String>(named("thg")) {  "https://app.thehindu.com/hindu/service/api_v1.006" }
     single<String>(named("daniel")) { "https://rickandmortyapi.com" }
+    single<String>(named("premium")) { "https://www.thehindu.com/premiumfeed/" }
 }
 
 

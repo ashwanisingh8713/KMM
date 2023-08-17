@@ -1,4 +1,4 @@
-package ui.tabNavigation.tabContents.favorite
+package ui.tabNavigation.tabContents.premium
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
@@ -10,12 +10,11 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.transitions.SlideTransition
-import ui.screens.favourite.FavouriteScreen
-import ui.screens.home.HomeScreen
+import ui.screens.premium.PremiumScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Tab.FavoriteTabContent() {
+fun Tab.PremiumTabContent() {
     val tabTitle = options.title
 
     LifecycleEffect(
@@ -28,7 +27,7 @@ fun Tab.FavoriteTabContent() {
     )
 
     Navigator(
-        FavouriteScreen()
+        PremiumScreen()
     ) { navigator ->
         SlideTransition(navigator) { screen ->
             screen.Content()

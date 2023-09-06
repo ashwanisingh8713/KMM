@@ -34,9 +34,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     private val _sectionContentState = MutableStateFlow<SectionContent?>( null)
     val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState
 
-    /*val _sectionContentState = MutableSharedFlow<SectionContent?>()
-    @NativeCoroutinesState
-    val sectionContentState: StateFlow<SectionContent?> get() = _sectionContentState*/
+    private var contentMap = mutableMapOf<Int, SectionContent>()
 
     private val _sectionContentLoading = MutableStateFlow<Boolean>( true)
     val sectionContentLoading: StateFlow<Boolean> get() = _sectionContentLoading
@@ -74,10 +72,19 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
                 println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
                 println("$ComposeTag: Success Result -> secId = ${content.data.sid}, secName = ${content.data.sname}")
                 _sectionContentState.value = content
+                contentMap[secId] = content
             }
 
             override fun onError(apiError: String) {
+                if(apiError.isNotEmpty() && apiError.contains("Unable to resolve host")) {
+                    val content = contentMap[secId]
+                    _sectionContentState.value = content
+                } else {
                     _sectionContentError.value = apiError
+                }
+
+
+
             }
 
             override fun onLoading(isLoading: Boolean) {

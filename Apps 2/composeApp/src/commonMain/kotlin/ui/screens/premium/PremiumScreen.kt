@@ -12,10 +12,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Article
 import ext.getScreenModel
 import ui.screens.detail.DetailScreen
-import ui.screens.home.pages.SectionContentUI_0
-import ui.screens.util.ComposeTag
 import ui.vm.PremiumContentViewModel
-import ui.vm.SectionListViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 16,August,2023.

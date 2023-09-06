@@ -31,7 +31,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
 import ui.screens.detail.DetailScreen
-import ui.screens.home.pages.SectionContentUI_0
+import ui.screens.home.pages.SectionContentListUI
 import ui.screens.util.ComposeTag
 import ui.screens.util.NoNetworkUI
 import ui.vm.SectionListViewModel
@@ -74,8 +74,10 @@ class HomeScreen constructor(
 
 
         LaunchedEffect(true) {
-            println("$ComposeTag: HomeNavigationScreen: TabLayout: LaunchedEffect:")
-            viewModel.makeSectionListApiRequest()
+            if(tabRowItems.isEmpty()) {
+                println("$ComposeTag: HomeNavigationScreen: TabLayout: LaunchedEffect:")
+                viewModel.makeSectionListApiRequest()
+            }
         }
 
         viewModel.successSectionList.collectAsState().value?.let { it ->
@@ -185,7 +187,7 @@ class HomeScreen constructor(
 
                             selectedPage = pagerState.currentPage
 
-                            SectionContentUI_0(
+                            SectionContentListUI(
                                 listState = listState!![index],
                                 sectionContent = sectionContent,
                                 isLoading = isLoading,

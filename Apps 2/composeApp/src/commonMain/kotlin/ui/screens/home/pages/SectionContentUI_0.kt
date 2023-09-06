@@ -1,6 +1,5 @@
 package ui.screens.home.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import cafe.adriel.voyager.core.screen.Screen
 import domain.model.Article
 import domain.model.SectionContent
 
@@ -27,7 +25,7 @@ import domain.model.SectionContent
  */
 
 @Composable
-fun SectionContentUI_0(
+fun SectionContentListUI(
     listState: LazyListState,
     sectionContent: SectionContent?,
     onArticleClick: (article: Article) -> Unit,

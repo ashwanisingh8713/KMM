@@ -12,14 +12,14 @@ data class SectionContent(
 )
 @Serializable
 data class SectionContentData(
-    val article: List<Article>,
+    val article: MutableList<Article>,
     val da: String,
     val imc: Int,
     val media: List<Me>,
     val s: Int,
     val sid: Int,
     val sname: String,
-    val yd: String
+    val yd: String,
 )
 @Serializable
 data class Article(

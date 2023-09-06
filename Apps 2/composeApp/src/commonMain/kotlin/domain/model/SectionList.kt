@@ -98,7 +98,8 @@ data class Widget(
     val secId: Int,
     val secName: String,
     val type: String,
-    val viewAllCTA: Boolean
+    val viewAllCTA: Boolean,
+    var articles: MutableList<Article>? = null,
 )
 @Serializable
 data class SubSection(

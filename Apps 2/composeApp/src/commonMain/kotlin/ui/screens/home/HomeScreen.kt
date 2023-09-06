@@ -82,6 +82,7 @@ class HomeScreen constructor(
 
         viewModel.successSectionList.collectAsState().value?.let { it ->
             val secList = it.data?.section
+            val widget = it.data?.home?.widget
             tabRowItems =
                 if (secList == null) mutableListOf<SectionTabItem>() else secList?.filter { it.type != "static" }
                     ?.map {
@@ -91,6 +92,7 @@ class HomeScreen constructor(
                             isSelected = false,
                             secId = it.secId,
                             secType = it.type,
+                            widget = widget ?: emptyList()
                         )
                     }!!.toMutableList()
 
@@ -156,12 +158,13 @@ class HomeScreen constructor(
                     Column(modifier = Modifier.fillMaxSize()) {
 
                         LaunchedEffect(pagerState.currentPage) {
-                            if (sectionContent == null || sectionContent?.data?.sid != sectionId) {
+                            if (sectionContent == null || sectionContent?.size == 0 || sectionContent!![0]?.sid != sectionId) {
                                 viewModel.makeSectionContentApiRequest(
                                     secId = sectionId,
                                     secName = sectionName,
                                     type = sectionType,
-                                    page = 1
+                                    page = 1,
+                                    widgets = tabRowItems[pagerState.currentPage].widget
                                 )
                             }
                         }
@@ -180,22 +183,25 @@ class HomeScreen constructor(
 //                },
                         )
                         { index ->
-                            val pageState = tabRowItems[pagerState.currentPage]
-                            sectionType = pageState.secType
-                            sectionId = pageState.secId
-                            sectionName = pageState.secName
+                            val tabState = tabRowItems[pagerState.currentPage]
+                            sectionType = tabState.secType
+                            sectionId = tabState.secId
+                            sectionName = tabState.secName
+                            val widget = tabState.widget
 
                             selectedPage = pagerState.currentPage
 
                             SectionContentListUI(
+                                viewModel = viewModel,
                                 listState = listState!![index],
                                 sectionContent = sectionContent,
                                 isLoading = isLoading,
                                 error = error,
-                                secId = pageState.secId,
-                                secName = pageState.secName,
-                                type = pageState.secType,
-                                onArticleClick = onArticleClick
+                                secId = tabState.secId,
+                                secName = tabState.secName,
+                                type = tabState.secType,
+                                onArticleClick = onArticleClick,
+                                widget = widget
                             )
                         }
                     }

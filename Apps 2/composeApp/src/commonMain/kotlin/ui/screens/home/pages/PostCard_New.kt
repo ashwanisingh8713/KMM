@@ -1,5 +1,6 @@
 package ui.screens.home.pages
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -14,11 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.model.Article
+import org.jetbrains.compose.resources.load
 import ui.screens.detail.DetailScreen
 
 /**
@@ -38,51 +43,21 @@ fun PostCard_New(
     val navigator = LocalNavigator.currentOrThrow
     Card(modifier = Modifier.padding(vertical = 1.dp), onClick = {
         onArticleClick(article)
-//        navigator.push(DetailScreen(article))
     }) {
         Column(modifier = modifier) {
             Box(
                 modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),
                 contentAlignment = Alignment.Center,
             ) {
-                /*KamelImage(
+
+                Image(
+                    painter = rememberAsyncImagePainter(article.im_thumbnail),
+                    contentDescription = null,
                     modifier = Modifier.fillMaxWidth().height(200.dp),
                     contentScale = ContentScale.FillBounds,
-                    resource = asyncPainterResource(article.im_thumbnail),
-                    contentDescription = "Profile",
-                    onLoading = { progress ->
-                        CircularProgressIndicator(
-                            modifier = Modifier.then(
-                                Modifier.size(32.dp)
-                            )
-                        )
-                    },
-                    onFailure = { exception ->
-                        KamelImage(
-                            modifier = Modifier.fillMaxWidth().height(200.dp),
-                            contentScale = ContentScale.FillBounds,
-                            resource = asyncPainterResource("https://appsearch.thehindu.com/admin/assets/images/icons/th/Light/xxhdpi/banner-b.png"),
-                            contentDescription = "Profile",
-                            onLoading = { progress ->
-                                CircularProgressIndicator(
-                                    modifier = Modifier.then(
-                                        Modifier.size(32.dp)
-                                    ), progress = progress
-                                )
-                            },
-                            onFailure = { exception ->
-                                // https://appsearch.thehindu.com/admin/assets/images/icons/th/Light/xxhdpi/banner-b.png
-                                Text(text = "Error loading image :: ${article.ti} :: ${exception.message}")
+                )
 
-                            }
-                        )
-
-                    }
-                )*/
-            }
-
-
-
+             }
 
             Column(Modifier.fillMaxWidth().padding(16.dp)) {
                 Text(

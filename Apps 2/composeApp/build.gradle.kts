@@ -131,7 +131,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
 
         applicationId = "daniel.avila.rnm.kmm.androidApp"

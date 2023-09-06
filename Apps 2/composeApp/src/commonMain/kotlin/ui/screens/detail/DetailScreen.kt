@@ -1,5 +1,6 @@
 package ui.screens.detail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +44,9 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.model.Article
+import ui.screens.util.htmlDescription
 
 /**
  * Created by Ashwani Kumar Singh on 03,August,2023.
@@ -176,27 +179,21 @@ private fun ArticleDetailBody(article: Article) {
     LazyColumn(state = lazyListState) {
         item {
             Column(modifier = Modifier.fillMaxWidth()) {
+                Image(
+                    painter = rememberAsyncImagePainter(article.im_thumbnail),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(232.dp)
+                        .graphicsLayer {
+                            alpha = 1f - visibility
+                            translationY = firstItemTranslationY
+                        },
+                    contentScale = ContentScale.FillBounds,
+                )
 
-//                val painterResource: Resource<Painter> = asyncPainterResource(article.im_thumbnail)
-//                KamelImage(
-//                    alignment = Alignment.TopCenter,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(232.dp)
-//                        .graphicsLayer {
-//                            alpha = 1f - visibility
-//                            translationY = firstItemTranslationY
-//                        },
-//                    contentScale = ContentScale.FillBounds,
-//                    resource = painterResource,
-//                    contentDescription = "Top image",
-//                    onLoading = { progress -> CircularProgressIndicator(progress) },
-//                    onFailure = { exception ->
-//
-//                    }
-//                )
-
-//                htmlDescription(article.de, modifier = Modifier.fillMaxSize())
+                // Showing Description of Article in WebView
+                htmlDescription(article.de, modifier = Modifier.fillMaxSize())
 
             }
 

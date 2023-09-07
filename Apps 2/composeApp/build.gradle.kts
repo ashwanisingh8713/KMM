@@ -75,6 +75,7 @@ kotlin {
                 implementation(compose.components.resources)
 
                 implementation(compose.materialIconsExtended)
+
             }
         }
 
@@ -93,6 +94,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
+                implementation ("com.google.android.gms:play-services-ads:22.0.0")
             }
         }
 

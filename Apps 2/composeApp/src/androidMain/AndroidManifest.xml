@@ -5,8 +5,13 @@
     <application
         android:name="com.compose.AndroidApp"
         android:icon="@android:drawable/ic_menu_compass"
-        android:label="Rick N Morty KMM"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:label="KMM TH"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        android:networkSecurityConfig="@xml/network_security_config">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
+
         <activity
             android:name="com.compose.AppActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"

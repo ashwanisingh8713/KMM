@@ -83,13 +83,17 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
                 println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
                 println("$ComposeTag: Success Result -> secId = ${content.data.sid}, secName = ${content.data.sname}")
                 val sectionContentList = mutableListOf<SectionContentListData?>()
-                content.data.article.forEach {
-                    val sectionContentListData = SectionContentListData(sid = secId, viewType = ViewType.VIEW_TYPE_ARTICLE, article = it, widget = null)
-                    sectionContentList.add(sectionContentListData)
+                content.data.article.forEachIndexed { index, it ->
+                    if(index%3 == 0 && index != 0) {
+                        val bannerAdsItem = SectionContentListData(secId = index, viewType = ViewType.VIEW_TYPE_BANNER_ADS)
+                        sectionContentList.add(bannerAdsItem)
+                    }
+                    val articleItem = SectionContentListData(secId = secId, viewType = ViewType.VIEW_TYPE_ARTICLE, article = it, widget = null)
+                    sectionContentList.add(articleItem)
                 }
                 var widgetIndexCount = 2
                 widgets.forEach {
-                    val sectionContentListData = SectionContentListData(sid = it.secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = it)
+                    val sectionContentListData = SectionContentListData(secId = it.secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = it)
                     sectionContentList.add(widgetIndexCount, sectionContentListData)
                     widgetIndexCount += 2+1
                 }
@@ -137,7 +141,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
                 println("$ComposeTag: Success Result -> secId = ${widgetContent.data.sid}, secName = ${widgetContent.data.sname}")
 
                 val sectionContentList = _sectionContentState.value!!
-                val index = sectionContentList.indexOf(SectionContentListData(sid = secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = null))
+                val index = sectionContentList.indexOf(SectionContentListData(secId = secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = null))
                 if(index != -1) {
                     sectionContentList[index]?.widget?.articles = widgetContent.data.article
                     _sectionContentState.update { sectionContentList }

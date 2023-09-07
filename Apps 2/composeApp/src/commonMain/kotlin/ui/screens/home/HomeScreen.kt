@@ -158,7 +158,7 @@ class HomeScreen constructor(
                     Column(modifier = Modifier.fillMaxSize()) {
 
                         LaunchedEffect(pagerState.currentPage) {
-                            if (sectionContent == null || sectionContent?.size == 0 || sectionContent!![0]?.sid != sectionId) {
+                            if (sectionContent == null || sectionContent?.size == 0 || sectionContent!![0]?.secId != sectionId) {
                                 viewModel.makeSectionContentApiRequest(
                                     secId = sectionId,
                                     secName = sectionName,

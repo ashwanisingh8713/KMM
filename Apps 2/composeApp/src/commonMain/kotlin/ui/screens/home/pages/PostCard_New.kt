@@ -44,20 +44,26 @@ fun PostCard_New(
     Card(modifier = Modifier.padding(vertical = 1.dp), onClick = {
         onArticleClick(article)
     }) {
+        val imgUrl = if(article.me.isNotEmpty())
+            article.me[0].im
+        else {
+            article.im_thumbnail
+        }
+
         Column(modifier = modifier) {
-            Box(
-                modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),
-                contentAlignment = Alignment.Center,
-            ) {
-
-                Image(
-                    painter = rememberAsyncImagePainter(article.im_thumbnail),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().height(200.dp),
-                    contentScale = ContentScale.FillBounds,
-                )
-
-             }
+            if(imgUrl.isNotEmpty()) {
+                Box(
+                    modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(imgUrl),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth().height(200.dp),
+                        contentScale = ContentScale.FillBounds,
+                    )
+                }
+            }
 
             Column(Modifier.fillMaxWidth().padding(16.dp)) {
                 Text(

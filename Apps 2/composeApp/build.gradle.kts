@@ -94,7 +94,10 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
+                // Import Google Mobile Ads SDK
                 implementation ("com.google.android.gms:play-services-ads:22.0.0")
+                // Import Taboola SDK
+                implementation ("com.taboola:android-sdk-beta:3.7.0-rc1")
             }
         }
 

@@ -46,6 +46,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.model.Article
+import taboola.loadTaboolaWidget
 import ui.screens.util.htmlDescription
 
 /**
@@ -75,7 +76,7 @@ private fun ArticleDetailContents(onBackPress: ()-> Unit, article: Article) {
             ArticleDetailTopBar(onBackPress)
         },
         bottomBar = {
-            ArticleDetailBottomBar()
+
         },
         content = {
             BoxWithConstraints(
@@ -90,135 +91,4 @@ private fun ArticleDetailContents(onBackPress: ()-> Unit, article: Article) {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ArticleDetailTopBar(onBackPress: ()-> Unit) {
-    TopAppBar(
-        title = {
-
-        },
-        navigationIcon = {
-            IconButton(onClick = { onBackPress() }) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
-        actions = {
-            Row {
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.SurroundSound,
-                        contentDescription = "Localized description"
-                    )
-                }
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Comment,
-                        contentDescription = "Localized description"
-                    )
-                }
-
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.BookmarkBorder,
-                        contentDescription = "Localized description"
-                    )
-                }
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.FormatSize,
-                        contentDescription = "Localized description"
-                    )
-                }
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Share,
-                        contentDescription = "Localized description"
-                    )
-                }
-
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.LogoDev,
-                        contentDescription = "Localized description"
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-private fun ArticleDetailBody(article: Article) {
-    val lazyListState = rememberLazyListState()
-    val firstItemTranslationY by remember {
-        derivedStateOf {
-            when {
-                lazyListState.layoutInfo.visibleItemsInfo.isNotEmpty() && lazyListState.firstVisibleItemIndex == 0 -> lazyListState.firstVisibleItemScrollOffset * .01f
-                else -> 0f
-            }
-        }
-    }
-
-    val visibility by remember {
-        derivedStateOf {
-            when {
-                lazyListState.layoutInfo.visibleItemsInfo.isNotEmpty() && lazyListState.firstVisibleItemIndex == 0 -> {
-                    val imageSize = lazyListState.layoutInfo.visibleItemsInfo[0].size
-                    val scrollOffset = lazyListState.firstVisibleItemScrollOffset
-                    scrollOffset / imageSize.toFloat()
-                }
-                else-> 1f
-            }
-        }
-    }
-
-    val list = (0..100).map{ "Item $it" }.toList()
-    LazyColumn(state = lazyListState) {
-        item {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = rememberAsyncImagePainter(article.im_thumbnail),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(232.dp)
-                        .graphicsLayer {
-                            alpha = 1f - visibility
-                            translationY = firstItemTranslationY
-                        },
-                    contentScale = ContentScale.FillBounds,
-                )
-
-                // Showing Description of Article in WebView
-                htmlDescription(article.de, modifier = Modifier.fillMaxSize())
-
-            }
-
-        }
-
-
-    }
-}
-
-
-
-
-
-@Composable
-private fun ArticleDetailBottomBar() {
-
-}
-
-@Composable
-private fun ArticleDetailBottomBarContents() {
-
-}
-
-@Composable
-private fun ArticleDetailAds() {
-
-}
 

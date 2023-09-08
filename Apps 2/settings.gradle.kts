@@ -15,5 +15,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        // Import Taboola SDK
+        maven("https://taboolapublic.jfrog.io/artifactory/mobile-release")
     }
 }

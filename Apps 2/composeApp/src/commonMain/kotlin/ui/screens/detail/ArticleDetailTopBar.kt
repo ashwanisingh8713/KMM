@@ -21,7 +21,10 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ArticleDetailTopBar(onBackPress: ()-> Unit) {
+internal fun ArticleDetailTopBar(onBackPress: ()-> Unit, onSharePress: ()-> Unit,
+                                 onCommentPress: ()-> Unit, onBookmarkPress: ()-> Unit,
+                                 onFontPress: ()-> Unit, onTextToSpeechPress: ()-> Unit,
+                                 isBookmarked: Boolean, isTextToSpeechEnabled: Boolean) {
     TopAppBar(
         title = {
 
@@ -36,42 +39,42 @@ internal fun ArticleDetailTopBar(onBackPress: ()-> Unit) {
         },
         actions = {
             Row {
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onTextToSpeechPress() }) {
                     Icon(
                         imageVector = Icons.Filled.SurroundSound,
-                        contentDescription = "Localized description"
+                        contentDescription = "Text To Speech"
                     )
                 }
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onCommentPress() }) {
                     Icon(
                         imageVector = Icons.Filled.Comment,
-                        contentDescription = "Localized description"
+                        contentDescription = "Comments"
                     )
                 }
 
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onBookmarkPress() }) {
                     Icon(
                         imageVector = Icons.Filled.BookmarkBorder,
-                        contentDescription = "Localized description"
+                        contentDescription = "Bookmark"
                     )
                 }
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onFontPress() }) {
                     Icon(
                         imageVector = Icons.Filled.FormatSize,
-                        contentDescription = "Localized description"
+                        contentDescription = "Font Size"
                     )
                 }
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onSharePress() }) {
                     Icon(
                         imageVector = Icons.Filled.Share,
-                        contentDescription = "Localized description"
+                        contentDescription = "Share"
                     )
                 }
 
                 IconButton(onClick = { /* doSomething() */ }) {
                     Icon(
                         imageVector = Icons.Filled.LogoDev,
-                        contentDescription = "Localized description"
+                        contentDescription = "Premium Logo"
                     )
                 }
             }

@@ -31,7 +31,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -60,20 +62,52 @@ data class DetailScreen(private val article: Article) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
+        val isBookmarked by remember { mutableStateOf<Boolean>(false) }
+        val isTextToSpeechEnabled by remember { mutableStateOf<Boolean>(false) }
+        val descriptionFontSize by remember { mutableStateOf<Int>(16) }
+
         val onBackPress : () -> Unit = {
             navigator.pop()
         }
-        ArticleDetailContents(onBackPress, article)
+        val onSharePress : () -> Unit = {
+
+        }
+        val onTextToSpeechPress:()->Unit = {
+            onTextToSpeechPress(article)
+        }
+        val onCommentPress: ()-> Unit = {
+
+        }
+
+        val onBookmarkPress: ()-> Unit = {
+
+        }
+
+        val onFontPress: ()-> Unit = {
+
+        }
+
+        ArticleDetailContents(article = article, onBackPress = onBackPress, onSharePress = onSharePress,
+            onCommentPress = onCommentPress, onBookmarkPress = onBookmarkPress, onFontPress = onFontPress,
+            onTextToSpeechPress = onTextToSpeechPress, isBookmarked = isBookmarked,
+            isTextToSpeechEnabled = isTextToSpeechEnabled, descriptionFontSize=descriptionFontSize)
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ArticleDetailContents(onBackPress: ()-> Unit, article: Article) {
+private fun ArticleDetailContents(article: Article, onBackPress: ()-> Unit, onSharePress: ()-> Unit,
+                                  onCommentPress: ()-> Unit, onBookmarkPress: ()-> Unit,
+                                   onFontPress:()-> Unit, onTextToSpeechPress: ()-> Unit,
+                                  isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int) {
+
+
     Scaffold(
         topBar = {
-            ArticleDetailTopBar(onBackPress)
+            ArticleDetailTopBar(onBackPress, onSharePress, onCommentPress, onBookmarkPress,
+                onFontPress, onTextToSpeechPress, isBookmarked, isTextToSpeechEnabled)
         },
         bottomBar = {
 
@@ -83,7 +117,7 @@ private fun ArticleDetailContents(onBackPress: ()-> Unit, article: Article) {
                 Modifier.padding(it),
                 contentAlignment = Alignment.TopCenter
             ) {
-                ArticleDetailBody(article = article)
+                ArticleDetailBody(article = article, descriptionFontSize = descriptionFontSize)
             }
 
         }

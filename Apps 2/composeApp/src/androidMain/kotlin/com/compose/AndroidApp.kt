@@ -16,8 +16,14 @@ import taboola.PublisherInfo
  */
 
 class AndroidApp : Application() {
+
+    companion object {
+        lateinit var appContext: Context
+    }
+
     override fun onCreate() {
         super.onCreate()
+        appContext = applicationContext
         initKoin {
             androidLogger(if (isDebug()) Level.ERROR else Level.NONE)
             androidContext(this@AndroidApp)

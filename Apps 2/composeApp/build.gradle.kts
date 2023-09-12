@@ -101,23 +101,7 @@ kotlin {
             }
         }
 
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.common)
-                implementation(compose.desktop.currentOs)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.sqlDelight.driver.sqlite)
-            }
-        }
 
-        val jsMain by getting {
-            dependencies {
-                implementation(compose.html.core)
-                implementation(libs.sqlDelight.driver.sqljs)
-                implementation(npm("sql.js", "1.6.2"))
-                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
-            }
-        }
 
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -139,7 +123,7 @@ android {
         minSdk = 24
         targetSdk = 33
 
-        applicationId = "daniel.avila.rnm.kmm.androidApp"
+        applicationId = "com.ns.th.androidApp"
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -158,17 +142,7 @@ android {
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
 
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "daniel.avila.rnm.kmm.desktopApp"
-            packageVersion = "1.0.0"
-        }
-    }
-}
 
 compose.experimental {
     web.application {}

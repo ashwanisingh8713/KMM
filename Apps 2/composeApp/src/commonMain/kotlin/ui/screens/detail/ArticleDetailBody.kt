@@ -24,7 +24,7 @@ import ui.screens.util.htmlDescription
  */
 
 @Composable
-internal fun ArticleDetailBody(article: Article) {
+internal fun ArticleDetailBody(article: Article, descriptionFontSize: Int) {
     val lazyListState = rememberLazyListState()
     val firstItemTranslationY by remember {
         derivedStateOf {

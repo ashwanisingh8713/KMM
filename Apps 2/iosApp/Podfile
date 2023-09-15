@@ -2,4 +2,5 @@ target 'iosApp' do
   use_frameworks!
   platform :ios, '16.2'
   pod 'composeApp', :path => '../composeApp'
+  pod 'Google-Mobile-Ads-SDK'
 end

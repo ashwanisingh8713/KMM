@@ -66,7 +66,12 @@ class HomeScreen constructor(
 
         var selectedPage by remember { mutableStateOf<Int>(0) }
 
-        val pagerState = rememberPagerState(initialPage = selectedPage)
+        val pagerState = rememberPagerState(
+            initialPage = selectedPage,
+            initialPageOffsetFraction = 0f
+        ) {
+            tabRowItems.size
+        }
 
         // To handle list state for each page, it should have same size as pagerState.pageCount
         var listState: List<LazyListState>? = null
@@ -144,16 +149,13 @@ class HomeScreen constructor(
                 } else if (tabRowItems.isNotEmpty()) {
 
                     /////////////////////////////////////////////////////////////////
-                    // TODO, Top Tab & Pager
+                    // Top Tab & Pager
                     /////////////////////////////////////////////////////////////////
-
-
                     val navigator = LocalNavigator.currentOrThrow
 
                     val onArticleClick: (article: Article) -> Unit = { article ->
                         navigator.push(DetailScreen(article))
                     }
-
 
                     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -172,15 +174,40 @@ class HomeScreen constructor(
                         // Tab Row
                         TabLayout(pagerState = pagerState, tabRowItems = tabRowItems)
 
-                        // Pager
+                        // HorizontalPager
+
                         HorizontalPager(
+                            modifier = Modifier.weight(1f),
+                            state = pagerState,
+                            userScrollEnabled = false,
+                        ) { index ->
+                            val tabState = tabRowItems[pagerState.currentPage]
+                            sectionType = tabState.secType
+                            sectionId = tabState.secId
+                            sectionName = tabState.secName
+                            val widget = tabState.widget
+
+                            selectedPage = pagerState.currentPage
+
+                            SectionContentListUI(
+                                viewModel = viewModel,
+                                listState = listState!![index],
+                                sectionContent = sectionContent,
+                                isLoading = isLoading,
+                                error = error,
+                                secId = tabState.secId,
+                                secName = tabState.secName,
+                                type = tabState.secType,
+                                onArticleClick = onArticleClick,
+                                widget = widget
+                            )
+                        }
+
+                        /*HorizontalPager(
                             pageCount = tabRowItems.size,
                             state = pagerState,
                             beyondBoundsPageCount = 0,
                             userScrollEnabled = false,
-//                key = {
-//                    uniqueScreenKey
-//                },
                         )
                         { index ->
                             val tabState = tabRowItems[pagerState.currentPage]
@@ -203,7 +230,7 @@ class HomeScreen constructor(
                                 onArticleClick = onArticleClick,
                                 widget = widget
                             )
-                        }
+                        }*/
                     }
 
 

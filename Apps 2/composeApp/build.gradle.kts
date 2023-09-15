@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -21,12 +20,6 @@ kotlin {
         }
     }
 
-    jvm("desktop")
-
-    js {
-        browser()
-        binaries.executable()
-    }
 
     iosX64()
     iosArm64()
@@ -117,15 +110,22 @@ kotlin {
 
 android {
     namespace = "com.app.compose"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = 25
+        targetSdk = 34
 
         applicationId = "com.ns.th.androidApp"
         versionCode = 1
         versionName = "1.0.0"
+
+        configurations.all {
+            resolutionStrategy {
+                force("androidx.emoji2:emoji2-views-helper:1.3.0")
+                force("androidx.emoji2:emoji2:1.3.0")
+            }
+        }
     }
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -151,9 +151,6 @@ compose.experimental {
 libres {
     // https://github.com/Skeptick/libres#setup
 }
-tasks.getByPath("desktopProcessResources").dependsOn("libresGenerateResources")
-tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
-tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 sqldelight {
     databases {

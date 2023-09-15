@@ -1,6 +1,8 @@
 package ui.screens.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Comment
@@ -26,6 +30,7 @@ import androidx.compose.material.icons.filled.LogoDev
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.SurroundSound
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -36,17 +41,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.model.Article
 import taboola.loadTaboolaWidget
 import ui.screens.util.htmlDescription
@@ -67,58 +67,74 @@ data class DetailScreen(private val article: Article) : Screen {
         val isTextToSpeechEnabled by remember { mutableStateOf<Boolean>(false) }
         val descriptionFontSize by remember { mutableStateOf<Int>(16) }
 
-        val onBackPress : () -> Unit = {
+        val onBackPress: () -> Unit = {
             navigator.pop()
         }
-        val onSharePress : () -> Unit = {
+        val onSharePress: () -> Unit = {
 
         }
-        val onTextToSpeechPress:()->Unit = {
+        val onTextToSpeechPress: () -> Unit = {
             onTextToSpeechPress(article)
         }
-        val onCommentPress: ()-> Unit = {
+        val onCommentPress: () -> Unit = {
 
         }
 
-        val onBookmarkPress: ()-> Unit = {
+        val onBookmarkPress: () -> Unit = {
 
         }
 
-        val onFontPress: ()-> Unit = {
+        val onFontPress: () -> Unit = {
 
         }
 
-        ArticleDetailContents(article = article, onBackPress = onBackPress, onSharePress = onSharePress,
-            onCommentPress = onCommentPress, onBookmarkPress = onBookmarkPress, onFontPress = onFontPress,
-            onTextToSpeechPress = onTextToSpeechPress, isBookmarked = isBookmarked,
-            isTextToSpeechEnabled = isTextToSpeechEnabled, descriptionFontSize=descriptionFontSize)
+        ArticleDetailContents(
+            article = article,
+            onBackPress = onBackPress,
+            onSharePress = onSharePress,
+            onCommentPress = onCommentPress,
+            onBookmarkPress = onBookmarkPress,
+            onFontPress = onFontPress,
+            onTextToSpeechPress = onTextToSpeechPress,
+            isBookmarked = isBookmarked,
+            isTextToSpeechEnabled = isTextToSpeechEnabled,
+            descriptionFontSize = descriptionFontSize
+        )
     }
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ArticleDetailContents(article: Article, onBackPress: ()-> Unit, onSharePress: ()-> Unit,
-                                  onCommentPress: ()-> Unit, onBookmarkPress: ()-> Unit,
-                                   onFontPress:()-> Unit, onTextToSpeechPress: ()-> Unit,
-                                  isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int) {
+private fun ArticleDetailContents(
+    article: Article, onBackPress: () -> Unit, onSharePress: () -> Unit,
+    onCommentPress: () -> Unit, onBookmarkPress: () -> Unit,
+    onFontPress: () -> Unit, onTextToSpeechPress: () -> Unit,
+    isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int
+) {
 
 
     Scaffold(
         topBar = {
-            ArticleDetailTopBar(onBackPress, onSharePress, onCommentPress, onBookmarkPress,
-                onFontPress, onTextToSpeechPress, isBookmarked, isTextToSpeechEnabled)
+            ArticleDetailTopBar(
+                onBackPress, onSharePress, onCommentPress, onBookmarkPress,
+                onFontPress, onTextToSpeechPress, isBookmarked, isTextToSpeechEnabled
+            )
         },
         bottomBar = {
 
         },
         content = {
-            BoxWithConstraints(
-                Modifier.padding(it),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                ArticleDetailBody(article = article, descriptionFontSize = descriptionFontSize)
-            }
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+                    item {
+                        Column {
+                            htmlDescription(article.de, modifier = Modifier)
+                        // Showing Taboola Widgets
+                        loadTaboolaWidget(pageUrl = article.al, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
+                        }
+                    }
+                }
 
         }
     )

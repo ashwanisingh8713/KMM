@@ -63,9 +63,13 @@ fun WidgetHorizontalList(viewModel: SectionListViewModel, isLoading: Boolean, wi
         modifier = Modifier.padding(top = 8.dp)
     )
 
-    val pagerState = rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        widget.articles?.size ?: 0
+    }
     HorizontalPager(
-        pageCount = widget.articles?.size ?: 0,
         pageSpacing = 16.dp,
         beyondBoundsPageCount = 2,
         state = pagerState,

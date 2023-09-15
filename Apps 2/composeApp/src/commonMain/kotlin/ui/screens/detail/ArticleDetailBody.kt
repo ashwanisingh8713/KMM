@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -21,8 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.model.Article
-import taboola.loadTaboolaWidget
-import ui.screens.util.htmlDescription
 
 /**
  * Created by Ashwani Kumar Singh on 08,September,2023.
@@ -73,10 +70,10 @@ internal fun ArticleDetailBody(article: Article, descriptionFontSize: Int) {
                 )
 
                 // Showing Description of Article in WebView
-                htmlDescription(article.de, modifier = Modifier.width(300.dp).height(300.dp))
+                HtmlDescription(article.de, modifier = Modifier.width(300.dp).height(300.dp))
 
                 // Showing Taboola Widgets
-                loadTaboolaWidget(pageUrl = article.al, modifier = Modifier)
+                LoadTaboolaWidget(pageUrl = article.al, modifier = Modifier)
             }
 
         }

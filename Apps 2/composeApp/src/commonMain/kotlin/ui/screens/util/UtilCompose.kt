@@ -46,5 +46,3 @@ fun NoNetworkUI(msg: String) {
 
 val ComposeTag = "AshwaniCompose"
 
-@Composable
-expect fun htmlDescription(description: String, modifier: Modifier)

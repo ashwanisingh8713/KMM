@@ -2,7 +2,6 @@ package taboola
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.taboola.android.TBLClassicUnit
@@ -16,15 +15,12 @@ import util.getArticleIdFromArticleUrl
  */
 
 
-@Composable
-actual fun loadTaboolaWidget(pageUrl: String, modifier: Modifier) {
-    loadSingleTaboola(pageUrl)
-}
+
 
 
 
 @Composable
-fun loadSingleTaboola(pageUrl: String) {
+fun LoadSingleTaboola(pageUrl: String) {
     val context = LocalContext.current
     val tblClassicUnit: TBLClassicUnit = createTaboolaWidget(context, pageUrl)
     tblClassicUnit.interceptScroll = true

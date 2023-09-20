@@ -4,5 +4,12 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3185547171517244~2853119016</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-package data.model
+package domain.mapper
 
 import kotlinx.serialization.Serializable
 

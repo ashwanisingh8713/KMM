@@ -9,6 +9,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import ext.getScreenModel
 import ui.screens.detail.DetailScreen
@@ -33,7 +34,7 @@ class PremiumScreen : Screen {
 
         val navigator = LocalNavigator.currentOrThrow
 
-        val onArticleClick: (Article) -> Unit = { article ->
+        val onArticleClick: (ArticleMapper) -> Unit = { article ->
             navigator.push(DetailScreen(article))
         }
 

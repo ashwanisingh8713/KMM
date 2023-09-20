@@ -1,4 +1,4 @@
-package ui.screens.util
+package ui.sharedui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -30,13 +30,11 @@ fun NoNetworkUI(msg: String) {
             Image(
                 painter = painterResource("no_network.png"),
                 contentDescription = null,
-                modifier = Modifier
-                    .height(50.dp)
-
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Text(
-                text = msg,
-                style = MaterialTheme.typography.displayMedium,
+                text = if (msg.contains("Unable to resolve host")) "No Internet Connection" else msg,
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center
             )
         }

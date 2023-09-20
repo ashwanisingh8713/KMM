@@ -69,6 +69,9 @@ kotlin {
 
                 implementation(compose.materialIconsExtended)
 
+                // Common code can persist key-value data
+                implementation("com.russhwolf:multiplatform-settings:1.0.0")
+
             }
         }
 

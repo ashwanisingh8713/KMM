@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.core.screen.Screen
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.PremiumContent
 import domain.model.SectionContent
@@ -32,7 +33,7 @@ import ui.screens.home.pages.PostCard_New
 fun PremiumContentUI(
     listState: LazyListState,
     sectionContent: PremiumContent?,
-    onArticleClick: (article: Article) -> Unit,
+    onArticleClick: (article: ArticleMapper) -> Unit,
     isLoading: Boolean,
     error: String?,
 ) {

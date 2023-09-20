@@ -1,5 +1,6 @@
 package ui.screens.detail
 
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import platform.AVFAudio.AVSpeechSynthesisVoice
 import platform.AVFAudio.AVSpeechSynthesizer
@@ -11,20 +12,20 @@ import platform.UIKit.setAccessibilityLanguage
  * Created by Ashwani Kumar Singh on 08,September,2023.
  */
 
-actual fun onSharePressed(article: Article) {
+actual fun onSharePressed(article: ArticleMapper) {
 
 }
-actual fun onCommentPress(article: Article) {
+actual fun onCommentPress(article: ArticleMapper) {
 
 }
 actual fun onFontPress(descriptionFontSize: Int) {
 
 }
 
-actual fun onTextToSpeechPress(article: Article) {
+actual fun onTextToSpeechPress(article: ArticleMapper) {
 
 
-    startSpeechWith("", "", article.de)
+    startSpeechWith("", "", article.de!!)
 
 }
 

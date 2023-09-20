@@ -25,15 +25,15 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import domain.model.Article
+import domain.mapper.ArticleMapper
 import ext.getScreenModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
 import ui.screens.detail.DetailScreen
 import ui.screens.home.pages.SectionContentListUI
-import ui.screens.util.ComposeTag
-import ui.screens.util.NoNetworkUI
+import ui.sharedui.ComposeTag
+import ui.sharedui.NoNetworkUI
 import ui.vm.SectionListViewModel
 
 /**
@@ -132,18 +132,7 @@ class HomeScreen constructor(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column {
-                            Image(
-                                painter = painterResource("no_network.png"),
-                                contentDescription = null,
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            )
-                            Text(
-                                text = if (sectionListError!!.contains("Unable to resolve host")) "No Internet Connection" else sectionListError!!,
-                                style = MaterialTheme.typography.headlineMedium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        NoNetworkUI(sectionListError!!)
 
                     }
                 } else if (tabRowItems.isNotEmpty()) {
@@ -153,7 +142,7 @@ class HomeScreen constructor(
                     /////////////////////////////////////////////////////////////////
                     val navigator = LocalNavigator.currentOrThrow
 
-                    val onArticleClick: (article: Article) -> Unit = { article ->
+                    val onArticleClick: (article: ArticleMapper) -> Unit = { article ->
                         navigator.push(DetailScreen(article))
                     }
 

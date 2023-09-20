@@ -1,5 +1,6 @@
 package domain.model
 
+import domain.mapper.ArticleMapper
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
@@ -99,7 +100,7 @@ data class Widget(
     val secName: String,
     val type: String,
     val viewAllCTA: Boolean,
-    var articles: MutableList<Article>? = null,
+    var articles: MutableList<ArticleMapper>? = null,
 )
 @Serializable
 data class SubSection(

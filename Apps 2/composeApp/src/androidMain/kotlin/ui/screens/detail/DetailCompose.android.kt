@@ -18,15 +18,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.viewinterop.AndroidView
+import domain.mapper.ArticleMapper
 
 @Composable
-actual fun DetailPageCompose(article: Article, modifier: Modifier) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Column {
-                HtmlDescription(article.de, modifier = Modifier)
+                HtmlDescription(article.de!!, modifier = Modifier)
                 // Showing Taboola Widgets
-                LoadTaboolaWidget(pageUrl = article.al, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
+                LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
             }
         }
     }

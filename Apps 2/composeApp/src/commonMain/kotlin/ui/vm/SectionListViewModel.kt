@@ -2,10 +2,12 @@ package ui.vm
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
+import daniel.avila.rnm.kmm.data_cache.sqldelight.SharedDatabase
 import domain.usecase.SectionListUseCase
 import data.datasource.SectionContentRequestBody
 import data.datasource.SectionListRequestBody
 import data.model.SectionContentListData
+import domain.mapper.ArticleMapper
 import domain.model.SectionContent
 import domain.model.SectionList
 import domain.model.Widget
@@ -14,14 +16,16 @@ import domain.usecase.base.UseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import ui.screens.util.ComposeTag
+import ui.sharedui.ComposeTag
 import ui.screens.util.ViewType
 
 /**
  * Created by Ashwani Kumar Singh on 26,July,2023.
  */
-class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, val sectionContentUseCase: SectionContentUseCase):
+class SectionListViewModel(private val sectionListUseCase: SectionListUseCase,
+                           val sectionContentUseCase: SectionContentUseCase):
     ScreenModel, KoinComponent {
 
 
@@ -62,9 +66,6 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
     private val _sectionContentState = MutableStateFlow<MutableList<SectionContentListData?>?>( null)
     val sectionContentState: StateFlow<MutableList<SectionContentListData?>?> get() = _sectionContentState
 
-    // It holds the contents of all loaded sections
-    private var contentMap = mutableMapOf<Int, MutableList<SectionContentListData?>?>()
-
     private val _sectionContentLoading = MutableStateFlow<Boolean>( true)
     val sectionContentLoading: StateFlow<Boolean> get() = _sectionContentLoading
 
@@ -78,12 +79,12 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
         println("$ComposeTag: LaunchedEffect -> secId = $secId, secName = $secName, secType = $type")
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
             os_version = 29, id = secId, lut = 0, type = type, page = page )
-        sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
-            override fun onSuccess(content: SectionContent) {
+        sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<List<ArticleMapper>> {
+            override fun onSuccess(content: List<ArticleMapper>) {
                 println("makeSectionContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
-                println("$ComposeTag: Success Result -> secId = ${content.data.sid}, secName = ${content.data.sname}")
                 val sectionContentList = mutableListOf<SectionContentListData?>()
-                content.data.article.forEachIndexed { index, it ->
+
+                content.forEachIndexed { index, it ->
                     if(index%3 == 0 && index != 0) {
                         val bannerAdsItem = SectionContentListData(secId = index, viewType = ViewType.VIEW_TYPE_BANNER_ADS)
                         sectionContentList.add(bannerAdsItem)
@@ -98,18 +99,13 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
                     widgetIndexCount += 2+1
                 }
 
-                contentMap[secId] = sectionContentList
                 _sectionContentState.update { sectionContentList }
 
             }
 
             override fun onError(apiError: String) {
-                if(apiError.isNotEmpty() && apiError.contains("Unable to resolve host")) {
-                    val content = contentMap[secId]
-                    _sectionContentState.value = content
-                } else {
-                    _sectionContentError.value = apiError
-                }
+                _sectionContentState.update { null }
+                _sectionContentError.value = apiError
             }
 
             override fun onLoading(isLoading: Boolean) {
@@ -135,15 +131,14 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase, v
         println("$ComposeTag: LaunchedEffect -> secId = $secId, secName = $secName, secType = $type")
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
             os_version = 29, id = secId, lut = 0, type = type, page = page )
-        sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<SectionContent> {
-            override fun onSuccess(widgetContent: SectionContent) {
+        sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<List<ArticleMapper>> {
+            override fun onSuccess(widgetContent: List<ArticleMapper>) {
                 println("makeWidgetContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
-                println("$ComposeTag: Success Result -> secId = ${widgetContent.data.sid}, secName = ${widgetContent.data.sname}")
 
                 val sectionContentList = _sectionContentState.value!!
                 val index = sectionContentList.indexOf(SectionContentListData(secId = secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = null))
                 if(index != -1) {
-                    sectionContentList[index]?.widget?.articles = widgetContent.data.article
+                    sectionContentList[index]?.widget?.articles = widgetContent.toMutableList()
                     _sectionContentState.update { sectionContentList }
                 }
 

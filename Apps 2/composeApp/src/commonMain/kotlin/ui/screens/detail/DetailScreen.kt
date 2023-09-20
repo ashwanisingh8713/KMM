@@ -19,13 +19,14 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import domain.mapper.ArticleMapper
 import domain.model.Article
 
 /**
  * Created by Ashwani Kumar Singh on 03,August,2023.
  */
 
-data class DetailScreen(private val article: Article) : Screen {
+data class DetailScreen(private val article: ArticleMapper) : Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
@@ -76,7 +77,7 @@ data class DetailScreen(private val article: Article) : Screen {
 
 @Composable
 private fun ArticleDetailContents(
-    article: Article, onBackPress: () -> Unit, onSharePress: () -> Unit,
+    article: ArticleMapper, onBackPress: () -> Unit, onSharePress: () -> Unit,
     onCommentPress: () -> Unit, onBookmarkPress: () -> Unit,
     onFontPress: () -> Unit, onTextToSpeechPress: () -> Unit,
     isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int

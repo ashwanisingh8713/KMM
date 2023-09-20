@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.PremiumData
 import ui.screens.detail.DetailScreen
@@ -34,7 +35,7 @@ fun PremiumItemCard(
     isLoading: Boolean,
     data: PremiumData,
     modifier: Modifier = Modifier,
-    onArticleClick: (article: Article) -> Unit
+    onArticleClick: (article: ArticleMapper) -> Unit
 ) {
     val navigator = LocalNavigator.currentOrThrow
     Card(modifier = Modifier.padding(vertical = 1.dp), onClick = {

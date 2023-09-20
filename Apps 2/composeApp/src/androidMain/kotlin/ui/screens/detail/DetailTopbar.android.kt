@@ -3,6 +3,7 @@ package ui.screens.detail
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.compose.AndroidApp
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import ui.screens.util.HtmlTextUtil
 import java.util.Locale
@@ -11,15 +12,15 @@ import java.util.Locale
  * Created by Ashwani Kumar Singh on 08,September,2023.
  */
 
-actual fun onSharePressed(article: Article) {
+actual fun onSharePressed(article: ArticleMapper) {
 
 }
 
 
-actual fun onTextToSpeechPress(article: Article) {
-    textToSpeech(AndroidApp.appContext, article.de, article.aid)
+actual fun onTextToSpeechPress(article: ArticleMapper) {
+    textToSpeech(AndroidApp.appContext, article.de!!, article.aid.toInt())
 }
-actual fun onCommentPress(article: Article) {
+actual fun onCommentPress(article: ArticleMapper) {
 
 }
 actual fun onFontPress(descriptionFontSize: Int) {

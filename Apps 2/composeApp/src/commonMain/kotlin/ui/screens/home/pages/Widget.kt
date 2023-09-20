@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.seiko.imageloader.rememberAsyncImagePainter
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.Widget
 import ui.screens.detail.DetailScreen
@@ -94,7 +95,7 @@ fun WidgetHorizontalList(viewModel: SectionListViewModel, isLoading: Boolean, wi
  */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun widgetUICard(pagerState: PagerState, article: Article, page: Int) {
+fun widgetUICard(pagerState: PagerState, article: ArticleMapper, page: Int) {
     val navigator = LocalNavigator.currentOrThrow
     Card(modifier = Modifier.padding(vertical = 1.dp), onClick = {
         navigator.push(DetailScreen(article))
@@ -104,22 +105,22 @@ fun widgetUICard(pagerState: PagerState, article: Article, page: Int) {
             contentAlignment = Alignment.Center,
         ) {
 
-            Image(
-                painter = rememberAsyncImagePainter(if(article.me.isNotEmpty()) article.me[0].im else article.im_thumbnail),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds,
-            )
+//            Image(
+//                painter = rememberAsyncImagePainter(if(article.me.isNotEmpty()) article.me[0].im else article.im_thumbnail),
+//                contentDescription = null,
+//                modifier = Modifier.fillMaxSize(),
+//                contentScale = ContentScale.FillBounds,
+//            )
 
             Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 30.dp)) {
                 Text(
-                    text = article.ti,
+                    text = article.ti!!,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.fillMaxWidth(),
                     color = Color.Black,
                 )
                 Text(
-                    text = article.le,
+                    text = article.le!!,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier.fillMaxWidth(),
                     color = Color.Black,

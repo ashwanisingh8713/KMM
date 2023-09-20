@@ -97,7 +97,7 @@ val repositoryModule = module {
     single<IRemoteData> { RemoteDataImp(get(named("daniel")), get(), get()) }
 
     //////////
-    single<SectionContentRepo> { SectionContentRepoImpl(get(named("thg")), get()) }
+    single<SectionContentRepo> { SectionContentRepoImpl(get(named("thg")), get(), get()) }
     single<SectionsListRepo> { SectionsListRepoImpl(get(named("thg")), get()) }
     single<PremiumContentRepo> { PremiumContentRepoImpl(get(named("premium")), get()) }
 

@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import data.model.SectionContentListData
+import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.Widget
 import ui.screens.util.ViewType
+import ui.sharedui.NoNetworkUI
 import ui.vm.SectionListViewModel
 
 /**
@@ -35,7 +37,7 @@ fun SectionContentListUI(
     viewModel: SectionListViewModel,
     listState: LazyListState,
     sectionContent: MutableList<SectionContentListData?>?,
-    onArticleClick: (article: Article) -> Unit,
+    onArticleClick: (article: ArticleMapper) -> Unit,
     isLoading: Boolean,
     error: String?,
     secId: Int,
@@ -60,12 +62,7 @@ fun SectionContentListUI(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = error,
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.labelMedium,
-                textAlign = TextAlign.Left,
-            )
+            NoNetworkUI(error)
         }
     } else if (sectionContent != null) { // Data Block
         LazyColumn(
@@ -75,9 +72,9 @@ fun SectionContentListUI(
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         ) {
-            itemsIndexed(items = sectionContent, key = { _, item ->
+            itemsIndexed(items = sectionContent, /*key = { _, item ->
                 item?.article?.aid ?: item?.widget?.secId ?: 0
-            }) { index, item ->
+            }*/) { index, item ->
 
                 when(item?.viewType) {
                     ViewType.VIEW_TYPE_ARTICLE -> {

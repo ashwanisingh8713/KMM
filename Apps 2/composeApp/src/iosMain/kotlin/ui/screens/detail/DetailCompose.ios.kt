@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitView
-import domain.model.Article
+import domain.mapper.ArticleMapper
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.coroutines.Dispatchers
@@ -29,11 +29,11 @@ import platform.WebKit.WKWebViewConfiguration
  */
 
 @Composable
-actual fun DetailPageCompose(article: Article, modifier: Modifier) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
     Column(modifier = modifier) {
-        HtmlDescription(article.de, modifier = Modifier)
+        HtmlDescription(article.de!!, modifier = Modifier)
         // Showing Taboola Widgets
-        LoadTaboolaWidget(pageUrl = article.al, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
+        LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
     }
 }
 

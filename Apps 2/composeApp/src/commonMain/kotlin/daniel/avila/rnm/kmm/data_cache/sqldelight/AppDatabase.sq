@@ -24,3 +24,98 @@ SELECT * FROM CharacterFavorite;
 selectCharacterFavoriteById:
 -- SELECT * FROM CharacterFavorite WHERE id = ?;
 SELECT EXISTS(SELECT 1 FROM CharacterFavorite WHERE id = ? LIMIT 1);
+
+---------------------- Start Section Last Update Time ----------------------
+
+CREATE TABLE SectionLastUpdateTime(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    secId TEXT NOT NULL,
+    secName TEXT NOT NULL,
+    lastUpdateTime INTEGER NOT NULL
+);
+
+insertSectionLastUpdateTime:
+INSERT INTO SectionLastUpdateTime(secId, secName, lastUpdateTime) VALUES (?,?,?);
+
+updateSectionLastUpdateTime:
+UPDATE SectionLastUpdateTime SET lastUpdateTime = ? WHERE secId = ?;
+
+selectSectionLastUpdateTime:
+SELECT * FROM SectionLastUpdateTime WHERE secId = ?;
+
+removeSectionLastUpdateTime:
+DELETE FROM SectionLastUpdateTime WHERE secId = ?;
+
+---------------------- Start Section Last Update Time ----------------------
+
+
+---------------------- Start Article Saving ----------------------
+CREATE TABLE SecArticle(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    aid TEXT NOT NULL,
+    secName TEXT NOT NULL,
+    secId TEXT NOT NULL,
+    pd TEXT NOT NULL,
+    au TEXT NOT NULL,
+    ti TEXT NOT NULL,
+    de TEXT NOT NULL,
+    al TEXT NOT NULL,
+    banner TEXT NOT NULL,
+    thumb TEXT NOT NULL,
+    media TEXT NOT NULL,
+    le TEXT NOT NULL,
+    articleType TEXT NOT NULL,
+    avUrl TEXT NOT NULL,
+    location TEXT NOT NULL
+);
+
+
+insertSecArticle:
+INSERT INTO SecArticle(aid, secName, secId, pd, au, ti, de, al, banner, thumb, media, le, articleType, avUrl, location) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+selectAllSecArticle:
+SELECT * FROM SecArticle;
+
+selectSecArticle:
+SELECT * FROM SecArticle WHERE secId = ?;
+
+removeSecArticle:
+DELETE FROM SecArticle WHERE secId = ?;
+---------------------- End Article Saving ----------------------
+
+
+---------------------- Start Article Bookmark ----------------------
+CREATE TABLE BookmarkArticle(
+    id INTEGER NOT NULL PRIMARY KEY,
+    aid TEXT NOT NULL,
+    secName TEXT NOT NULL,
+    secId TEXT NOT NULL,
+    pd TEXT NOT NULL,
+    au TEXT NOT NULL,
+    ti TEXT NOT NULL,
+    de TEXT NOT NULL,
+    al TEXT NOT NULL,
+    banner TEXT NOT NULL,
+    thumb TEXT NOT NULL,
+    media TEXT NOT NULL,
+    le TEXT NOT NULL,
+    articleType TEXT NOT NULL,
+    avUrl TEXT NOT NULL,
+    location TEXT NOT NULL
+);
+
+
+insertBookmarkArticle:
+INSERT INTO BookmarkArticle(id, aid, secName, secId, pd, au, ti, de, al, banner, thumb, media, le, articleType, avUrl, location) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+selectAllBookmarkArticle:
+SELECT * FROM BookmarkArticle;
+
+selectBookmarkArticleById:
+SELECT EXISTS(SELECT 1 FROM BookmarkArticle WHERE aid = ? LIMIT 1);
+
+removeBookmarkArticle:
+DELETE FROM BookmarkArticle WHERE aid = ?;
+
+---------------------- End Article Bookmark ----------------------
+

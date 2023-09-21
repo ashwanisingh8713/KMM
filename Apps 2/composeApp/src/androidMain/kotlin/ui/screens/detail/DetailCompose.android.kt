@@ -1,8 +1,9 @@
 package ui.screens.detail
 
+import android.content.Context
+import android.view.LayoutInflater
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import domain.model.Article
 import taboola.LoadSingleTaboola
 
 /**
@@ -12,30 +13,55 @@ import taboola.LoadSingleTaboola
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.Composer
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.FragmentActivity
+import com.app.compose.R
 import domain.mapper.ArticleMapper
+import io.piano.android.composer.ComposerException
+import io.piano.android.composer.listeners.ShowTemplateListener
+import io.piano.android.composer.model.Event
+import io.piano.android.composer.model.ExperienceRequest
+import io.piano.android.composer.model.events.ShowTemplate
+import io.piano.android.composer.showtemplate.ShowTemplateController
+import ui.sharedui.DetailBanner
 
 @Composable
 actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
+    val context = LocalContext.current
+
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Column {
+                // Piano Template
+                PianoBlockerTemplate()
+                // Showing Banner
+                DetailBanner(article.banner!!, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
+                // Showing HTML Description
                 HtmlDescription(article.de!!, modifier = Modifier)
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
+
+                LaunchedEffect(true) {
+                    pianoExperience(context)
+                }
             }
         }
     }
 }
 
+
+
 @Composable
 actual fun HtmlDescription(description: String, modifier: Modifier) {
-
     // Adding a WebView inside AndroidView
     // with layout as full screen
     AndroidView(
@@ -79,5 +105,63 @@ actual fun HtmlDescription(description: String, modifier: Modifier) {
 @Composable
 actual fun LoadTaboolaWidget(pageUrl: String, modifier: Modifier) {
     LoadSingleTaboola(pageUrl)
+}
+
+fun pianoExperience(context: Context) {
+
+    val showTemplateListener = ShowTemplateListener { event: Event<ShowTemplate> ->
+        event.eventData.delayBy.let {
+            val showTemplateController = ShowTemplateController(event)
+            val activity = context as FragmentActivity
+//            val fragmentActivity = activity as FragmentActivity
+            showTemplateController.show(activity)
+        }
+    }
+
+    val experienceRequest = ExperienceRequest.Builder()
+        .contentSection("Premium")
+        .url("https://www.thehindu.com/news/national/karnataka/fed-up-of-being-at-the-mercy-of-mncs-farmers-in-karnataka-are-democratising-seed-production/article67302777.ece")
+        .tags(
+            (listOf(
+                "Premium Articles",
+                "Karnataka",
+                "agriculture",
+                "healthy lifestyle",
+                "organic foods",
+                "food",
+                "food security",
+                "business and finance"
+            ))
+        )
+        .debug(true)
+        .build()
+
+    io.piano.android.composer.Composer.getInstance().getExperience(
+        experienceRequest,
+        listOf(showTemplateListener)
+    ) { exception: ComposerException ->
+        Toast.makeText(
+            context,
+            "[${Thread.currentThread().name}] ${exception.cause?.message ?: exception.message}",
+            Toast.LENGTH_LONG
+        ).show()
+
+    }
+}
+
+@Composable
+fun PianoBlockerTemplate() {
+    AndroidView(
+        factory = { context ->
+            val view =
+                LayoutInflater.from(context).inflate(R.layout.piano_blocker_layout, null, false)
+
+            // do whatever you want...
+            view // return the view
+        },
+        update = { view ->
+            // Update the view
+        }
+    )
 }
 

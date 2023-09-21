@@ -1,5 +1,6 @@
 package com.compose
 
+import PianoTH
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -34,6 +35,9 @@ class AndroidApp : Application() {
 
         // Initialize Taboola SDK as early as possible
         Taboola.init(publisherInfo)
+
+        // Initialize Piano SDK
+        PianoTH().initPianoTH(this as Context)
 
     }
 

@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,6 +26,7 @@ import kotlinx.coroutines.withContext
 import platform.CoreGraphics.CGRectZero
 import platform.WebKit.WKWebView
 import platform.WebKit.WKWebViewConfiguration
+import ui.sharedui.DetailBanner
 
 /**
  * Created by Ashwani Kumar Singh on 15,September,2023.
@@ -30,10 +34,20 @@ import platform.WebKit.WKWebViewConfiguration
 
 @Composable
 actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
-    Column(modifier = modifier) {
-        HtmlDescription(article.de!!, modifier = Modifier)
-        // Showing Taboola Widgets
-        LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
+    Surface {
+    Column(modifier = Modifier.fillMaxSize()
+
+        ) {
+            // Showing Banner
+            DetailBanner(article.banner!!, Modifier.fillMaxWidth().fillMaxHeight(0.4f))
+            // Showing HTML Description
+            HtmlDescription(article.de!!, modifier = Modifier.fillMaxSize())
+            // Showing Taboola Widgets
+            LoadTaboolaWidget(
+                pageUrl = article.al!!,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f)
+            )
+    }
     }
 }
 
@@ -64,8 +78,6 @@ actual fun HtmlDescription(description: String, modifier: Modifier) {
                     wkWebView!!
                 },
                 update = {
-//                    val request = NSURLRequest(uRL = NSURL(string = url))
-//                    wkWebView?.loadRequest(request)
                     wkWebView?.loadHTMLString(
                         "<html><body>$description</body></html>",
                         baseURL = null

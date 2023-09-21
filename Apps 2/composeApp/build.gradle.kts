@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose)
@@ -35,7 +34,8 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
-        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+        extraSpecAttributes["resources"] =
+            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {
@@ -91,12 +91,26 @@ kotlin {
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
                 // Import Google Mobile Ads SDK
-                implementation ("com.google.android.gms:play-services-ads:22.0.0")
+                implementation("com.google.android.gms:play-services-ads:22.0.0")
                 // Import Taboola SDK
-                implementation ("com.taboola:android-sdk-beta:3.7.0-rc1")
+                implementation("com.taboola:android-sdk-beta:3.7.0-rc1")
+
+                //Piano API
+                implementation ("io.piano.android:api:2.0.0")
+                //Piano Composer
+                implementation ("io.piano.android:composer:2.6.2")
+                //Piano Show Template
+                implementation ("io.piano.android:composer-show-template:2.6.2")
+                //Piano ID
+                implementation ("io.piano.android:id:2.6.2")
+                //Piano Google auth SDK
+                implementation ("io.piano.android:id-oauth-google:2.6.2")
+                //Piano Facebook auth SDK
+                implementation ("io.piano.android:id-oauth-facebook:2.6.2")
+                // c1x
+                implementation( "io.piano.android:composer-c1x:2.6.2")
             }
         }
-
 
 
         val iosX64Main by getting

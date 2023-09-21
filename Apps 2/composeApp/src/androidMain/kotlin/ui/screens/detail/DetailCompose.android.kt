@@ -44,7 +44,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
                 // Piano Template
                 PianoBlockerTemplate()
                 // Showing Banner
-                DetailBanner(article.banner!!, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
+                DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
                 HtmlDescription(article.de!!, modifier = Modifier)
                 // Showing Taboola Widgets

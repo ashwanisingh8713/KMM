@@ -32,6 +32,7 @@ import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
 import ui.screens.detail.DetailScreen
 import ui.screens.home.pages.SectionContentListUI
+import ui.screens.util.ViewType
 import ui.sharedui.ComposeTag
 import ui.sharedui.NoNetworkUI
 import ui.vm.SectionListViewModel
@@ -142,8 +143,10 @@ class HomeScreen constructor(
                     /////////////////////////////////////////////////////////////////
                     val navigator = LocalNavigator.currentOrThrow
 
+                    // Detail Page Click Listener
                     val onArticleClick: (article: ArticleMapper) -> Unit = { article ->
-                        navigator.push(DetailScreen(article))
+                        val allArticles = sectionContent?.filter { it?.viewType == ViewType.VIEW_TYPE_ARTICLE }?.map { it?.article!! }
+                        allArticles?.let { navigator.push(DetailScreen(article = article, allArticles = it)) }
                     }
 
                     Column(modifier = Modifier.fillMaxSize()) {

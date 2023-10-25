@@ -1,19 +1,25 @@
 package ui.screens.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -26,7 +32,7 @@ import domain.model.Article
  * Created by Ashwani Kumar Singh on 03,August,2023.
  */
 
-data class DetailScreen(private val article: ArticleMapper) : Screen {
+data class DetailScreen(private val article: ArticleMapper, private val allArticles: List<ArticleMapper> = emptyList()) : Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
@@ -69,7 +75,8 @@ data class DetailScreen(private val article: ArticleMapper) : Screen {
             onTextToSpeechPress = onTextToSpeechPress,
             isBookmarked = isBookmarked,
             isTextToSpeechEnabled = isTextToSpeechEnabled,
-            descriptionFontSize = descriptionFontSize
+            descriptionFontSize = descriptionFontSize,
+            allArticles= allArticles
         )
     }
 }
@@ -80,7 +87,8 @@ private fun ArticleDetailContents(
     article: ArticleMapper, onBackPress: () -> Unit, onSharePress: () -> Unit,
     onCommentPress: () -> Unit, onBookmarkPress: () -> Unit,
     onFontPress: () -> Unit, onTextToSpeechPress: () -> Unit,
-    isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int
+    isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int,
+    allArticles: List<ArticleMapper>
 ) {
 
 
@@ -98,8 +106,12 @@ private fun ArticleDetailContents(
             BoxWithConstraints(
                 Modifier.padding(it),
                 contentAlignment = Alignment.TopCenter
-            ){
-                DetailPageCompose(article, Modifier.fillMaxSize())
+            ) {
+                if(allArticles.isEmpty()) {
+                    DetailPageCompose(article, Modifier.fillMaxSize())
+                } else {
+                    DetailPager(allArticles)
+                }
             }
 
 
@@ -107,5 +119,30 @@ private fun ArticleDetailContents(
     )
 
 }
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun DetailPager(allArticles: List<ArticleMapper>) {
+
+//    val initialPage = allArticles.indexOf()
+
+    val pagerState = rememberPagerState(initialPageOffsetFraction = -0.1f, pageCount = {
+        allArticles.size
+    })
+
+    HorizontalPager(modifier = Modifier.fillMaxSize(), state = pagerState,
+        beyondBoundsPageCount = 1,
+        pageSpacing = 0.dp,
+        contentPadding = PaddingValues(0.dp)
+    ) { page ->
+        // Our page content
+        val article = allArticles[page]
+        DetailPageCompose(article, Modifier.width(500.dp))
+    }
+
+
+}
+
 
 

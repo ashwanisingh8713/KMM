@@ -16,10 +16,8 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composer
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -38,15 +36,15 @@ import ui.sharedui.DetailBanner
 actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
     val context = LocalContext.current
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = modifier) {
         item {
-            Column {
+            Column (modifier = modifier){
                 // Piano Template
                 PianoBlockerTemplate()
                 // Showing Banner
                 DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
-                HtmlDescription(article.de!!, modifier = Modifier)
+                HtmlDescription(article.de!!, modifier = modifier)
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
 

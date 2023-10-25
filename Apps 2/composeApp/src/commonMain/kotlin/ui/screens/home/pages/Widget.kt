@@ -2,16 +2,28 @@ package ui.screens.home.pages
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -74,7 +86,7 @@ fun WidgetHorizontalList(viewModel: SectionListViewModel, isLoading: Boolean, wi
         pageSpacing = 16.dp,
         beyondBoundsPageCount = 2,
         state = pagerState,
-        modifier = Modifier.fillMaxSize().height(200.dp)
+        modifier = Modifier.fillMaxSize().height(300.dp)
     ) { page ->
         Box(modifier = Modifier.fillMaxSize()) {
             // Contains Image and Text composables
@@ -105,14 +117,9 @@ fun widgetUICard(pagerState: PagerState, article: ArticleMapper, page: Int) {
             contentAlignment = Alignment.Center,
         ) {
 
-//            Image(
-//                painter = rememberAsyncImagePainter(if(article.me.isNotEmpty()) article.me[0].im else article.im_thumbnail),
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxSize(),
-//                contentScale = ContentScale.FillBounds,
-//            )
 
-            Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 30.dp)) {
+
+            /*Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 30.dp)) {
                 Text(
                     text = article.ti!!,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
@@ -126,10 +133,75 @@ fun widgetUICard(pagerState: PagerState, article: ArticleMapper, page: Int) {
                     color = Color.Black,
 
                     )
-            }
+            }*/
+
+            ProductCard(
+                product = article,
+                navigateToDetailScreen = { navigator.push(DetailScreen(article)) },
+            )
 
         }
 
 
     }
+}
+
+
+
+@Composable
+fun ProductCard(
+    product: ArticleMapper,
+    navigateToDetailScreen: (ArticleMapper) -> Unit,
+) {
+
+    Card(
+        modifier = Modifier.padding(4.dp).clickable { navigateToDetailScreen(product) },
+        shape = RoundedCornerShape(5.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        ),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(4.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            val painter = rememberAsyncImagePainter(product.banner!!)
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxWidth().height(150.dp)
+                    .padding(4.dp),
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(
+                product.ti!!,
+                maxLines = 1,
+                style = MaterialTheme.typography.titleSmall,
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(
+                product.le!!,
+                maxLines = 2,
+                style = MaterialTheme.typography.labelSmall,
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(
+                text= product.secName!!,
+                style = MaterialTheme.typography.titleSmall,
+            )
+
+
+        }
+    }
+
 }

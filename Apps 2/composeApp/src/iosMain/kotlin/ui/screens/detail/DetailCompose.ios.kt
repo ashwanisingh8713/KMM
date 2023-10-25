@@ -39,7 +39,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
 
         ) {
             // Showing Banner
-            DetailBanner(article.banner!!, Modifier.fillMaxWidth().fillMaxHeight(0.4f))
+            DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.4f))
             // Showing HTML Description
             HtmlDescription(article.de!!, modifier = Modifier.fillMaxSize())
             // Showing Taboola Widgets

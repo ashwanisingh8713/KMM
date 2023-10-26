@@ -17,9 +17,11 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
 import com.app.compose.R
@@ -44,7 +46,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
                 // Showing Banner
                 DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
-                HtmlDescription(article.de!!, modifier = modifier)
+                HtmlDescription(article.de!!, modifier =  Modifier.fillMaxWidth().padding(end = 20.dp))
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
 
@@ -62,7 +64,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
 actual fun HtmlDescription(description: String, modifier: Modifier) {
     // Adding a WebView inside AndroidView
     // with layout as full screen
-    AndroidView(
+    AndroidView( modifier = modifier,
         factory = {
             WebView(it).apply {
                 layoutParams = ViewGroup.LayoutParams(
@@ -76,8 +78,7 @@ actual fun HtmlDescription(description: String, modifier: Modifier) {
 
                 // to verify that the client requesting your web page is actually your Android app.
                 settings.userAgentString = System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
-
-//                settings.useWideViewPort = true
+                settings.useWideViewPort = false
 
 
                 // Bind JavaScript code to Android code

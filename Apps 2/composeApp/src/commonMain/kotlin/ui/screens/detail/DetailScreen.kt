@@ -138,7 +138,7 @@ fun DetailPager(allArticles: List<ArticleMapper>) {
     ) { page ->
         // Our page content
         val article = allArticles[page]
-        DetailPageCompose(article, Modifier.width(500.dp))
+        DetailPageCompose(article, Modifier.fillMaxWidth())
     }
 
 

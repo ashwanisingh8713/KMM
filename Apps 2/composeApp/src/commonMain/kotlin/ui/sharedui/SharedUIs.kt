@@ -52,23 +52,26 @@ fun DetailBanner(article: ArticleMapper, modifier: Modifier = Modifier) {
 //        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
+
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth().height(250.dp),
+            val banner = article.banner!!
+            if(banner.isNotEmpty()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth().height(250.dp),
 //                shape = RoundedCornerShape(32.dp),
-                elevation = 0.dp
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(article.banner!!),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-                    contentScale = ContentScale.FillBounds,
-                )
+                    elevation = 0.dp
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(banner),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                        contentScale = ContentScale.FillBounds,
+                    )
+                }
+                Spacer(modifier = Modifier.size(16.dp))
             }
-
-            Spacer(modifier = Modifier.size(16.dp))
 
             Text(
                 article.ti!!,

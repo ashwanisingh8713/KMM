@@ -61,9 +61,9 @@ class HomeScreen constructor(
         var sectionName by remember { mutableStateOf<String>("") }
         var sectionType by remember { mutableStateOf<String>("") }
 
-        val sectionContent by viewModel.sectionContentState.collectAsState()
+        /*val sectionContent by viewModel.sectionContentState.collectAsState()
         val isLoading by viewModel.sectionContentLoading.collectAsState()
-        val error by viewModel.sectionContentError.collectAsState()
+        val error by viewModel.sectionContentError.collectAsState()*/
 
         var selectedPage by remember { mutableStateOf<Int>(0) }
 
@@ -145,14 +145,13 @@ class HomeScreen constructor(
 
                     // Detail Page Click Listener
                     val onArticleClick: (article: ArticleMapper) -> Unit = { article ->
-                        val allArticles = sectionContent?.filter { it?.viewType == ViewType.VIEW_TYPE_ARTICLE }?.map { it?.article!! }
-                        allArticles?.let { navigator.push(DetailScreen(article = article, allArticles = it)) }
+//                        val allArticles = sectionContent?.filter { it?.viewType == ViewType.VIEW_TYPE_ARTICLE }?.map { it?.article!! }
+//                        allArticles?.let { navigator.push(DetailScreen(article = article, allArticles = it)) }
                     }
 
                     Column(modifier = Modifier.fillMaxSize()) {
 
                         LaunchedEffect(pagerState.currentPage) {
-                            if (sectionContent == null || sectionContent?.size == 0 || sectionContent!![0]?.secId != sectionId) {
                                 viewModel.makeSectionContentApiRequest(
                                     secId = sectionId,
                                     secName = sectionName,
@@ -160,7 +159,7 @@ class HomeScreen constructor(
                                     page = 1,
                                     widgets = tabRowItems[pagerState.currentPage].widget
                                 )
-                            }
+
                         }
 
                         // Tab Row
@@ -184,14 +183,11 @@ class HomeScreen constructor(
                             SectionContentListUI(
                                 viewModel = viewModel,
                                 listState = listState!![index],
-                                sectionContent = sectionContent,
-                                isLoading = isLoading,
-                                error = error,
                                 secId = tabState.secId,
                                 secName = tabState.secName,
                                 type = tabState.secType,
-                                onArticleClick = onArticleClick,
-                                widget = widget
+                                widget = widget,
+                                navigator = LocalNavigator.currentOrThrow
                             )
                         }
 

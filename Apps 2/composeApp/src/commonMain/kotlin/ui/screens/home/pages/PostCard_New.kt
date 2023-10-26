@@ -43,17 +43,20 @@ fun PostCard_New(
     }) {
 
         Column(modifier = modifier) {
-            article.banner?.let {
-                Box(
-                    modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(article.banner),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth().height(200.dp),
-                        contentScale = ContentScale.FillBounds,
-                    )
+            val banner = article.banner
+            banner?.let {
+                if(it.isNotEmpty()) {
+                    Box(
+                        modifier = modifier.fillMaxWidth().fillMaxHeight(0.6f),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(banner),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth().height(200.dp),
+                            contentScale = ContentScale.FillBounds,
+                        )
+                    }
                 }
             }
 

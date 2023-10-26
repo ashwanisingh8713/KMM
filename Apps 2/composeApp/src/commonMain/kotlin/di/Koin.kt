@@ -35,6 +35,7 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import org.koin.compose.koinInject
@@ -144,7 +145,7 @@ val sqlDelightModule = module {
 }
 
 val dispatcherModule = module {
-    factory { Dispatchers.Default }
+    factory<CoroutineDispatcher> { Dispatchers.Default }
 }
 
 val mapperModule = module {

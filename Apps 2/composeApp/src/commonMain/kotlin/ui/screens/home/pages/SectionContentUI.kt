@@ -16,14 +16,24 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import data.model.SectionContentListData
 import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.Widget
+import ext.getScreenModel
+import kotlinx.coroutines.CoroutineDispatcher
+import org.koin.compose.getKoin
+import ui.screens.detail.DetailScreen
 import ui.screens.util.ViewType
 import ui.sharedui.NoNetworkUI
 import ui.vm.SectionListViewModel
@@ -36,15 +46,22 @@ import ui.vm.SectionListViewModel
 fun SectionContentListUI(
     viewModel: SectionListViewModel,
     listState: LazyListState,
-    sectionContent: MutableList<SectionContentListData?>?,
-    onArticleClick: (article: ArticleMapper) -> Unit,
-    isLoading: Boolean,
-    error: String?,
     secId: Int,
     secName: String,
     type: String,
-    widget: List<Widget>
+    widget: List<Widget>,
+    navigator :Navigator
 ) {
+
+    val sectionContent by viewModel.sectionContentState.collectAsState()
+    val isLoading by viewModel.sectionContentLoading.collectAsState()
+    val error by viewModel.sectionContentError.collectAsState()
+
+    val onArticleClick: (article: ArticleMapper) -> Unit = { article ->
+                        val allArticles = sectionContent?.filter { it?.viewType == ViewType.VIEW_TYPE_ARTICLE }?.map { it?.article!! }
+                        allArticles?.let { navigator.push(DetailScreen(article = article, allArticles = it)) }
+    }
+
     if (isLoading) { // Loading Block
 
         Box(
@@ -62,7 +79,7 @@ fun SectionContentListUI(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            NoNetworkUI(error)
+            NoNetworkUI(error!!)
         }
     } else if (sectionContent != null) { // Data Block
         LazyColumn(
@@ -72,7 +89,7 @@ fun SectionContentListUI(
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         ) {
-            itemsIndexed(items = sectionContent, /*key = { _, item ->
+            itemsIndexed(items = sectionContent!!, /*key = { _, item ->
                 item?.article?.aid ?: item?.widget?.secId ?: 0
             }*/) { index, item ->
 

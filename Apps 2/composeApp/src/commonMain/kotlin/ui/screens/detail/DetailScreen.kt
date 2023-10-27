@@ -110,7 +110,11 @@ private fun ArticleDetailContents(
                 if(allArticles.isEmpty()) {
                     DetailPageCompose(article, Modifier.fillMaxSize())
                 } else {
-                    DetailPager(allArticles)
+                    var initialPage = allArticles.indexOf(article)
+                    if(initialPage == -1) {
+                        initialPage = 0
+                    }
+                    DetailPager(allArticles, initialPage = initialPage)
                 }
             }
 
@@ -123,11 +127,8 @@ private fun ArticleDetailContents(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailPager(allArticles: List<ArticleMapper>) {
-
-//    val initialPage = allArticles.indexOf()
-
-    val pagerState = rememberPagerState(initialPageOffsetFraction = -0.1f, pageCount = {
+fun DetailPager(allArticles: List<ArticleMapper>, initialPage: Int = 0) {
+    val pagerState = rememberPagerState(initialPage = initialPage, initialPageOffsetFraction = 0.0f, pageCount = {
         allArticles.size
     })
 

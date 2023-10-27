@@ -6,12 +6,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +46,7 @@ import ui.vm.SectionListViewModel
  */
 
 @Composable
-fun SectionContentListUI(
+fun SectionContentUI_Column(
     viewModel: SectionListViewModel,
     listState: LazyListState,
     secId: Int,
@@ -53,7 +56,7 @@ fun SectionContentListUI(
     navigator :Navigator
 ) {
 
-    // https://stackoverflow.com/questions/70589639/lazycolumn-to-not-recompose-some-items
+    val columnState = rememberScrollState()
 
     val sectionContent by viewModel.sectionContentState.collectAsState()
     val isLoading by viewModel.sectionContentLoading.collectAsState()
@@ -84,36 +87,32 @@ fun SectionContentListUI(
             NoNetworkUI(error!!)
         }
     } else if (sectionContent != null) { // Data Block
-        LazyColumn(
-            state = listState,
-            modifier = Modifier,
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-
+        Column(
+            modifier = Modifier.fillMaxSize().verticalScroll(columnState),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            itemsIndexed(items = sectionContent!!, /*key = { _, item ->
-                item?.article?.aid ?: item?.widget?.secId ?: 0
-            }*/) { index, item ->
+            sectionContent?.map {
+                it?.let {item->
+                    when(item.viewType) {
+                        ViewType.VIEW_TYPE_ARTICLE -> {
+                            PostCard_New(
+                                isLoading = isLoading,
+                                article = item.article!!,
+                                onArticleClick = onArticleClick
+                            )
+                            Divider(color = Color.Black, thickness = 1.dp)
+                        }
+                        ViewType.VIEW_TYPE_WIDGET -> {
+                            WidgetHorizontalList(
+                                viewModel = viewModel,
+                                isLoading = isLoading,
+                                widget = item.widget!!
+                            )
 
-                when(item?.viewType) {
-                    ViewType.VIEW_TYPE_ARTICLE -> {
-                        PostCard_New(
-                            isLoading = isLoading,
-                            article = item!!.article!!,
-                            onArticleClick = onArticleClick
-                        )
-                        Divider(color = Color.Black, thickness = 1.dp)
-                    }
-                    ViewType.VIEW_TYPE_WIDGET -> {
-                        WidgetHorizontalList(
-                            viewModel = viewModel,
-                            isLoading = isLoading,
-                            widget = item!!.widget!!
-                        )
-                    }
-                    ViewType.VIEW_TYPE_BANNER_ADS -> {
-                        AdmobBanner(modifier= Modifier.fillMaxWidth().height(300.dp))
-                    }else -> {
+                        }
+                        ViewType.VIEW_TYPE_BANNER_ADS -> {
+                            AdmobBanner(modifier= Modifier.fillMaxWidth().height(300.dp))
+                        }else -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -125,12 +124,14 @@ fun SectionContentListUI(
                             )
                         }
                     }
-                }
+                    }
 
+                }
 
             }
 
         }
+
     } else {
         Box(
             modifier = Modifier.fillMaxSize(),

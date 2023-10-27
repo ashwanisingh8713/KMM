@@ -48,19 +48,15 @@ internal class StartingScreen : Screen {
             }
         ) { tabNavigator ->
             Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Surface(shadowElevation = 3.dp) {
-                                Text(text = tabNavigator.current.options.title)
-//                            Row {
-//                                HomeTopBar()
+//                topBar = {
+//                    TopAppBar(
+//                        title = {
+//                            Surface(shadowElevation = 3.dp) {
 //                                Text(text = tabNavigator.current.options.title)
 //                            }
-                            }
-                        }
-                    )
-                },
+//                        }
+//                    )
+//                },
                 content = {
                     BoxWithConstraints(
                         Modifier.padding(it),

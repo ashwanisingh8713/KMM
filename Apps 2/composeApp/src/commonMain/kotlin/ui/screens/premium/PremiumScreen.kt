@@ -10,10 +10,9 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.mapper.ArticleMapper
-import domain.model.Article
 import ext.getScreenModel
 import ui.screens.detail.DetailScreen
-import ui.vm.PremiumContentViewModel
+import ui.viewModel.PremiumContentViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 16,August,2023.

@@ -1,4 +1,4 @@
-package ui.vm
+package ui.viewModel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope

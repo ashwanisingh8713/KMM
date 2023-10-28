@@ -1,5 +1,6 @@
 package ui.screens.detail
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.compose.runtime.Composable
@@ -14,12 +15,18 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.consumePositionChange
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -35,7 +42,7 @@ import io.piano.android.composer.showtemplate.ShowTemplateController
 import ui.sharedui.DetailBanner
 
 @Composable
-actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit) {
     val context = LocalContext.current
 
     LazyColumn(modifier = modifier) {
@@ -46,7 +53,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
                 // Showing Banner
                 DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
-                HtmlDescription(article.de!!, modifier =  Modifier.fillMaxWidth().padding(end = 20.dp))
+                HtmlDescription(article.de!!, modifier =  modifier.padding(end = 20.dp), onWebPageTouch = onWebPageTouch)
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
 
@@ -60,8 +67,9 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier) {
 
 
 
+@SuppressLint("ClickableViewAccessibility")
 @Composable
-actual fun HtmlDescription(description: String, modifier: Modifier) {
+actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit) {
     // Adding a WebView inside AndroidView
     // with layout as full screen
     AndroidView( modifier = modifier,
@@ -75,19 +83,13 @@ actual fun HtmlDescription(description: String, modifier: Modifier) {
 
                 // to play video on a web view
                 settings.javaScriptEnabled = true
-
+                settings.defaultFontSize = 30
                 // to verify that the client requesting your web page is actually your Android app.
                 settings.userAgentString = System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
                 settings.useWideViewPort = false
 
-
                 // Bind JavaScript code to Android code
-//                addJavascriptInterface(WebAppInterface(context,infoDialog), "Android")
-
-
-
-
-//                loadUrl(url)
+                // addJavascriptInterface(WebAppInterface(context,infoDialog), "Android")
                 loadDataWithBaseURL(
                     null,
                     "<html><body>$description</body></html>",
@@ -97,7 +99,10 @@ actual fun HtmlDescription(description: String, modifier: Modifier) {
                 )
             }
         }, update = {
-
+            it.setOnTouchListener{ v, event ->
+                onWebPageTouch()
+                false
+            }
         })
 
 }

@@ -1,14 +1,12 @@
-package ui.vm
+package ui.viewModel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import daniel.avila.rnm.kmm.data_cache.sqldelight.SharedDatabase
 import domain.usecase.SectionListUseCase
 import data.datasource.SectionContentRequestBody
 import data.datasource.SectionListRequestBody
 import data.model.SectionContentListData
 import domain.mapper.ArticleMapper
-import domain.model.SectionContent
 import domain.model.SectionList
 import domain.model.Widget
 import domain.usecase.SectionContentUseCase
@@ -16,7 +14,6 @@ import domain.usecase.base.UseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import ui.sharedui.ComposeTag
 import ui.screens.util.ViewType

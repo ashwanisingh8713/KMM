@@ -1,6 +1,5 @@
 package di
 
-import androidx.compose.runtime.key
 import daniel.avila.rnm.kmm.data_cache.CacheDataImp
 import daniel.avila.rnm.kmm.data_cache.sqldelight.SharedDatabase
 import daniel.avila.rnm.kmm.data_remote.RemoteDataImp
@@ -38,14 +37,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
-import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import ui.vm.PremiumContentViewModel
-import ui.vm.SectionListViewModel
+import ui.viewModel.PremiumContentViewModel
+import ui.viewModel.SectionListViewModel
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {

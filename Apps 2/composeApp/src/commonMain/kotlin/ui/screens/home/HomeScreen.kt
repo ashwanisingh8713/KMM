@@ -1,7 +1,6 @@
 package ui.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,14 +27,11 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.mapper.ArticleMapper
 import ext.getScreenModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import ui.model.SectionTabItem
-import ui.screens.detail.DetailScreen
 import ui.screens.home.pages.SectionContentListUI
-import ui.screens.util.ViewType
 import ui.sharedui.ComposeTag
 import ui.sharedui.NoNetworkUI
-import ui.vm.SectionListViewModel
+import ui.viewModel.SectionListViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 11,August,2023.

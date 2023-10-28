@@ -9,10 +9,10 @@ import domain.mapper.ArticleMapper
  */
 
 @Composable
-expect fun DetailPageCompose(article: ArticleMapper, modifier: Modifier)
+expect fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit)
 
 @Composable
-expect fun HtmlDescription(description: String, modifier: Modifier)
+expect fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit)
 
 @Composable
 expect fun LoadTaboolaWidget(pageUrl: String, modifier: Modifier)

@@ -2,6 +2,7 @@ package ui.screens.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,7 +43,7 @@ import io.piano.android.composer.showtemplate.ShowTemplateController
 import ui.sharedui.DetailBanner
 
 @Composable
-actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
     val context = LocalContext.current
 
     LazyColumn(modifier = modifier) {
@@ -53,7 +54,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPa
                 // Showing Banner
                 DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
-                HtmlDescription(article.de!!, modifier =  modifier.padding(end = 20.dp), onWebPageTouch = onWebPageTouch)
+                HtmlDescription(article.de!!, modifier =  modifier.padding(end = 20.dp), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
 
@@ -69,7 +70,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPa
 
 @SuppressLint("ClickableViewAccessibility")
 @Composable
-actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit) {
+actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
     // Adding a WebView inside AndroidView
     // with layout as full screen
     AndroidView( modifier = modifier,
@@ -77,13 +78,12 @@ actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTou
             WebView(it).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 webViewClient = WebViewClient()
 
                 // to play video on a web view
                 settings.javaScriptEnabled = true
-                settings.defaultFontSize = 30
                 // to verify that the client requesting your web page is actually your Android app.
                 settings.userAgentString = System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
                 settings.useWideViewPort = false
@@ -103,6 +103,8 @@ actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTou
                 onWebPageTouch()
                 false
             }
+            it.settings.defaultFontSize = fontSizeForWebPage
+            println("AshwaniFont FontSizeForWebPage Rule-4 = $fontSizeForWebPage")
         })
 
 }

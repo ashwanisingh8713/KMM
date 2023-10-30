@@ -52,6 +52,7 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
     override fun Content() {
 
         var fontSizeStepperVisible by remember { mutableStateOf(false)}
+        var fontSizeForWebPage by remember { mutableStateOf(18)}
 
         val navigator = LocalNavigator.currentOrThrow
 
@@ -120,7 +121,9 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
         }
 
         val fontSizeChanged:(Int)->Unit = {
-
+            println("AshwaniFont FontSizeForWebPage Rule-2 = $fontSizeForWebPage")
+            fontSizeForWebPage = it
+            println("AshwaniFont FontSizeForWebPage Rule-3 = $fontSizeForWebPage")
         }
 
         val onPageChanged:(Int)->Unit = {
@@ -147,7 +150,8 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
                 isTextToSpeechEnabled = isTextToSpeechEnabled,
                 descriptionFontSize = descriptionFontSize,
                 allArticles = allArticles,
-                onWebPageTouch = onWebPageTouch
+                onWebPageTouch = onWebPageTouch,
+                fontSizeForWebPage = fontSizeForWebPage
             )
 
             FontSizeChangeCompose(fontSizeStepperVisible, fontSizeChanged)
@@ -163,7 +167,7 @@ private fun ArticleDetailContents(
     article: ArticleMapper, onBackPress: () -> Unit, onSharePress: () -> Unit,
     onCommentPress: () -> Unit, onBookmarkPress: () -> Unit,
     onFontPress: () -> Unit, onTextToSpeechPress: () -> Unit, onPageChanged:(Int)->Unit,
-    isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int,
+    isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int, fontSizeForWebPage: Int,
     allArticles: List<ArticleMapper>, onWebPageTouch:()->Unit
 ) {
 
@@ -184,13 +188,13 @@ private fun ArticleDetailContents(
                 contentAlignment = Alignment.TopCenter
             ) {
                 if(allArticles.isEmpty()) {
-                    DetailPageCompose(article, Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch)
+                    DetailPageCompose(article, Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
                 } else {
                     var initialPage = allArticles.indexOf(article)
                     if(initialPage == -1) {
                         initialPage = 0
                     }
-                    DetailPager(modifier, allArticles, initialPage = initialPage, onPageChanged = onPageChanged, onWebPageTouch=onWebPageTouch)
+                    DetailPager(modifier, allArticles, initialPage = initialPage, onPageChanged = onPageChanged, onWebPageTouch=onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
                 }
             }
 
@@ -203,7 +207,7 @@ private fun ArticleDetailContents(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPage: Int = 0, onPageChanged:(Int)->Unit, onWebPageTouch:()->Unit) {
+fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPage: Int = 0, onPageChanged:(Int)->Unit, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
     val pagerState = rememberPagerState(initialPage = initialPage, initialPageOffsetFraction = 0.0f, pageCount = {
         allArticles.size
     })
@@ -215,7 +219,7 @@ fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPag
     ) { page ->
         // Our page content
         val article = allArticles[page]
-        DetailPageCompose(article, modifier, onWebPageTouch = onWebPageTouch)
+        DetailPageCompose(article, modifier, onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
         LaunchedEffect(pagerState) {
             snapshotFlow {
                 pagerState.currentPage
@@ -235,27 +239,27 @@ fun FontSizeChangeCompose(fontSizeStepperVisible: Boolean, fontSizeChanged:(Int)
     var currentStep by rememberSaveable { mutableStateOf(2) }
     if (fontSizeStepperVisible) {
         val step1Click: (Int) -> Unit = {
+            fontSizeChanged(it)
             currentStep = 1
-            fontSizeChanged(currentStep)
         }
 
         val step2Click: (Int) -> Unit = {
+            fontSizeChanged(it)
             currentStep = 2
-            fontSizeChanged(currentStep)
         }
 
         val step3Click: (Int) -> Unit = {
+            fontSizeChanged(it)
             currentStep = 3
-            fontSizeChanged(currentStep)
         }
 
         val step4Click: (Int) -> Unit = {
+            fontSizeChanged(it)
             currentStep = 4
-            fontSizeChanged(currentStep)
         }
 
         val titleList = arrayListOf("XS", "S", "L", "XL")
-        val valueList = arrayListOf(14, 18, 22, 26)
+        val valueList = arrayListOf(20, 26, 32, 38)
         val numberStep = 4
 
         Stepper_n(

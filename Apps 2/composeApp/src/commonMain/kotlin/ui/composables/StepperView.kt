@@ -55,6 +55,8 @@ fun Stepper_n(
         if (index < numberOfSteps)
             valueList[index] = element
     }
+
+
     val borderStroke = BorderStroke(2.dp, Color.Gray)
         Box(
             modifier = Modifier.fillMaxSize().padding(top = 60.dp, start = 10.dp, end = 10.dp),
@@ -167,7 +169,11 @@ private fun Step_n(
                 shape = CircleShape,
                 border = borderStroke,
                 color = innerCircleColor,
-                modifier = Modifier.size(circleSize).clickable { stepClick(stepValue) }
+                modifier = Modifier.size(circleSize).clickable {
+                    println("AshwaniFont FontSizeForWebPage Rule-1 = $stepValue")
+                    stepClick(stepValue)
+
+                }
 
             ) {
 

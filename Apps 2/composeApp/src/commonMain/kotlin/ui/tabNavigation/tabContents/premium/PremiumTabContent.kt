@@ -1,6 +1,5 @@
 package ui.tabNavigation.tabContents.premium
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -12,7 +11,6 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.transitions.SlideTransition
 import ui.screens.premium.PremiumScreen
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Tab.PremiumTabContent() {
     val tabTitle = options.title

@@ -43,7 +43,7 @@ class HomeScreen constructor(
 ) : Screen {
     override val key = uniqueScreenKey
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
 

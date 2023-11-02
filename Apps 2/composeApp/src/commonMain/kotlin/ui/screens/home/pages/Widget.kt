@@ -64,7 +64,7 @@ fun WidgetHorizontalList(viewModel: SectionListViewModel, isLoading: Boolean, wi
         return
     }
     Text(
-        text = "Widget : ${widget.secName} : ${widget.articles?.size}",
+        text = "Widget : ${widget.secName} : ${widget.secId}",
         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Normal),
         textAlign = TextAlign.Left,
         modifier = Modifier.padding(top = 8.dp)
@@ -160,6 +160,7 @@ fun ProductCard(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+
 
 
             val painter = rememberAsyncImagePainter(product.banner!!)

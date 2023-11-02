@@ -91,7 +91,8 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase,
                 }
                 var widgetIndexCount = 2
                 widgets.forEach {
-                    val sectionContentListData = SectionContentListData(secId = it.secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = it)
+                    val viewType = widgetViewType(it.secId)
+                    val sectionContentListData = SectionContentListData(secId = it.secId, viewType = viewType, article = null, widget = it)
                     sectionContentList.add(widgetIndexCount, sectionContentListData)
                     widgetIndexCount += 2+1
                 }
@@ -121,19 +122,28 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase,
     private val _widgetError = MutableStateFlow<String?>( null)
     val widgetError: StateFlow<String?> get() = _widgetError
 
+    fun widgetViewType(sid:Int) : String {
+        return when(sid) {
+            69 -> ViewType.VIEW_TYPE_WIDGET_CARTOON
+            else -> ViewType.VIEW_TYPE_WIDGET
+        }
+    }
+
     /**
      * This method is used to make api request for widget article's content list
      */
     fun makeWidgetContentApiRequest(secId: Int, secName: String, type:String, page: Int = 1, lut: Int = 0) {
-        println("$ComposeTag: LaunchedEffect -> secId = $secId, secName = $secName, secType = $type")
+        println("WidgetCartoon: LaunchedEffect -> secId = $secId, secName = $secName, secType = $type")
         val params = SectionContentRequestBody(device = "android", api_key = "hindu@9*M", app_version = 78,
             os_version = 29, id = secId, lut = 0, type = type, page = page )
         sectionContentUseCase.invoke(scope = coroutineScope, params, onResult = object : UseCaseResponse<List<ArticleMapper>> {
             override fun onSuccess(widgetContent: List<ArticleMapper>) {
-                println("makeWidgetContentApiRequest - ViewModel :: secId= $secId, secName= $secName, type= $type")
-
+                val sid = widgetContent[0].secId
                 val sectionContentList = _sectionContentState.value!!
-                val index = sectionContentList.indexOf(SectionContentListData(secId = secId, viewType = ViewType.VIEW_TYPE_WIDGET, article = null, widget = null))
+
+                val viewType = widgetViewType(sid!!.toInt())
+
+                val index = sectionContentList.indexOf(SectionContentListData(secId = secId, viewType = viewType, article = null, widget = null))
                 if(index != -1) {
                     sectionContentList[index]?.widget?.articles = widgetContent.toMutableList()
                     _sectionContentState.update { sectionContentList }

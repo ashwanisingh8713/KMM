@@ -1,6 +1,7 @@
 package ui.screens.home.pages
 
 import ads.AdmobBanner
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
@@ -86,7 +87,10 @@ fun SectionContentListUI(
                 item?.article?.aid ?: item?.widget?.secId ?: 0
             }*/) { index, item ->
 
+                println("WidgetCartoon - viewType = ${item?.viewType}")
+
                 when(item?.viewType) {
+
                     ViewType.VIEW_TYPE_ARTICLE -> {
                         PostCard_New(
                             isLoading = isLoading,
@@ -97,6 +101,13 @@ fun SectionContentListUI(
                     }
                     ViewType.VIEW_TYPE_WIDGET -> {
                         WidgetHorizontalList(
+                            viewModel = viewModel,
+                            isLoading = isLoading,
+                            widget = item!!.widget!!
+                        )
+                    }
+                    ViewType.VIEW_TYPE_WIDGET_CARTOON -> {
+                        WidgetCartoon(
                             viewModel = viewModel,
                             isLoading = isLoading,
                             widget = item!!.widget!!
@@ -117,10 +128,7 @@ fun SectionContentListUI(
                         }
                     }
                 }
-
-
             }
-
         }
     } else {
         Box(

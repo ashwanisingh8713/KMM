@@ -17,7 +17,7 @@ data class SectionList(
 data class Data(
     val date: Int,
     val home: Home,
-    val section: List<Section>
+    val section: MutableList<Section>
 )
 
 @Serializable

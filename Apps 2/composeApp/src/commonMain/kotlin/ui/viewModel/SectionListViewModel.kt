@@ -125,6 +125,7 @@ class SectionListViewModel(private val sectionListUseCase: SectionListUseCase,
     fun widgetViewType(sid:Int) : String {
         return when(sid) {
             69 -> ViewType.VIEW_TYPE_WIDGET_CARTOON
+            5 -> ViewType.VIEW_TYPE_WIDGET_EDITORIAL
             else -> ViewType.VIEW_TYPE_WIDGET
         }
     }

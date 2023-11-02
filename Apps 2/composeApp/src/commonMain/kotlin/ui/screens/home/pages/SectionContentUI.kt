@@ -113,6 +113,13 @@ fun SectionContentListUI(
                             widget = item!!.widget!!
                         )
                     }
+                    ViewType.VIEW_TYPE_WIDGET_EDITORIAL -> {
+                        WidgetEditorials(
+                            viewModel = viewModel,
+                            isLoading = isLoading,
+                            widget = item!!.widget!!
+                        )
+                    }
                     ViewType.VIEW_TYPE_BANNER_ADS -> {
                         AdmobBanner(modifier= Modifier.fillMaxWidth().height(300.dp))
                     }else -> {

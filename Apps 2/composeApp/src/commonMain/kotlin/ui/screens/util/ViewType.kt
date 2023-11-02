@@ -9,6 +9,7 @@ class ViewType {
         const val VIEW_TYPE_ARTICLE = "article"
         const val VIEW_TYPE_WIDGET = "widget"
         const val VIEW_TYPE_WIDGET_CARTOON = "widget_cartoon"
+        const val VIEW_TYPE_WIDGET_EDITORIAL = "widget_editorial"
         const val VIEW_TYPE_BANNER_ADS = "BannerAds"
     }
 }

@@ -2,10 +2,8 @@ package ui.screens.home.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,27 +11,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seiko.imageloader.rememberAsyncImagePainter
 import domain.mapper.ArticleMapper
 import domain.model.Article
 import domain.model.Widget
+import ui.sharedui.WidgetTitle
 import ui.viewModel.SectionListViewModel
 
 /**
@@ -66,7 +55,7 @@ fun WidgetCartoon(viewModel: SectionListViewModel, isLoading: Boolean, widget: W
         shape = RoundedCornerShape(10.dp)
     ) {
         Column {
-            LatestNewsText()
+            WidgetTitle("Cartoon")
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,40 +100,3 @@ fun CartoonItem(article: ArticleMapper) {
     }
 }
 
-@Composable
-fun LatestNewsText() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 6.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(0.75f),
-            text = "Cartoon",
-            style = TextStyle(
-                fontSize = 22.sp,
-                lineHeight = 20.8.sp,
-                fontWeight = FontWeight(700),
-
-            )
-        )
-        Text(
-            text = "See All",
-            style = TextStyle(
-                fontSize = 12.sp,
-                fontWeight = FontWeight(600),
-            )
-        )
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Sharp.KeyboardArrowRight,
-                contentDescription = "forward",
-                tint = Color(0xFF0080FF),
-            )
-        }
-
-
-    }
-}

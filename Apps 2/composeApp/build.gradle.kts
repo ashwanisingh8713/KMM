@@ -109,6 +109,9 @@ kotlin {
                 implementation ("io.piano.android:id-oauth-facebook:2.6.2")
                 // c1x
                 implementation( "io.piano.android:composer-c1x:2.6.2")
+
+                implementation ("androidx.media3:media3-exoplayer:1.1.0")
+                implementation ("androidx.media3:media3-ui:1.1.0")
             }
         }
 

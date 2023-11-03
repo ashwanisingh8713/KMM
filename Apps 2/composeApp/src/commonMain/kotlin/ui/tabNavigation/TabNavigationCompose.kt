@@ -28,6 +28,7 @@ import ui.tabNavigation.tabs.BookmarkTab
 import ui.tabNavigation.tabs.PremiumTab
 import ui.tabNavigation.tabs.HomeTab
 import ui.tabNavigation.tabs.MoreTab
+import ui.tabNavigation.tabs.ReelsTab
 
 /**
  * Created by Ashwani Kumar Singh on 10,August,2023.
@@ -44,7 +45,7 @@ internal class StartingScreen : Screen {
             tabDisposable = {
                 TabDisposable(
                     navigator = it,
-                    tabs = listOf(HomeTab, PremiumTab, BookmarkTab, MoreTab)
+                    tabs = listOf(HomeTab, PremiumTab, BookmarkTab, ReelsTab, MoreTab)
                 )
             }
         ) { tabNavigator ->
@@ -71,6 +72,7 @@ internal class StartingScreen : Screen {
                         TabNavigationItem(HomeTab)
                         TabNavigationItem(PremiumTab)
                         TabNavigationItem(BookmarkTab)
+                        TabNavigationItem(ReelsTab)
                         TabNavigationItem(MoreTab)
                     }
                 }

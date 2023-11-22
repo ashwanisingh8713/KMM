@@ -13,6 +13,7 @@ import taboola.LoadSingleTaboola
  */
 
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
 import com.app.compose.R
+import com.eygraber.uri.toUrl
 import domain.mapper.ArticleMapper
 import io.piano.android.composer.ComposerException
 import io.piano.android.composer.listeners.ShowTemplateListener
@@ -40,10 +42,11 @@ import io.piano.android.composer.model.Event
 import io.piano.android.composer.model.ExperienceRequest
 import io.piano.android.composer.model.events.ShowTemplate
 import io.piano.android.composer.showtemplate.ShowTemplateController
+import org.koin.compose.getKoin
 import ui.sharedui.DetailBanner
 
 @Composable
-actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int, onLinkClick:(String)->Unit) {
     val context = LocalContext.current
 
     LazyColumn(modifier = modifier) {
@@ -54,7 +57,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPa
                 // Showing Banner
                 DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.6f))
                 // Showing HTML Description
-                HtmlDescription(article.de!!, modifier =  modifier.padding(end = 20.dp), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
+                HtmlDescription(article.de!!, modifier =  modifier.padding(end = 20.dp), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage, onLinkClick)
                 // Showing Taboola Widgets
                 LoadTaboolaWidget(pageUrl = article.al!!, modifier = Modifier.fillMaxWidth().fillMaxHeight(.1f))
 
@@ -70,7 +73,8 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPa
 
 @SuppressLint("ClickableViewAccessibility")
 @Composable
-actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
+actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int, onLinkClick:(String)->Unit) {
+    val context = LocalContext.current
     // Adding a WebView inside AndroidView
     // with layout as full screen
     AndroidView( modifier = modifier,
@@ -80,13 +84,31 @@ actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTou
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                webViewClient = WebViewClient()
+                webViewClient = object: WebViewClient() {
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        request?.let {it2->
+                            val url = it2.url.toString()
+                            Toast.makeText(context, url, Toast.LENGTH_LONG).show()
+                            onLinkClick(url)
+                        }
+
+
+
+                        return true
+                    }
+
+                }
 
                 // to play video on a web view
                 settings.javaScriptEnabled = true
                 // to verify that the client requesting your web page is actually your Android app.
                 settings.userAgentString = System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
                 settings.useWideViewPort = false
+                settings.allowContentAccess = true
+
 
                 // Bind JavaScript code to Android code
                 // addJavascriptInterface(WebAppInterface(context,infoDialog), "Android")
@@ -106,7 +128,6 @@ actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTou
             it.settings.defaultFontSize = fontSizeForWebPage
             println("AshwaniFont FontSizeForWebPage Rule-4 = $fontSizeForWebPage")
         })
-
 }
 @Composable
 actual fun LoadTaboolaWidget(pageUrl: String, modifier: Modifier) {

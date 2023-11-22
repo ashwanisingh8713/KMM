@@ -1,6 +1,5 @@
 package domain.usecase.base
 
-import domain.model.PremiumContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

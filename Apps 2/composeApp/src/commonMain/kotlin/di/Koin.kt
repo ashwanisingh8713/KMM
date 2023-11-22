@@ -17,12 +17,15 @@ import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.Charac
 import daniel.avila.rnm.kmm.repository.ICacheData
 import daniel.avila.rnm.kmm.repository.IRemoteData
 import daniel.avila.rnm.kmm.repository.RepositoryImp
+import data.repository.ArticleIdDetailRepoImpl
 import data.repository.PremiumContentRepoImpl
 import data.repository.SectionContentRepoImpl
 import data.repository.SectionsListRepoImpl
+import domain.repository.ArticleIdDetailRepo
 import domain.repository.PremiumContentRepo
 import domain.repository.SectionContentRepo
 import domain.repository.SectionsListRepo
+import domain.usecase.ArticleIdDetailUseCase
 import domain.usecase.PremiumContentUseCase
 import domain.usecase.SectionContentUseCase
 import domain.usecase.SectionListUseCase
@@ -42,6 +45,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import ui.viewModel.ArticleIdDetailViewModel
 import ui.viewModel.PremiumContentViewModel
 import ui.viewModel.SectionListViewModel
 
@@ -72,6 +76,7 @@ val viewModelModule = module {
 
     factory { SectionListViewModel(get(), get()) }
     factory { PremiumContentViewModel(get()) }
+    factory { ArticleIdDetailViewModel(get()) }
 
 }
 
@@ -87,6 +92,7 @@ val useCasesModule: Module = module {
     factory { SectionContentUseCase(get()) }
     factory { SectionListUseCase(get()) }
     factory { PremiumContentUseCase(get()) }
+    factory { ArticleIdDetailUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -99,6 +105,7 @@ val repositoryModule = module {
     single<SectionContentRepo> { SectionContentRepoImpl(get(named("thg")), get(), get()) }
     single<SectionsListRepo> { SectionsListRepoImpl(get(named("thg")), get()) }
     single<PremiumContentRepo> { PremiumContentRepoImpl(get(named("premium")), get()) }
+    single<ArticleIdDetailRepo> { ArticleIdDetailRepoImpl(get(named("ArticleIdDetailRepo")), get()) }
 
 }
 
@@ -135,6 +142,7 @@ val ktorModule = module {
     single<String>(named("thg")) {  "https://app.thehindu.com/hindu/service/api_v1.006" }
     single<String>(named("daniel")) { "https://rickandmortyapi.com" }
     single<String>(named("premium")) { "https://www.thehindu.com/premiumfeed/" }
+    single<String>(named("ArticleIdDetailRepo")) { "https://thehindu.com/app/getArticleByIds.json?articleIds=" }
 }
 
 

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.Navigator
 import domain.mapper.ArticleMapper
 import domain.model.Widget
+import io.ktor.client.utils.EmptyContent.contentType
 import ui.screens.detail.DetailScreen
 import ui.screens.util.ViewType
 import ui.sharedui.NoNetworkUI
@@ -83,18 +84,22 @@ fun SectionContentListUI(
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         ) {
-            itemsIndexed(items = sectionContent!!, /*key = { _, item ->
-                item?.article?.aid ?: item?.widget?.secId ?: 0
-            }*/) { index, item ->
-
-                println("WidgetCartoon - viewType = ${item?.viewType}")
-
+            // Impl Ref Topic - https://medium.com/google-developer-experts/the-diffing-dilemma-all-about-diffing-with-lazylists-288847307b8a
+            items(
+                count = sectionContent!!.size,
+                key = { index -> //KEY
+                    index
+                },
+                contentType = { index -> //CONTENT-TYPE
+                    sectionContent!![index]?.viewType
+                }
+            ) {
+                val item = sectionContent!![it]
                 when(item?.viewType) {
-
                     ViewType.VIEW_TYPE_ARTICLE -> {
                         PostCard_New(
                             isLoading = isLoading,
-                            article = item!!.article!!,
+                            article = item.article!!,
                             onArticleClick = onArticleClick
                         )
                         Divider(color = Color.Black, thickness = 1.dp)
@@ -103,37 +108,37 @@ fun SectionContentListUI(
                         WidgetHorizontalList(
                             viewModel = viewModel,
                             isLoading = isLoading,
-                            widget = item!!.widget!!
+                            widget = item.widget!!
                         )
                     }
                     ViewType.VIEW_TYPE_WIDGET_CARTOON -> {
                         WidgetCartoon(
                             viewModel = viewModel,
                             isLoading = isLoading,
-                            widget = item!!.widget!!
+                            widget = item.widget!!
                         )
                     }
                     ViewType.VIEW_TYPE_WIDGET_EDITORIAL -> {
                         WidgetEditorials(
                             viewModel = viewModel,
                             isLoading = isLoading,
-                            widget = item!!.widget!!
+                            widget = item.widget!!
                         )
                     }
                     ViewType.VIEW_TYPE_BANNER_ADS -> {
                         AdmobBanner(modifier= Modifier.fillMaxWidth().height(300.dp))
                     }else -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "No Data",
-                                style = MaterialTheme.typography.displayMedium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No Data",
+                            style = MaterialTheme.typography.displayMedium,
+                            textAlign = TextAlign.Center
+                        )
                     }
+                }
                 }
             }
         }

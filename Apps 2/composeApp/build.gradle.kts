@@ -161,6 +161,9 @@ android {
         resources.excludes.add("META-INF/**")
     }
 }
+dependencies {
+    implementation("org.jetbrains:annotations:15.0")
+}
 
 
 

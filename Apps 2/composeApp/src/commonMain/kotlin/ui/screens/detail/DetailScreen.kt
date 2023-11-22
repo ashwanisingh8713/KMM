@@ -3,31 +3,26 @@ package ui.screens.detail
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerEvent
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -36,9 +31,12 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.mapper.ArticleMapper
-import kotlinx.coroutines.awaitCancellation
+import ext.getScreenModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import ui.composables.Stepper_n
+import ui.viewModel.ArticleIdDetailViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 03,August,2023.
@@ -50,6 +48,8 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
 
     @Composable
     override fun Content() {
+
+        val articleIdDetailViewModel = getScreenModel<ArticleIdDetailViewModel>()
 
         var fontSizeStepperVisible by remember { mutableStateOf(false)}
         var fontSizeForWebPage by remember { mutableStateOf(18)}
@@ -135,6 +135,21 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
             }
         }
 
+
+        // On ArticleLink Click, Redirection to detail page
+        LaunchedEffect(true) {
+            articleIdDetailViewModel.articleIdDetailSuccess.collectLatest {
+                navigator.push(DetailScreen(article = it!!))
+            }
+        }
+
+        val onLinkClick:(String)->Unit= {
+            val subArr = it.split("/")
+            val lastSubStr = subArr[subArr.size-1]
+            val artileId = lastSubStr.filter { it.isDigit() }.toInt()
+            articleIdDetailViewModel.makArticleIdApiRequest(artileId)
+        }
+
         Box {
             ArticleDetailContents(
                 modifier = pointerModifier,
@@ -151,7 +166,8 @@ data class DetailScreen(private val article: ArticleMapper, private val allArtic
                 descriptionFontSize = descriptionFontSize,
                 allArticles = allArticles,
                 onWebPageTouch = onWebPageTouch,
-                fontSizeForWebPage = fontSizeForWebPage
+                fontSizeForWebPage = fontSizeForWebPage,
+                onLinkClick = onLinkClick
             )
 
             FontSizeChangeCompose(fontSizeStepperVisible, fontSizeChanged)
@@ -168,7 +184,7 @@ private fun ArticleDetailContents(
     onCommentPress: () -> Unit, onBookmarkPress: () -> Unit,
     onFontPress: () -> Unit, onTextToSpeechPress: () -> Unit, onPageChanged:(Int)->Unit,
     isBookmarked: Boolean, isTextToSpeechEnabled: Boolean, descriptionFontSize: Int, fontSizeForWebPage: Int,
-    allArticles: List<ArticleMapper>, onWebPageTouch:()->Unit
+    allArticles: List<ArticleMapper>, onWebPageTouch:()->Unit,onLinkClick:(String)->Unit
 ) {
 
     Scaffold(
@@ -188,13 +204,13 @@ private fun ArticleDetailContents(
                 contentAlignment = Alignment.TopCenter
             ) {
                 if(allArticles.isEmpty()) {
-                    DetailPageCompose(article, Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
+                    DetailPageCompose(article, Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage, onLinkClick=onLinkClick)
                 } else {
                     var initialPage = allArticles.indexOf(article)
                     if(initialPage == -1) {
                         initialPage = 0
                     }
-                    DetailPager(modifier, allArticles, initialPage = initialPage, onPageChanged = onPageChanged, onWebPageTouch=onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
+                    DetailPager(modifier, allArticles, initialPage = initialPage, onPageChanged = onPageChanged, onWebPageTouch=onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage, onLinkClick=onLinkClick)
                 }
             }
 
@@ -207,7 +223,7 @@ private fun ArticleDetailContents(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPage: Int = 0, onPageChanged:(Int)->Unit, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
+fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPage: Int = 0, onPageChanged:(Int)->Unit, onWebPageTouch:()->Unit, fontSizeForWebPage: Int, onLinkClick:(String)->Unit) {
     val pagerState = rememberPagerState(initialPage = initialPage, initialPageOffsetFraction = 0.0f, pageCount = {
         allArticles.size
     })
@@ -219,7 +235,7 @@ fun DetailPager(modifier: Modifier, allArticles: List<ArticleMapper>, initialPag
     ) { page ->
         // Our page content
         val article = allArticles[page]
-        DetailPageCompose(article, modifier, onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
+        DetailPageCompose(article, modifier, onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage, onLinkClick)
         LaunchedEffect(pagerState) {
             snapshotFlow {
                 pagerState.currentPage

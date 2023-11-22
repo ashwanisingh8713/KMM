@@ -31,7 +31,7 @@ import ui.sharedui.DetailBanner
  */
 
 @Composable
-actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
+actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int, onLinkClick:(String)->Unit) {
     Surface {
     Column(modifier = Modifier.fillMaxSize()
 
@@ -39,7 +39,7 @@ actual fun DetailPageCompose(article: ArticleMapper, modifier: Modifier, onWebPa
             // Showing Banner
             DetailBanner(article, Modifier.fillMaxWidth().fillMaxHeight(0.4f))
             // Showing HTML Description
-            HtmlDescription(article.de!!, modifier = Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage)
+            HtmlDescription(article.de!!, modifier = Modifier.fillMaxSize(), onWebPageTouch = onWebPageTouch, fontSizeForWebPage = fontSizeForWebPage, onLinkClick)
             // Showing Taboola Widgets
             LoadTaboolaWidget(
                 pageUrl = article.al!!,
@@ -56,7 +56,7 @@ actual fun LoadTaboolaWidget(pageUrl: String, modifier: Modifier) {
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int) {
+actual fun HtmlDescription(description: String, modifier: Modifier, onWebPageTouch:()->Unit, fontSizeForWebPage: Int, onLinkClick:(String)->Unit) {
     var wkWebView by remember { mutableStateOf<WKWebView?>(null) }
 
     LaunchedEffect(Unit) {

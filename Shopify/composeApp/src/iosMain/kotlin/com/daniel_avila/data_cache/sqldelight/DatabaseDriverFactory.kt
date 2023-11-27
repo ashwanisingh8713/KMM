@@ -2,7 +2,6 @@ package com.daniel_avila.data_cache.sqldelight
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.native.NativeSqliteDriver
-import com.ns.shopify.kmm.data_cache.sqldelight.AppDatabase
 
 actual class DatabaseDriverFactory {
     actual suspend fun createDriver(): SqlDriver {

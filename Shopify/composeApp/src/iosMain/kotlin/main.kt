@@ -1,5 +1,5 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import com.daniel_avila.App
+import com.app.App
 import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController {

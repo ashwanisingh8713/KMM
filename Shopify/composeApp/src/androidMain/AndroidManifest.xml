@@ -3,12 +3,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:name=".AndroidApp"
+        android:name="com.daniel_avila.AndroidApp"
         android:icon="@android:drawable/ic_menu_compass"
         android:label="Shopify"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".AppActivity"
+            android:name="com.daniel_avila.AppActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize"

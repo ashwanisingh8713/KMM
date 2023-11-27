@@ -94,7 +94,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.ns.shopify.kmm"
+    namespace = "com.ns"
     compileSdk = 34
 
     defaultConfig {
@@ -127,7 +127,7 @@ sqldelight {
         create("AppDatabase") {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
-            packageName.set("com.ns.shopify.kmm.data_cache.sqldelight")
+            packageName.set("com.daniel_avila.data_cache.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
     }

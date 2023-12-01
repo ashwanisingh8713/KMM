@@ -16,7 +16,6 @@ import com.daniel_avila.repository.RepositoryImp
 import com.daniel_avila.presentation.ui.features.character_detail.CharacterDetailViewModel
 import com.daniel_avila.presentation.ui.features.characters.CharactersViewModel
 import com.daniel_avila.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
-import com.rocketreserver.vm.LaunchListViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -50,9 +49,6 @@ val viewModelModule = module {
     factory { CharactersViewModel(get()) }
     factory { CharactersFavoritesViewModel(get()) }
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
-
-
-    factory { LaunchListViewModel() }
 }
 
 val useCasesModule: Module = module {

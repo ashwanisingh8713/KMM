@@ -17,6 +17,7 @@ kotlinx-serialization = "1.5.1"
 koin = "3.4.3"
 koinCompose = "1.0.4"
 sqlDelight = "2.0.0-alpha05"
+appollo-version="3.8.2"
 
 [libraries]
 
@@ -46,6 +47,8 @@ sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", ver
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 sqlDelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
+apollo3-runtime = {module = "com.apollographql.apollo3:apollo-runtime", version.ref = "appollo-version"}
+apollo3-api = {module = "com.apollographql.apollo3:apollo-api", version.ref = "appollo-version"}
 
 [plugins]
 
@@ -56,3 +59,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+apollo3 = {id = "com.apollographql.apollo3", version.ref = "appollo-version"}
+

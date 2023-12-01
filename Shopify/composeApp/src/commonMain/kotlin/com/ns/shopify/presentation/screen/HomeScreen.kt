@@ -15,6 +15,4 @@ class HomeScreen : Screen {
     override fun Content() {
             Text("Hello Shopify App")
     }
-
-
 }

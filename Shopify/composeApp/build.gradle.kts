@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.libres)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.apollo3)
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -55,10 +56,15 @@ kotlin {
                 implementation(libs.ktor.json)
                 implementation(libs.ktor.logging)
                 implementation(libs.ktor.negotiation)
+
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.sqlDelight.extensions)
+
+                implementation(libs.apollo3.runtime)
+//                implementation(libs.apollo3.api)
+                implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
             }
         }
 
@@ -130,6 +136,12 @@ sqldelight {
             packageName.set("com.daniel_avila.data_cache.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.ns.shopify")
     }
 }
 

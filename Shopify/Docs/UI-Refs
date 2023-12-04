@@ -1,12 +1,48 @@
 
-Ecommerce-Compose ***  (UI Reference can be taken)
+Ecommerce-Compose ***  (UI Reference can be taken - Android Compose)
     - Login
+    - Tabs
+    - List Item in Card (Title, Subtitle, Image, rating, price)
+    - Login
+    - SignUp
+    - Forgot Password
+    - Credit Card Add Screen
+
+
+Jexmon -- E-commerce-Complete-Jetpack-Compose-UI  *** (UI Reference can be taken - Android Compose)
+    - Welcome Pager Screen
+    - SignIn (Email, Password, Social Login Icons, error message)
+    - Login Success Screen
+    - Forgot Password
+    - SignUp (Email, Password, Confirm Password)
+    - Profile Tab page options
+    - Home Tab page options
     - Tabs
 
 
-E-commerce-Complete-Jetpack-Compose-UI  *** (UI Reference can be taken)
-    - Login
-    - Tabs
 
-Online-Flora-Go-Go-App-UI-Android ()
+JetCompose FlowerUI -- Online-Flora-Go-Go-App-UI-Android (- Android Compose)
 https://github.com/meshramaravind/Online-Flora-Go-Go-App-UI-Android.git
+    - Login
+    - Cart Item Screen
+
+
+
+Kmm-Template (Basic KMM Sample)
+     - UI List
+     - Detail Screen
+     - Only Vertical List Item in Card (Image, Title, Subtitle, price)
+     - Basic Detail Page
+
+
+It has good example of Navigation, Tabs and ViewModel.
+Novelty (https://github.com/samandar-me/novelty.git - KMP Compose)
+    - Bottom Tab Navigation
+    - Inner Top-Tab Navigation
+    - SQDlight
+    - MOKO-ViewModel
+    - Theme Color
+    - Voyager Navigation
+    - Theme Color (platform specific)
+    - iOS
+

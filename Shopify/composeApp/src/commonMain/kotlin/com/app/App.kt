@@ -6,14 +6,9 @@ import com.daniel_avila.presentation.ui.theme.AppTheme
 import com.ns.shopify.presentation.screen.HomeScreen
 
 
-// This is for daniel.avila.rnm Sample
-// GitHub link : https://github.com/daniaviladomingo/kmm
-/*@Composable
-internal fun App() = AppTheme {
-    Navigator(CharactersScreen())
-}*/
-
-
+/**
+ * Created by Ashwani Kumar Singh on 04,December,2023.
+ */
 
 @Composable
 internal fun App() = AppTheme {

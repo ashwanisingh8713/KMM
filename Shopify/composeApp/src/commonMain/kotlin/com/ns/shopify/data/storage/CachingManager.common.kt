@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 expect class CachingManager {
     suspend fun saveThemeIndex(index: Int)
-
     fun getThemeIndex(): Flow<Int>
+
+    suspend fun saveLoggedInStatus(isLoggedIn: Boolean)
+    fun getLoggedInStatus(): Flow<Boolean>
 }

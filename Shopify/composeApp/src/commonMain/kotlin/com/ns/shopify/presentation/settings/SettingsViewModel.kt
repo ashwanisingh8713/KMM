@@ -18,11 +18,21 @@ class SettingsViewModel(
     var index by mutableStateOf(0)
         private set
 
+    var loggedInStatus by mutableStateOf(false)
+        private set
+
     init {
         observerValue()
     }
 
     private fun observerValue() {
+
+        coroutineScope.launch {
+            cachingManager.getLoggedInStatus().collectLatest {
+                loggedInStatus = it
+            }
+        }
+
         coroutineScope.launch {
             cachingManager.getThemeIndex().collectLatest {
                 index = it
@@ -33,6 +43,13 @@ class SettingsViewModel(
     fun saveThemeIndex(index: Int) {
         coroutineScope.launch(appDispatcher) {
             cachingManager.saveThemeIndex(index)
+            observerValue()
+        }
+    }
+
+    fun saveLoggedInStatus(isLoggedIn: Boolean) {
+        coroutineScope.launch(appDispatcher) {
+            cachingManager.saveLoggedInStatus(isLoggedIn)
             observerValue()
         }
     }

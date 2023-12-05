@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.app.util.Other
@@ -16,6 +17,7 @@ import com.ns.shopify.presentation.componets.AnimVisible
 import com.ns.shopify.presentation.componets.TabItem
 import com.ns.shopify.presentation.screen.cart.CartTab
 import com.ns.shopify.presentation.screen.home.HomeTab
+import com.ns.shopify.presentation.screen.login.SignInScreen
 import com.ns.shopify.presentation.screen.more.MoreTab
 import com.ns.shopify.presentation.screen.user.UserTab
 import com.ns.shopify.presentation.settings.SettingsViewModel
@@ -48,7 +50,7 @@ fun App(
     ) {
         BoxWithConstraints {
             TabNavigator(HomeTab) {
-                if (maxWidth.value < 500f) {
+                if (vm.loggedInStatus) {
                     Scaffold(
                         bottomBar = {
                             AnimVisible(
@@ -67,15 +69,10 @@ fun App(
                         CurrentTab()
                     }
                 } else {
-                    Box(modifier = Modifier.padding(start = 80.dp)) {
-                        CurrentTab()
-                    }
-                    AnimVisible(
-                        isVisible = Other.isBottomBarVisible
-                    ) {
 
-                    }
+                    Navigator(SignInScreen())
                 }
+
             }
         }
     }

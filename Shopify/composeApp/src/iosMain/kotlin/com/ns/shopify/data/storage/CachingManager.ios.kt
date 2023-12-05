@@ -20,4 +20,13 @@ actual class CachingManager {
         emit(s.toInt())
     }
 
+    actual suspend fun saveLoggedInStatus(isLoggedIn: Boolean) {
+        userDefault.setBool(isLoggedIn, "logged_in")
+    }
+
+    actual fun getLoggedInStatus(): Flow<Boolean> = flow {
+        val s = userDefault.boolForKey("logged_in")
+        emit(s)
+    }
+
 }

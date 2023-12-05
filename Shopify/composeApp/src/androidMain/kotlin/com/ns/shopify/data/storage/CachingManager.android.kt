@@ -1,6 +1,7 @@
 package com.ns.shopify.data.storage
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -15,14 +16,25 @@ actual class CachingManager(private val context: Context) {
 
     private val Context.dataStore by preferencesDataStore("theme_cache")
 
-    private val key = intPreferencesKey("index_key")
+    private val theme_key = intPreferencesKey("index_key")
+    private val loggedInStatus_key = booleanPreferencesKey("loggedInStatus_key")
     actual suspend fun saveThemeIndex(index: Int) {
         context.dataStore.edit {
-            it[key] = index
+            it[theme_key] = index
         }
     }
 
     actual fun getThemeIndex(): Flow<Int> = context.dataStore.data.map {
-        it[key] ?: 0
+        it[theme_key] ?: 0
+    }
+
+    actual suspend fun saveLoggedInStatus(isLoggedIn: Boolean) {
+        context.dataStore.edit {
+            it[loggedInStatus_key] = isLoggedIn
+        }
+    }
+
+    actual fun getLoggedInStatus(): Flow<Boolean> = context.dataStore.data.map {
+        it[loggedInStatus_key] ?: false
     }
 }

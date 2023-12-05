@@ -1,13 +1,13 @@
 package com.ns.shopify.di
 
 import com.apollographql.apollo3.ApolloClient
-import com.daniel_avila.data_cache.sqldelight.SharedDatabase
 import com.ns.shopify.data.repo.LoginModuleRepoImpl
 import com.ns.shopify.data.storage.TokenRepository
 import com.ns.shopify.domain.repo.login.ILoginModuleRepo
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerRecoverUseCase
+import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.presentation.viewmodel.AccessTokenCreateViewModel
 import com.ns.shopify.presentation.viewmodel.CustomerRecoverViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +17,10 @@ import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
+/**
+ * Created by Ashwani Kumar Singh on 02,December,2023.
+ */
+expect fun platformModule(): Module
 fun shopifyInitKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
@@ -25,12 +29,13 @@ fun shopifyInitKoin(appDeclaration: KoinAppDeclaration = {}) =
             useCasesModule,
             repositoryModule,
             apolloModule,
-            sqlDelightModule,
             dispatcherModule,
+            platformModule()
         )
     }
 
 val viewModelModule = module {
+    factory { SettingsViewModel(get(), get()) }
     factory { AccessTokenCreateViewModel(get()) }
     factory { CustomerRecoverViewModel(get()) }
     factory { CustomerRecoverViewModel(get()) }
@@ -61,9 +66,7 @@ val apolloModule = module {
 
 }
 
-val sqlDelightModule = module {
-    single { SharedDatabase(get()) }
-}
+
 
 val dispatcherModule = module {
     factory { Dispatchers.Default }

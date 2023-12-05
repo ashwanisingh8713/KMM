@@ -1,7 +1,7 @@
 package com.app.storage
 
 import android.content.SharedPreferences
-import com.daniel_avila.AndroidApp
+import com.app.AndroidApp
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SharedPreferencesSettings
 

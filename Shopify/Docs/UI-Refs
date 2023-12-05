@@ -44,5 +44,6 @@ Novelty (https://github.com/samandar-me/novelty.git - KMP Compose)
     - Theme Color
     - Voyager Navigation
     - Theme Color (platform specific)
-    - iOS
+    - Very Good Use of expect/actual
+    - Native Uses of SharedPref and NSUserDefaults
 

@@ -19,9 +19,11 @@ koinCompose = "1.0.4"
 sqlDelight = "2.0.0-alpha05"
 appollo-version="3.8.2"
 kamel-image = "1.5.11"
+datastore-preferences = "1.0.0"
 
 [libraries]
 
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }

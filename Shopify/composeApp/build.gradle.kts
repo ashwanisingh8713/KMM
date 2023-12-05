@@ -85,6 +85,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
+                implementation(libs.datastore.preferences)
             }
         }
 

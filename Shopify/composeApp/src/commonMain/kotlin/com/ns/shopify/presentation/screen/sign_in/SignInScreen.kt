@@ -1,4 +1,4 @@
-package com.ns.shopify.presentation.screen.login
+package com.ns.shopify.presentation.screen.sign_in
 
 
 import androidx.compose.foundation.Image
@@ -30,6 +30,10 @@ import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.ErrorSuggestion
+import com.ns.shopify.presentation.screen.forgot_password.ForgetPasswordScreen
+import com.ns.shopify.presentation.screen.sign_up.SignUpScreen
+import com.ns.shopify.presentation.settings.SettingsViewModel
+import org.koin.compose.rememberKoinInject
 
 
 /**
@@ -39,9 +43,7 @@ class SignInScreen : Screen {
 
     @Composable
     override fun Content() {
-
         val navController = LocalNavigator.current
-
         if (navController != null) {
             LoginComponent(navController = navController)
         }
@@ -77,11 +79,12 @@ class SignInScreen : Screen {
                 horizontalArrangement = Arrangement.SpaceBetween
             )
             {
-                Box(modifier = Modifier.weight(0.7f)) {
+                // Back Arrow Button
+                /*Box(modifier = Modifier.weight(0.7f)) {
                     DefaultBackArrow {
                         navController.pop()
                     }
-                }
+                }*/
                 Box(modifier = Modifier.weight(1.0f)) {
                     Text(text = "Sign in", color = MaterialTheme.colors.onPrimary, fontSize = 18.sp)
                 }
@@ -152,21 +155,25 @@ class SignInScreen : Screen {
                     style = TextStyle(textDecoration = TextDecoration.Underline),
                     modifier = Modifier.clickable {
                         // TODO: Forgot Password Navigation
-                        //navController.navigate(AuthScreen.ForgetPasswordScreen.route)
+                        navController.push(ForgetPasswordScreen())
                     }
                 )
             }
+
+            val vm = rememberKoinInject<SettingsViewModel>()
+
             CustomDefaultBtn(shapeSize = 50f, btnText = "Continue") {
                 //email pattern
 //            val pattern = Patterns.EMAIL_ADDRESS
 //            val isEmailValid = pattern.matcher(email.text).matches()
-                val isEmailValid = true
+                val isEmailValid = email.text.isNotEmpty()
                 val isPassValid = password.text.length >= 8
                 emailErrorState.value = !isEmailValid
                 passwordErrorState.value = !isPassValid
                 if (isEmailValid && isPassValid) {
                     // TODO: Login Success Navigation
-                    //navController.navigate(AuthScreen.SignInSuccess.route)
+                    // navController.navigate(AuthScreen.SignInSuccess.route)
+                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
                 }
             }
             Column(
@@ -244,7 +251,7 @@ class SignInScreen : Screen {
                         color = MaterialTheme.colors.primary,
                         modifier = Modifier.clickable {
                             // TODO: Sign Up Navigation
-                            //navController.navigate(AuthScreen.SignUpScreen.route)
+                            navController.push(SignUpScreen())
                         })
                 }
             }

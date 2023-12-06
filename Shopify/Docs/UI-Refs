@@ -37,13 +37,21 @@ Kmm-Template (Basic KMM Sample)
 
 It has good example of Navigation, Tabs and ViewModel.
 Novelty (https://github.com/samandar-me/novelty.git - KMP Compose)
+    - Voyager Navigation
     - Bottom Tab Navigation
     - Inner Top-Tab Navigation
-    - SQDlight
+    - SQDelight
     - MOKO-ViewModel
     - Theme Color
-    - Voyager Navigation
     - Theme Color (platform specific)
     - Very Good Use of expect/actual
     - Native Uses of SharedPref and NSUserDefaults
+
+
+TimePlanner (https://github.com/v1tzor/TimePlanner.git - Android Only)
+    - Voyager Navigation
+    - Bottom Tab Navigation         - TabsScreen.kt
+    - ModalNavigationDrawer ( Hamburger Drawer) - TabsScreen.kt
+    - Feature module (pattern) implementation
+    - MVI Pattern
 

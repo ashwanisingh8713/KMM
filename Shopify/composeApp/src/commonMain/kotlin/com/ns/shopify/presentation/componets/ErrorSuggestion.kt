@@ -29,6 +29,6 @@ fun ErrorSuggestion(message: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(painter = rememberVectorPainter(image = Icons.Outlined.Close), contentDescription = "Error Icon")
-        Text(text = message, color = MaterialTheme.colors.onPrimary, fontSize = 14.sp)
+        Text(text = message, color = MaterialTheme.colors.primary, fontSize = 14.sp)
     }
 }

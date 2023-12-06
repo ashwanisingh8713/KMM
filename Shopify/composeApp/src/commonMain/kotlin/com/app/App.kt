@@ -1,14 +1,9 @@
 package com.app
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
@@ -17,7 +12,7 @@ import com.ns.shopify.presentation.componets.AnimVisible
 import com.ns.shopify.presentation.componets.TabItem
 import com.ns.shopify.presentation.screen.cart.CartTab
 import com.ns.shopify.presentation.screen.home.HomeTab
-import com.ns.shopify.presentation.screen.login.SignInScreen
+import com.ns.shopify.presentation.screen.sign_in.SignInScreen
 import com.ns.shopify.presentation.screen.more.MoreTab
 import com.ns.shopify.presentation.screen.user.UserTab
 import com.ns.shopify.presentation.settings.SettingsViewModel
@@ -64,10 +59,11 @@ fun App(
 //                                    TabItem(Settings(vm))
                                 }
                             }
+                        },
+                        content = {
+                            CurrentTab()
                         }
-                    ) {
-                        CurrentTab()
-                    }
+                    )
                 } else {
 
                     Navigator(SignInScreen())

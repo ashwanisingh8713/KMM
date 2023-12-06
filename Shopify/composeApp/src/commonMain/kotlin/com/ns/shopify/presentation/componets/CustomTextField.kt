@@ -51,11 +51,11 @@ fun CustomTextField(
         },
         singleLine = true,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            trailingIconColor = if (text.text.isNotEmpty()) MaterialTheme.colors.primary else MaterialTheme.colors.onPrimary,
+            trailingIconColor = if (text.text.isNotEmpty()) MaterialTheme.colors.primary else MaterialTheme.colors.primary,
             cursorColor = MaterialTheme.colors.primary,
             focusedBorderColor = MaterialTheme.colors.primary,
             focusedLabelColor = MaterialTheme.colors.primary,
-            textColor = MaterialTheme.colors.onPrimary
+            textColor = MaterialTheme.colors.primary
         ),
         visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType),

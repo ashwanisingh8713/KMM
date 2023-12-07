@@ -1,12 +1,19 @@
 package com.ns.shopify.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.ns.shopify.data.repo.CategoryCollectionRepoImpl
 import com.ns.shopify.data.repo.LoginModuleRepoImpl
+import com.ns.shopify.data.repo.ShopDetailsRepoImpl
 import com.ns.shopify.data.storage.TokenRepository
+import com.ns.shopify.domain.repo.IShopDetailsRepo
+import com.ns.shopify.domain.repo.category.ICategoryCollectionRepo
 import com.ns.shopify.domain.repo.login.ILoginModuleRepo
+import com.ns.shopify.domain.usecase.ShopDetailsUseCase
+import com.ns.shopify.domain.usecase.category.CategoryCollectionUsecase
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerRecoverUseCase
+import com.ns.shopify.presentation.screen.home.HomeViewModel
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.presentation.viewmodel.AccessTokenCreateViewModel
 import com.ns.shopify.presentation.viewmodel.CustomerRecoverViewModel
@@ -39,24 +46,29 @@ val viewModelModule = module {
     factory { AccessTokenCreateViewModel(get()) }
     factory { CustomerRecoverViewModel(get()) }
     factory { CustomerRecoverViewModel(get()) }
+    factory { HomeViewModel(get()) }
 }
 
 val useCasesModule: Module = module {
+    factory { ShopDetailsUseCase(get(), get()) }
     factory { AccessTokenCreateUseCase(get(), get()) }
     factory { CustomerCreateUseCase(get(), get()) }
     factory { CustomerRecoverUseCase(get(), get()) }
+    factory { CategoryCollectionUsecase(get(), get()) }
 }
 
 val repositoryModule = module {
+    factory<IShopDetailsRepo> { ShopDetailsRepoImpl(get()) }
     factory<ILoginModuleRepo> { LoginModuleRepoImpl(get()) }
+    factory<ICategoryCollectionRepo> { CategoryCollectionRepoImpl(get()) }
 }
 
 val apolloModule = module {
     single {
         ApolloClient.Builder()
-            .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
-            .addHttpHeader("Authorization", "${TokenRepository.getToken()}")
-            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
+            .serverUrl("https://c498b0-3.myshopify.com/api/2023-10/graphql.json")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "6974ac476e8022a5916eca859872fcf3")
+//            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)
                 true

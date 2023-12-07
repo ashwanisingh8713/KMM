@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.apollo3)
+
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -138,7 +139,7 @@ sqldelight {
         create("AppDatabase") {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
-            packageName.set("com.daniel_avila.data_cache.sqldelight")
+            packageName.set("com.ns.data_cache.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
     }

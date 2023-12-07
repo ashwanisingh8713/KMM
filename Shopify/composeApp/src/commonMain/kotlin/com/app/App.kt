@@ -43,6 +43,7 @@ fun App(
     AppTheme (
         isDark = theme
     ) {
+        printLog("App Login Status : ${vm.loggedInStatus}")
         BoxWithConstraints {
             TabNavigator(HomeTab) {
                 if (vm.loggedInStatus) {

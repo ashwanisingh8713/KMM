@@ -10,6 +10,16 @@ query GetCollections($first: Int, $productsFirst: Int) {
                     id
                     handle
                     title
+                    featuredImage {
+                        originalSrc
+                        url
+                    }
+                    priceRange {
+                        minVariantPrice {
+                            amount
+                            currencyCode
+                        }
+                    }
                 }
             }
         }

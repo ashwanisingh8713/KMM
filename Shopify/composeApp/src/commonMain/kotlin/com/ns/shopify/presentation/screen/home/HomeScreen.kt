@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.ns.shopify.presentation.componets.CollectionList
 import com.ns.shopify.presentation.componets.Loading
 
 /**
@@ -45,7 +46,12 @@ internal class HomeScreen(
             Loading()
         }
         if(state.value.isLoaded) {
-            //Text(text = state.value.success[0], fontSize = 25.sp)
+//            val products = state.value.success.get(0).products.nodes
+//             Text(text = products[0].title, fontSize = 25.sp)
+            CollectionList(list = state.value.success, onClick = { news ->
+                // TODO, Open Product Detail Page
+                // navController.push(NewsDetailScreen(news))
+            })
         }
 
     }

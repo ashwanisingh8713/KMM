@@ -43,6 +43,8 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                             )
                         }
                     } else {  // Success Block
+                        val categories = response.data?.collections?.nodes
+
                         val title = response.data?.collections?.nodes?.get(0)?.products?.nodes?.get(0)?.title
                         printLog("model_error: $error")
                         printLog("model_1: $title")
@@ -51,7 +53,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                             its.copy(
                                 isLoading = false,
                                 isLoaded = true,
-                                success = mutableListOf(title!!)
+                                success = categories ?: emptyList()
                             )
                         }
                     }

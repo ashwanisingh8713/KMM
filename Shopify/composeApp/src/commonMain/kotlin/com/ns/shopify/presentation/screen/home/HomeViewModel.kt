@@ -17,11 +17,13 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
 
     private val TAG = HomeViewModel::class.simpleName
 
-    private val _state = MutableStateFlow<HomeState>(HomeState())
+    private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
 
 
-    private val collection = mutableListOf<String>()
+    init {
+        getCollection()
+    }
 
     fun getCollection() {
         coroutineScope.launch {

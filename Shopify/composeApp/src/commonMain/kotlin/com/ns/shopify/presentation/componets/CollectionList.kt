@@ -39,7 +39,7 @@ import com.ns.shopify.GetCollectionsQuery
 @Composable
 fun CollectionList(
     list: List<GetCollectionsQuery.Node>,
-    onClick: (GetCollectionsQuery.Node1) -> Unit,
+    onItemClick: (GetCollectionsQuery.Node1) -> Unit,
     suggestionProductState: LazyListState = rememberLazyListState(),
     collectionState: LazyListState = rememberLazyListState(),
 ) {
@@ -62,14 +62,14 @@ fun CollectionList(
 
 
             LazyRow(
-                state = suggestionProductState,
+//                state = suggestionProductState,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 contentPadding = PaddingValues(horizontal = 10.dp)
             ) {
                 items(
                     items = currentCollection.products.nodes
                 ) { product ->
-                    ProductItem(product = product)
+                    ProductItem(product = product, onItemClick = onItemClick)
                 }
             }
 
@@ -80,15 +80,15 @@ fun CollectionList(
 
 
 @Composable
-fun ProductItem(product: GetCollectionsQuery.Node1) {
+fun ProductItem(product: GetCollectionsQuery.Node1, onItemClick: (GetCollectionsQuery.Node1)->Unit) {
     Column {
         Box(
             modifier = Modifier
-//                                .size(150.dp)
+                //.size(150.dp)
                 .background(Color.LightGray, shape = RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp))
                 .clickable {
-                    //onItemClick(state.product[it].id)
+                    onItemClick(product)
                 },
             contentAlignment = Alignment.Center
         ) {

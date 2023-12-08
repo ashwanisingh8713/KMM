@@ -32,7 +32,7 @@ internal object HomeTab : Tab {
         val state = viewModel.state.collectAsState()
 
         Navigator(
-            HomeScreen(state, viewModel::getCollection)
+            screen = HomeScreen(state, viewModel::getCollection),
         ) { navigator ->
             SlideTransition(navigator) { screen ->
                 screen.Content()

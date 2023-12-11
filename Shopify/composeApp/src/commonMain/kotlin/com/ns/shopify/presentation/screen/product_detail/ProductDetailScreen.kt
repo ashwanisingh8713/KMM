@@ -26,13 +26,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.ns.shopify.di.viewModelModule
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.NetworkImage
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.core.context.unloadKoinModules
 
 
 /**
@@ -44,7 +48,7 @@ class ProductDetailScreen : Screen {
 
     @Composable
     override fun Content() {
-        val productDetailViewModel = ProductDetailViewModel()
+        val productDetailViewModel = getScreenModel<ProductDetailViewModel>()
         val navigator = LocalNavigator.currentOrThrow
         ProductDetailScreen(viewModel = productDetailViewModel, popBack = {
             navigator.pop()

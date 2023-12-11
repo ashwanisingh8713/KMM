@@ -25,11 +25,12 @@ fun CustomTextField(
     keyboardType: KeyboardType,
     visualTransformation: VisualTransformation,
     errorState: MutableState<Boolean>,
-    onChanged: (TextFieldValue) -> Unit
+    onChanged: (TextFieldValue) -> Unit,
+    initialValue: String = ""
 ) {
     //state
     var text by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(initialValue))
     }
 
     OutlinedTextField(

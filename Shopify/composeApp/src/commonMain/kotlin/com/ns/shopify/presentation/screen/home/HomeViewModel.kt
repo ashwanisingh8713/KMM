@@ -3,7 +3,7 @@ package com.ns.shopify.presentation.screen.home
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.app.printLog
-import com.ns.shopify.domain.usecase.category.CategoryCollectionUsecase
+import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -33,7 +33,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                     isLoaded = false
                 )
             }
-            categoryCollectionUsecase.invoke("")
+            categoryCollectionUsecase("")
                 .onSuccess {response->
                     val error = response.errors?.get(0)?.message
                     if(error!=null) { // Error Block

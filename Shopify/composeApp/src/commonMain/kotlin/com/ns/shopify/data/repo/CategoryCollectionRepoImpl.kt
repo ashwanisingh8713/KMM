@@ -3,9 +3,8 @@ package com.ns.shopify.data.repo
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
-import com.app.printLog
 import com.ns.shopify.GetCollectionsQuery
-import com.ns.shopify.domain.repo.category.ICategoryCollectionRepo
+import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
 
 /**
  * Created by Ashwani Kumar Singh on 07,December,2023.

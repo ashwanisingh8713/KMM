@@ -1,0 +1,27 @@
+query ProductDetail($first: Int, $productsFirst: Int) {
+    collections(first: $first) {
+        nodes {
+            handle
+            description
+            id
+            title
+            products(first: $productsFirst) {
+                nodes {
+                    id
+                    handle
+                    title
+                    featuredImage {
+                        originalSrc
+                        url
+                    }
+                    priceRange {
+                        minVariantPrice {
+                            amount
+                            currencyCode
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

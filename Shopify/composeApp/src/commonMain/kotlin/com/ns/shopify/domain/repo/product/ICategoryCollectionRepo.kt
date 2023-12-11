@@ -1,4 +1,4 @@
-package com.ns.shopify.domain.repo.category
+package com.ns.shopify.domain.repo.product
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.ns.shopify.GetCollectionsQuery

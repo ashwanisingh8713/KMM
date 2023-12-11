@@ -48,6 +48,8 @@ kotlin {
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+//                implementation(compose.ui)
+                implementation(compose.animation)
                 implementation(libs.libres)
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.tab.navigator)
@@ -72,6 +74,8 @@ kotlin {
                 implementation(libs.apollo3.runtime)
 //                implementation(libs.apollo3.api)
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
+
+
             }
         }
 
@@ -91,6 +95,9 @@ kotlin {
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
                 implementation(libs.datastore.preferences)
+//                debugImplementation(platform("androidx.compose:compose-bom:2023.04.01"))
+//                debugImplementation("androidx.compose.ui:ui-tooling")
+//                debugApi(compose.uiTooling)
             }
         }
 

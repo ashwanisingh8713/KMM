@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,7 +97,8 @@ fun ForgetPasswordScreen(navController: Navigator) {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newEmail ->
                //     email = newEmail
-                }
+                },
+                icon = Icons.Outlined.Email
             )
 
             CustomDefaultBtn(shapeSize = 50f, btnText = "Continue") {

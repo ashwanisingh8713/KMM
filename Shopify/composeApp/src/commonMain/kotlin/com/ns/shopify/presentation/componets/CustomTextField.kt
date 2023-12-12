@@ -3,11 +3,19 @@ package com.ns.shopify.presentation.componets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.runtime.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -25,7 +33,8 @@ fun CustomTextField(
     keyboardType: KeyboardType,
     visualTransformation: VisualTransformation,
     errorState: MutableState<Boolean>,
-    onChanged: (TextFieldValue) -> Unit
+    onChanged: (TextFieldValue) -> Unit,
+    icon : ImageVector? = null
 ) {
     //state
     var text by remember {
@@ -44,10 +53,14 @@ fun CustomTextField(
         label = { Text(text = label) },
         shape = RoundedCornerShape(1.dp),
         trailingIcon = {
-            Icon(
-                painter = rememberVectorPainter(image = Icons.Rounded.KeyboardArrowLeft),
-                contentDescription = "TextField Email"
-            )
+            if(icon != null) {
+                Icon(
+                    painter = rememberVectorPainter(image = icon),
+                    contentDescription = "TextField Email"
+                )
+            } else {
+
+            }
         },
         singleLine = true,
         colors = TextFieldDefaults.outlinedTextFieldColors(

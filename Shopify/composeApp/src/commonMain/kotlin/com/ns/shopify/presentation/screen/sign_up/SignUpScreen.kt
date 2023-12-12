@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -163,7 +165,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newEmail ->
                     email.value = newEmail
-                }
+                },
+                icon = Icons.Outlined.Email
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -175,7 +178,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = PasswordVisualTransformation(),
                 onChanged = { newPass ->
                     password.value = newPass
-                }
+                },
+                icon = Icons.Outlined.Lock
             )
 
 
@@ -188,7 +192,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = PasswordVisualTransformation(),
                 onChanged = { newPass ->
                     confirmPass.value = newPass
-                }
+                },
+                icon = Icons.Outlined.Lock
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -372,7 +377,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newText ->
                     firstName.value = newText
-                }
+                },
+                icon = null
             )
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
@@ -383,7 +389,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newText ->
                     lastName.value = newText
-                }
+                },
+                icon = null
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -395,7 +402,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newNumber ->
                     phoneNumber.value = newNumber
-                }
+                },
+                icon = null
             )
 
 
@@ -408,7 +416,8 @@ internal class SignUpScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newText ->
                     address.value = newText
-                }
+                },
+                icon = null
             )
             Spacer(modifier = Modifier.height(10.dp))
             if (firstNameErrorState.value || lastNameErrorState.value) {

@@ -4,12 +4,30 @@ package com.ns.shopify.presentation.screen.sign_in
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -28,7 +46,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
-import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.ErrorSuggestion
 import com.ns.shopify.presentation.screen.forgot_password.ForgetPasswordScreen
 import com.ns.shopify.presentation.screen.sign_up.SignUpScreen
@@ -106,7 +123,8 @@ class SignInScreen : Screen {
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newEmail ->
                     email = newEmail
-                }
+                },
+                icon = Icons.Outlined.Email
             )
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
@@ -117,7 +135,8 @@ class SignInScreen : Screen {
                 visualTransformation = PasswordVisualTransformation(),
                 onChanged = { newPass ->
                     password = newPass
-                }
+                },
+                icon = Icons.Outlined.Lock
             )
             Spacer(modifier = Modifier.height(10.dp))
             if (emailErrorState.value) {

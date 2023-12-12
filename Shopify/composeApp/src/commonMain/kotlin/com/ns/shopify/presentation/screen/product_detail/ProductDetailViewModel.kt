@@ -1,9 +1,9 @@
-package com.ns.shopify.presentation.screen.home
+package com.ns.shopify.presentation.screen.product_detail
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.app.printLog
-import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
+import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,21 +11,16 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 /**
- * Created by Ashwani Kumar Singh on 07,December,2023.
+ * Created by Ashwani Kumar Singh on 08,December,2023.
  */
-class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUsecase): ScreenModel, KoinComponent {
+class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsecase):ScreenModel, KoinComponent {
 
-    private val TAG = HomeViewModel::class.simpleName
+    private val TAG = "ProductDetailViewModel"
 
-    private val _state = MutableStateFlow(HomeState())
+    private val _state = MutableStateFlow(ProductDetailStates())
     val state = _state.asStateFlow()
 
-
-    init {
-        getCollection()
-    }
-
-    fun getCollection() {
+    fun getProductDetail(id: String) {
         coroutineScope.launch {
             _state.update {
                 it.copy(
@@ -33,7 +28,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                     isLoaded = false
                 )
             }
-            categoryCollectionUsecase("")
+            productDetailUsecase.invoke("")
                 .onSuccess {response->
                     val error = response.errors?.get(0)?.message
                     if(error!=null) { // Error Block
@@ -55,7 +50,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                             its.copy(
                                 isLoading = false,
                                 isLoaded = true,
-                                success = categories ?: emptyList()
+//                                success = categories ?: emptyList()
                             )
                         }
                     }
@@ -71,7 +66,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
                 }
         }
     }
+    }
 
 
 
-}

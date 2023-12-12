@@ -1,8 +1,8 @@
-package com.ns.shopify.domain.usecase.category
+package com.ns.shopify.domain.usecase.product
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.ns.shopify.GetCollectionsQuery
-import com.ns.shopify.domain.repo.category.ICategoryCollectionRepo
+import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
 import com.ns.shopify.domain.usecase.base.BaseUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 

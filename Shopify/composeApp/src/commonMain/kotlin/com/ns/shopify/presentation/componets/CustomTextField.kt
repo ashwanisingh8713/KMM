@@ -35,10 +35,11 @@ fun CustomTextField(
     errorState: MutableState<Boolean>,
     onChanged: (TextFieldValue) -> Unit,
     icon : ImageVector? = null
+    initialValue: String = ""
 ) {
     //state
     var text by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(initialValue))
     }
 
     OutlinedTextField(

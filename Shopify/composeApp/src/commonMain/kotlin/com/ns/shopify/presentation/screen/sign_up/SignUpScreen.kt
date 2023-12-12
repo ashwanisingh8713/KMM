@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,22 +26,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.ns.shopify.presentation.componets.AlertDialog
 import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.ErrorSuggestion
+import com.ns.shopify.presentation.componets.Loading
 
 
 /**
  * Created by Ashwani Kumar Singh on 06,December,2023.
  */
 
-internal class SignUpScreen : Screen {
+internal class SignUpScreen(
+
+    private val temp_email: String = "decaci4871@newcupon.com",
+    private val temp_passwd: String = "12345678",
+    private val temp_firstName: String = "Ashwani",
+    private val temp_lastName: String = "Singh",
+    private val temp_address: String = "My Address",
+    private val temp_phoneNumber: String = "+918390098887"
+
+) : Screen {
 
     @Composable
     override fun Content() {
+
+
+
         val navController = LocalNavigator.current
         if (navController != null) {
             SignUpScreen(navController = navController)
@@ -50,13 +66,13 @@ internal class SignUpScreen : Screen {
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
     fun SignUpScreen(navController: Navigator) {
-        var email = remember { mutableStateOf(TextFieldValue("")) }
-        var password = remember { mutableStateOf(TextFieldValue("")) }
-        var confirmPass = remember { mutableStateOf(TextFieldValue("")) }
-        var firstName = remember { mutableStateOf(TextFieldValue("")) }
-        var lastName = remember { mutableStateOf(TextFieldValue("")) }
-        var phoneNumber = remember { mutableStateOf(TextFieldValue("")) }
-        var address = remember { mutableStateOf(TextFieldValue("")) }
+        var email = remember { mutableStateOf(TextFieldValue(temp_email)) }
+        var password = remember { mutableStateOf(TextFieldValue(temp_passwd)) }
+        var confirmPass = remember { mutableStateOf(TextFieldValue(temp_passwd)) }
+        var firstName = remember { mutableStateOf(TextFieldValue(temp_firstName)) }
+        var lastName = remember { mutableStateOf(TextFieldValue(temp_lastName)) }
+        var phoneNumber = remember { mutableStateOf(TextFieldValue(temp_phoneNumber)) }
+        var address = remember { mutableStateOf(TextFieldValue(temp_address)) }
         val emailErrorState = remember { mutableStateOf(false) }
         val passwordErrorState = remember { mutableStateOf(false) }
         val conPasswordErrorState = remember { mutableStateOf(false) }
@@ -65,6 +81,24 @@ internal class SignUpScreen : Screen {
         val phoneNumberErrorState = remember { mutableStateOf(false) }
         val addressErrorState = remember { mutableStateOf(false) }
         val animate = remember { mutableStateOf(true) }
+
+
+        val viewModel = getScreenModel<SignUpViewModel>()
+        val state = viewModel.state.collectAsState()
+
+        val createCustomerAccount:()-> Unit = {
+            viewModel.signUpRequest(
+                email = email.value.text,
+                password = password.value.text,
+                firstName = firstName.value.text,
+                lastName = lastName.value.text,
+                phone = phoneNumber.value.text,
+            )
+        }
+
+        val dialogErrorClicked:()->Unit = {
+            viewModel.clearErrorState()
+        }
 
 
         AnimatedContent(targetState = animate.value, transitionSpec = {
@@ -100,7 +134,10 @@ internal class SignUpScreen : Screen {
                     phoneNumberErrorState = phoneNumberErrorState,
                     addressErrorState = addressErrorState,
                     animate = animate,
-                    navController = navController
+                    createCustomerAccount = createCustomerAccount,
+                    state = state,
+                    navController = navController,
+                    dialogErrorClicked = dialogErrorClicked
                 )
             }
         }
@@ -136,7 +173,7 @@ internal class SignUpScreen : Screen {
             {
                 Box(modifier = Modifier.weight(0.7f)) {
                     DefaultBackArrow {
-                        navController.pop()
+//                        navController.pop()
                     }
                 }
                 Box(modifier = Modifier.weight(1.0f)) {
@@ -158,6 +195,7 @@ internal class SignUpScreen : Screen {
             )
             Spacer(modifier = Modifier.height(50.dp))
             CustomTextField(
+                initialValue = temp_email,
                 placeholder = "example@email.com",
                 label = "Email",
                 errorState = emailErrorState,
@@ -171,6 +209,7 @@ internal class SignUpScreen : Screen {
 
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = temp_passwd,
                 placeholder = "********",
                 label = "Password",
                 keyboardType = KeyboardType.Password,
@@ -185,6 +224,7 @@ internal class SignUpScreen : Screen {
 
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = temp_passwd,
                 placeholder = "********",
                 label = "Confirm Password",
                 keyboardType = KeyboardType.Password,
@@ -289,7 +329,7 @@ internal class SignUpScreen : Screen {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 30.dp)
+                        .padding(top = 20.dp)
                         .clickable {
 
                         },
@@ -332,7 +372,10 @@ internal class SignUpScreen : Screen {
         phoneNumberErrorState: MutableState<Boolean>,
         addressErrorState: MutableState<Boolean>,
         animate: MutableState<Boolean>,
-        navController: Navigator
+        navController: Navigator,
+        createCustomerAccount:()-> Unit,
+        state : State<SignUpState>,
+        dialogErrorClicked:()->Unit
     ) {
 
         Column(
@@ -370,6 +413,7 @@ internal class SignUpScreen : Screen {
             )
             Spacer(modifier = Modifier.height(50.dp))
             CustomTextField(
+                initialValue = temp_firstName,
                 placeholder = "Enter your first name",
                 label = "First Name",
                 errorState = firstNameErrorState,
@@ -382,6 +426,7 @@ internal class SignUpScreen : Screen {
             )
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = temp_lastName,
                 placeholder = "Enter your last name",
                 label = "Last Name",
                 errorState = lastNameErrorState,
@@ -395,6 +440,7 @@ internal class SignUpScreen : Screen {
 
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = temp_phoneNumber,
                 placeholder = "Enter your phone number",
                 label = "Phone Number",
                 keyboardType = KeyboardType.Phone,
@@ -409,6 +455,7 @@ internal class SignUpScreen : Screen {
 
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = temp_address,
                 placeholder = "example: Dhaka, Bangladesh",
                 label = "Address",
                 keyboardType = KeyboardType.Password,
@@ -430,21 +477,30 @@ internal class SignUpScreen : Screen {
                 ErrorSuggestion("Please enter valid address.")
             }
 
-            CustomDefaultBtn(shapeSize = 50f, btnText = "Continue") {
-                val isPhoneValid =
-                    phoneNumber.value.text.isEmpty() || phoneNumber.value.text.length < 4
-                val isFNameValid = firstName.value.text.isEmpty() || firstName.value.text.length < 3
-                val isLNameValid = lastName.value.text.isEmpty() || lastName.value.text.length < 3
-                val isAddressValid = address.value.text.isEmpty() || address.value.text.length < 5
-                firstNameErrorState.value = !isFNameValid
-                lastNameErrorState.value = !isLNameValid
-                addressErrorState.value = !isAddressValid
-                phoneNumberErrorState.value = !isPhoneValid
-                if (!isFNameValid && !isLNameValid && !isAddressValid && !isPhoneValid) {
-                    // TODO, Navigate to OTP Screen
-                    //navController.navigate(AuthScreen.OTPScreen.route)
+            Box(){
+                if(state.value.isLoading){
+                    Loading()
+                } else {
+                    CustomDefaultBtn(shapeSize = 50f, btnText = "Continue") {
+                        val isPhoneValid =
+                            phoneNumber.value.text.isNotEmpty() || phoneNumber.value.text.length > 9
+                        val isFNameValid = firstName.value.text.isNotEmpty() || firstName.value.text.length > 3
+                        val isLNameValid = lastName.value.text.isNotEmpty() || lastName.value.text.length > 3
+                        val isAddressValid = address.value.text.isNotEmpty() || address.value.text.length > 5
+                        firstNameErrorState.value = !isFNameValid
+                        lastNameErrorState.value = !isLNameValid
+                        addressErrorState.value = !isAddressValid
+                        phoneNumberErrorState.value = !isPhoneValid
+                        if (isFNameValid && isLNameValid && isAddressValid && isPhoneValid) {
+                            // TODO, Navigate to OTP Screen
+                            //navController.navigate(AuthScreen.OTPScreen.route)
+
+                            createCustomerAccount()
+                        }
+                    }
                 }
             }
+
         }
         Column(
             modifier = Modifier
@@ -483,7 +539,29 @@ internal class SignUpScreen : Screen {
             }
         }
 
+        if(state.value.isLoaded) {
+            AlertDialog(
+                title = "Success",
+                message = "Account created successfully. \nPlease go to your registered email and verify your account, before login.",
+                onClose = {
+                    navController.pop()
+                },
+
+            )
+        }
+        if(state.value.error != null && state.value.error!!.isNotBlank()) {
+            AlertDialog(
+                title = "Error!",
+                message = state.value.error,
+                onClose = {
+                    dialogErrorClicked()
+                },
+
+                )
+        }
+
     }
+
 }
 
 

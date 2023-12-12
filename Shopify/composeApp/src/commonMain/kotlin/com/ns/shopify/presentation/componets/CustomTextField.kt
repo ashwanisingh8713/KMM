@@ -34,7 +34,7 @@ fun CustomTextField(
     visualTransformation: VisualTransformation,
     errorState: MutableState<Boolean>,
     onChanged: (TextFieldValue) -> Unit,
-    icon : ImageVector? = null
+    icon : ImageVector? = null,
     initialValue: String = ""
 ) {
     //state

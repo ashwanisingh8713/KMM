@@ -1,0 +1,650 @@
+{
+  "data": {
+    "product": {
+      "availableForSale": true,
+      "compareAtPriceRange": {
+        "maxVariantPrice": {
+          "currencyCode": "INR",
+          "amount": "1500.0"
+        },
+        "minVariantPrice": {
+          "amount": "1500.0",
+          "currencyCode": "INR"
+        }
+      },
+      "createdAt": "2023-12-08T09:07:53Z",
+      "description": "The Sweatshirt & Sweatpant set is made with cotton. It is extremely smooth, soft, breathable, and made with healthy cotton fabric. With Light thickness, it will keep your baby warm in light winters. This set is tailored with utmost care to give a stylish look. The track pant with an elastic waistband is designed for comfort thinking about your kids’ safety. Ideal for all kinds of gifting purposes. Mars Infiniti is adhering to design a concept for your boy where comfortability, yet style quotient is maintained.",
+      "descriptionHtml": "<span data-mce-fragment=\"1\">The Sweatshirt &amp; Sweatpant set is made with cotton. It is extremely smooth, soft, breathable, and made with healthy cotton fabric. With Light thickness, it will keep your baby warm in light winters. This set is tailored with utmost care to give a stylish look. The track pant with an elastic waistband is designed for comfort thinking about your kids’ safety. Ideal for all kinds of gifting purposes. Mars Infiniti is adhering to design a concept for your boy where comfortability, yet style quotient is maintained.</span>",
+      "featuredImage": {
+        "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/18-24-months-t-wf03-emerald-under-mars-infiniti-original-imagtbczqtdfrtwj.webp?v=1702026477",
+        "width": 602,
+        "id": "gid://shopify/ProductImage/41135749988599",
+        "height": 832,
+        "altText": null
+      },
+      "handle": "boys-girls-casual-sweatshirt-track-pants",
+      "id": "gid://shopify/Product/8051846119671",
+      "images": {
+        "nodes": [
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/18-24-months-t-wf03-emerald-under-mars-infiniti-original-imagtbczqtdfrtwj.webp?v=1702026477",
+            "id": "gid://shopify/ProductImage/41135749988599"
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/18-24-months-t-wf03-emerald-under-mars-infiniti-original-imagtbczzaypjcxz.webp?v=1702026477",
+            "id": "gid://shopify/ProductImage/41135750086903"
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/12-18-months-t-wf03-green-what-round-mars-infiniti-original-imag8rskfqfsx5rs.webp?v=1702026568",
+            "id": "gid://shopify/ProductImage/41135766175991"
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/2-3-years-t-wf03-navy-undefined-mars-infiniti-original-imagtyvspgdbcyqn.webp?v=1702026631",
+            "id": "gid://shopify/ProductImage/41135777677559"
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0673/3201/4327/files/6-12-months-t-wf03-orange-woodland-mars-infiniti-original-imaguty2ecwxzqzd.webp?v=1702026662",
+            "id": "gid://shopify/ProductImage/41135783182583"
+          }
+        ]
+      },
+      "isGiftCard": false,
+      "onlineStoreUrl": "https://c498b0-3.myshopify.com/products/boys-girls-casual-sweatshirt-track-pants",
+      "options": [
+        {
+          "id": "gid://shopify/ProductOption/10226039095543",
+          "name": "Size",
+          "values": [
+            "6-12 Months",
+            "12-18 Months",
+            "18-24 Months",
+            "2-3 Years",
+            "3-4 Years"
+          ]
+        },
+        {
+          "id": "gid://shopify/ProductOption/10226039062775",
+          "name": "Color",
+          "values": [
+            "Emerald & Mustard",
+            "Mint Green",
+            "Navy Blue",
+            "Orange",
+            "Red",
+            "Yello & Navy"
+          ]
+        },
+        {
+          "id": "gid://shopify/ProductOption/10227653705975",
+          "name": "Style",
+          "values": [
+            "Trendy",
+            "Slim"
+          ]
+        }
+      ],
+      "priceRange": {
+        "maxVariantPrice": {
+          "amount": "999.0",
+          "currencyCode": "INR"
+        },
+        "minVariantPrice": {
+          "amount": "100.0",
+          "currencyCode": "INR"
+        }
+      },
+      "productType": "Sweathshirt and Pants",
+      "publishedAt": "2023-12-08T09:07:53Z",
+      "requiresSellingPlan": false,
+      "tags": [],
+      "title": "Boys & Girls Casual Sweatshirt Track Pants",
+      "totalInventory": 36,
+      "trackingParameters": null,
+      "vendor": "My Store",
+      "variants": {
+        "nodes": [
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727129847",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Emerald & Mustard / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809498359",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Emerald & Mustard / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727293687",
+            "price": {
+              "amount": "400.0"
+            },
+            "title": "6-12 Months / Mint Green / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809662199",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Mint Green / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727457527",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "6-12 Months / Navy Blue / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44193809826039",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Navy Blue / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727621367",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "6-12 Months / Orange / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809989879",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Orange / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727785207",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "6-12 Months / Red / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810153719",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Red / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727949047",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "6-12 Months / Yello & Navy / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810317559",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "6-12 Months / Yello & Navy / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727162615",
+            "price": {
+              "amount": "209.0"
+            },
+            "title": "12-18 Months / Emerald & Mustard / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809531127",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Emerald & Mustard / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727326455",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "12-18 Months / Mint Green / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809694967",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Mint Green / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727490295",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "12-18 Months / Navy Blue / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809858807",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Navy Blue / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727654135",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "12-18 Months / Orange / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810022647",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Orange / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727817975",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "12-18 Months / Red / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810186487",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Red / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727981815",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "12-18 Months / Yello & Navy / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810350327",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "12-18 Months / Yello & Navy / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727195383",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Emerald & Mustard / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809563895",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Emerald & Mustard / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727359223",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Mint Green / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809727735",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Mint Green / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727523063",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Navy Blue / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809891575",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Navy Blue / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727686903",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Orange / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810055415",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Orange / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727850743",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Red / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810219255",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Red / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189728014583",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "18-24 Months / Yello & Navy / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810383095",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "18-24 Months / Yello & Navy / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727228151",
+            "price": {
+              "amount": "999.0"
+            },
+            "title": "2-3 Years / Emerald & Mustard / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809596663",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Emerald & Mustard / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727391991",
+            "price": {
+              "amount": "399.0"
+            },
+            "title": "2-3 Years / Mint Green / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809760503",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Mint Green / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727555831",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "2-3 Years / Navy Blue / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809924343",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Navy Blue / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727719671",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "2-3 Years / Orange / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810088183",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Orange / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727883511",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "2-3 Years / Red / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810252023",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Red / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189728047351",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "2-3 Years / Yello & Navy / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810415863",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "2-3 Years / Yello & Navy / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727260919",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Emerald & Mustard / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809629431",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Emerald & Mustard / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": true,
+            "id": "gid://shopify/ProductVariant/44189727424759",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Mint Green / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809793271",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Mint Green / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727588599",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Navy Blue / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193809957111",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Navy Blue / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727752439",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Orange / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810120951",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Orange / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189727916279",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Red / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810284791",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Red / Slim",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44189728080119",
+            "price": {
+              "amount": "379.0"
+            },
+            "title": "3-4 Years / Yello & Navy / Trendy",
+            "currentlyNotInStock": false
+          },
+          {
+            "availableForSale": false,
+            "id": "gid://shopify/ProductVariant/44193810448631",
+            "price": {
+              "amount": "100.0"
+            },
+            "title": "3-4 Years / Yello & Navy / Slim",
+            "currentlyNotInStock": false
+          }
+        ]
+      }
+    }
+  }
+}

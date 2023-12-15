@@ -11,7 +11,7 @@ import com.ns.shopify.domain.repo.product.IProductDetailRepo
  */
 class ProductDetailRepoImpl(private val  apolloClient: ApolloClient): IProductDetailRepo {
     override suspend fun getProductDetail(id: String): ApolloResponse<ProductDetailQuery.Data> {
-        var response = apolloClient.query(ProductDetailQuery(first = Optional.present(3),  productsFirst = Optional.present(3))).execute()
+        var response = apolloClient.query(ProductDetailQuery(first = Optional.present(10),  productId = Optional.present(id), optionsFirst2 = Optional.present(100), variantsFirst2 = Optional.present(100) )).execute()
         return response
     }
 }

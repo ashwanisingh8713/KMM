@@ -1,26 +1,71 @@
-query ProductDetail($first: Int, $productsFirst: Int) {
-    collections(first: $first) {
-        nodes {
-            handle
-            description
+query ProductDetail($first: Int, $productId: ID, $optionsFirst2: Int, $variantsFirst2: Int) {
+    product(id: $productId) {
+        availableForSale
+        compareAtPriceRange {
+            maxVariantPrice {
+                currencyCode
+                amount
+            }
+            minVariantPrice {
+                amount
+                currencyCode
+            }
+        }
+        createdAt
+        description
+        descriptionHtml
+        featuredImage {
+            url
+            width
             id
-            title
-            products(first: $productsFirst) {
-                nodes {
-                    id
-                    handle
-                    title
-                    featuredImage {
-                        originalSrc
-                        url
-                    }
-                    priceRange {
-                        minVariantPrice {
-                            amount
-                            currencyCode
-                        }
-                    }
+            height
+            altText
+        }
+        handle
+        id
+        images(first: $first) {
+            nodes {
+                url
+                id
+            }
+        }
+        isGiftCard
+        onlineStoreUrl
+        options(first: $optionsFirst2) {
+            id
+            name
+            values
+        }
+        priceRange {
+            maxVariantPrice {
+                amount
+                currencyCode
+            }
+            minVariantPrice {
+                amount
+                currencyCode
+            }
+        }
+        productType
+        publishedAt
+        requiresSellingPlan
+        tags
+        title
+        totalInventory
+        trackingParameters
+        vendor
+        variants(first: $variantsFirst2) {
+            nodes {
+                availableForSale
+                id
+                price {
+                    amount
                 }
+                product {
+                    title
+                }
+                title
+                currentlyNotInStock
             }
         }
     }

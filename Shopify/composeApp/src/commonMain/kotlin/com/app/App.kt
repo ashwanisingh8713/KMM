@@ -62,11 +62,11 @@ fun App(
                             }
                         },
                         content = {
+
                             CurrentTab()
                         }
                     )
                 } else {
-
                     Navigator(SignInScreen())
                 }
 

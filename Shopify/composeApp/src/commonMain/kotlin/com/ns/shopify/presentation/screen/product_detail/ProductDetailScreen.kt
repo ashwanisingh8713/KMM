@@ -61,7 +61,7 @@ class ProductDetailScreen : Screen {
         viewModel: ProductDetailViewModel,
         popBack: () -> Unit
     ) {
-        val state = viewModel.state.value
+        val state = viewModel.stateOld.value
         /*if (state.isLoading) {
             Column(
                 modifier = Modifier.fillMaxSize(),

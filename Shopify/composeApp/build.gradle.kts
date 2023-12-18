@@ -23,9 +23,21 @@ kotlin {
     }
 
 
-    iosX64()
+    /*iosX64()
     iosArm64()
-    iosSimulatorArm64()
+    iosSimulatorArm64()*/
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+        iosTarget.setUpiOSObserver()
+    }
 
     cocoapods {
         version = "1.0.0"
@@ -74,7 +86,7 @@ kotlin {
                 implementation(libs.apollo3.runtime)
 //                implementation(libs.apollo3.api)
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
-
+                implementation("co.touchlab:kermit:2.0.0-RC5")
 
             }
         }
@@ -95,9 +107,7 @@ kotlin {
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
                 implementation(libs.datastore.preferences)
-//                debugImplementation(platform("androidx.compose:compose-bom:2023.04.01"))
-//                debugImplementation("androidx.compose.ui:ui-tooling")
-//                debugApi(compose.uiTooling)
+                api("androidx.webkit:webkit:1.8.0")
             }
         }
 
@@ -140,7 +150,21 @@ android {
 }
 
 
+// Required By WebView
+fun org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.setUpiOSObserver() {
+    val path = projectDir.resolve("src/nativeInterop/cinterop/observer")
 
+    binaries.all {
+        linkerOpts("-F $path")
+        linkerOpts("-ObjC")
+    }
+
+    compilations.getByName("main") {
+        cinterops.create("observer") {
+            compilerOpts("-F $path")
+        }
+    }
+}
 
 
 sqldelight {

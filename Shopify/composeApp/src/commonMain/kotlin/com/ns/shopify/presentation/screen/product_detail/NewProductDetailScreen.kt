@@ -1,6 +1,5 @@
 package com.ns.shopify.presentation.screen.product_detail
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -14,38 +13,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.multiplatform.webview.util.KLogSeverity
+import com.multiplatform.webview.web.WebView
+import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.NetworkImage
@@ -104,82 +98,21 @@ class NewProductDetailScreen(private val productId: String = "gid://shopify/Prod
                         )
                         .padding(15.dp)
                 ) {
+                    // Product Title
                     ProductTitle(viewModel.title)
+                    // Product Variants
                     VariantsP(viewModel)
+                    // Product Description in TextView
+                    ProductDescription(viewModel.state.value.success!!.description)
+                    // Product Description in WebView
+                    // ProductDescriptionInWeb(viewModel.state.value.success!!.descriptionHtml as String)
                 }
 
 
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
-    }
-
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun Variants(variants: ProductDetailQuery.Variants, options: List<ProductDetailQuery.Option>) {
-
-    val primaryOption = options[0]
-
-
-    val onOptionSelection: (optionIndex: Int, itemIndex: Int) -> Unit = { optionIndex, itemIndex ->
-        val selectedOption = options[optionIndex]
-        val selectedValue = selectedOption.values[itemIndex]
-
-    }
-
-    options.forEachIndexed { optionIndex, option ->
-
-//            selectedOptions[optionIndex] = optionIndex
-//            selectedOptionsAvailable[optionIndex] = true
-
-//            var isAvailable by remember { mutableStateOf(false) }
-//            var selected by remember { mutableStateOf(0) }
-        Text(
-            text = option.name,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 15.sp
-        )
-        val value = option.values
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
-        ) {
-            items(value.size) { itemIndex ->
-                Chip(
-                    onClick = {
-//                            selectedOptions[optionIndex] = itemIndex
-                        onOptionSelection(optionIndex, itemIndex)
-                    },
-                    border = BorderStroke(
-                        ChipDefaults.OutlinedBorderSize,
-                        Color.Red
-                    ),
-                    colors = ChipDefaults.chipColors(
-//                            backgroundColor = if(selectedOptions[optionIndex] == itemIndex) Color.Yellow else Color.White,
-                        contentColor = Color.Black,
-                        disabledBackgroundColor = Color.LightGray,
-                        disabledContentColor = Color.Gray
-                    )
-                ) {
-//                        if (selectedOptionsAvailable[optionIndex]) {
-                    if (1 == 1) {
-                        Text(
-                            text = value[itemIndex],
-                        )
-                    } else {
-                        Text(
-                            text = value[itemIndex],
-                            style = LocalTextStyle.current.copy(textDecoration = TextDecoration.LineThrough)
-                        )
-                    }
-
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.height(10.dp))
     }
 
 }
@@ -241,6 +174,43 @@ fun ProductTitle(title: String) {
         fontSize = 18.sp
     )
     Spacer(modifier = Modifier.height(20.dp))
+}
+
+@Composable
+fun ProductDescription(description: String) {
+    Text(text = description)
+    Spacer(modifier = Modifier.height(50.dp))
+}
+
+/**
+ * It shows product description in WebView,
+ * But as of now it is not scrolling in iOS and there is issue with height in iOS.
+ */
+@Composable
+fun ProductDescriptionInWeb(htmlDescription: String) {
+    Box(Modifier.fillMaxWidth().height(500.dp)) {
+        val webViewState = rememberWebViewStateWithHTMLData(htmlDescription)
+        LaunchedEffect(Unit) {
+            webViewState.webSettings.apply {
+                zoomLevel = 1.0
+                isJavaScriptEnabled = true
+                logSeverity = KLogSeverity.Debug
+                allowFileAccessFromFileURLs = true
+                allowUniversalAccessFromFileURLs = true
+                androidWebSettings.apply {
+                    isAlgorithmicDarkeningAllowed = true
+                    safeBrowsingEnabled = true
+                    allowFileAccess = true
+
+                }
+            }
+        }
+        WebView(
+            state = webViewState,
+            modifier = Modifier.fillMaxSize().background(color = Color.Red),
+            captureBackPresses = false,
+        )
+    }
 }
 
 

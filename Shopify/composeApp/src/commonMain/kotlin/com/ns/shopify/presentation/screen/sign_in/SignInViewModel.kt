@@ -13,7 +13,8 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 11,December,2023.
  */
-class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : ScreenModel, KoinComponent {
+class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : ScreenModel,
+    KoinComponent {
 
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
@@ -23,9 +24,10 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : Scr
             _state.value = SignInState(isLoading = true)
             signInUseCase(CustomerAccessTokenCreateInput(email, password))
                 .onSuccess {it1->
-                    val error = it1.customerUserErrors?.get(0)?.message
-                    if(error!=null) {
+                    val errorData = it1.customerUserErrors
+                    if(errorData.isNotEmpty()) {
                         _state.update { it2->
+                            val error = errorData[0].message
                             it2.copy(
                                 isLoading = false,
                                 isLoaded = false,
@@ -41,7 +43,7 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : Scr
                             )
                         }
                     }
-                }.onFailure {error->
+                }.onFailure { error ->
                     _state.update {
                         it.copy(
                             isLoading = true,
@@ -53,5 +55,9 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : Scr
 
         }
 
+    }
+
+    fun clearErrorState() {
+        _state.update { it.copy(error = "") }
     }
 }

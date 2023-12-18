@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,8 +43,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.ns.shopify.presentation.componets.AlertDialog
 import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
 import com.ns.shopify.presentation.componets.ErrorSuggestion
@@ -81,7 +84,13 @@ class SignInScreen : Screen {
         val passwordErrorState = remember {
             mutableStateOf(false)
         }
+        val viewModel = getScreenModel<SignInViewModel>()
 
+        val state = viewModel.state.collectAsState()
+
+        val dialogErrorClicked:()->Unit = {
+            viewModel.clearErrorState()
+        }
 
         Column(
             modifier = Modifier
@@ -179,8 +188,6 @@ class SignInScreen : Screen {
                 )
             }
 
-            val vm = rememberKoinInject<SettingsViewModel>()
-
             CustomDefaultBtn(shapeSize = 50f, btnText = "Continue") {
                 //email pattern
 //            val pattern = Patterns.EMAIL_ADDRESS
@@ -190,9 +197,10 @@ class SignInScreen : Screen {
                 emailErrorState.value = !isEmailValid
                 passwordErrorState.value = !isPassValid
                 if (isEmailValid && isPassValid) {
-                    // TODO: Login Success Navigation
-                    // navController.navigate(AuthScreen.SignInSuccess.route)
-                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                    //Login Success Navigation
+                    //Make API call
+                    viewModel.signInRequest(email.text, password.text)
+
                 }
             }
             Column(
@@ -274,8 +282,28 @@ class SignInScreen : Screen {
                         })
                 }
             }
+        }
 
+        if(state.value.isLoaded) {
+            val vm = rememberKoinInject<SettingsViewModel>()
+            AlertDialog(
+                title = "Success",
+                message = "Account created successfully. \nPlease go to your registered email and verify your account, before login.",
+                onClose = {
+                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                },
 
+                )
+        }
+        if(state.value.error != null && state.value.error!!.isNotBlank()) {
+            AlertDialog(
+                title = "Error!",
+                message = state.value.error,
+                onClose = {
+                    dialogErrorClicked()
+                },
+
+                )
         }
     }
 

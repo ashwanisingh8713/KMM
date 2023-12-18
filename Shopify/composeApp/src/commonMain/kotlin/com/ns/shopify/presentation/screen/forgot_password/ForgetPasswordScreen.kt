@@ -16,11 +16,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.ns.shopify.presentation.componets.AlertDialog
 import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
 import com.ns.shopify.presentation.componets.DefaultBackArrow
+import com.ns.shopify.presentation.screen.sign_in.SignInViewModel
+import com.ns.shopify.presentation.settings.SettingsViewModel
+import org.koin.compose.rememberKoinInject
 
 
 /**
@@ -31,20 +36,21 @@ internal class ForgetPasswordScreen : Screen {
 
     @Composable
     override fun Content() {
+        val viewModel = getScreenModel<ForgotPasswordViewModel>()
+        val state = viewModel.state.collectAsState()
         val navController = LocalNavigator.current
         if (navController != null) {
-            ForgetPasswordScreen(navController = navController)
+            ForgetPasswordUI(navController = navController, state = state, viewModel = viewModel)
         }
     }
 }
 
 @Composable
-fun ForgetPasswordScreen(navController: Navigator) {
+fun ForgetPasswordUI(navController: Navigator, state: State<ForgotPasswordState>, viewModel: ForgotPasswordViewModel) {
     var email: String = ""
     val emailErrorState = remember {
         mutableStateOf(false)
     }
-
 
     Column(
         modifier = Modifier
@@ -106,8 +112,9 @@ fun ForgetPasswordScreen(navController: Navigator) {
                 val isEmailValid = true
                 emailErrorState.value = !isEmailValid
                 if (isEmailValid) {
-                    // TODO, make API request navigate to sign in screen
-                    navController.pop()
+                    //Make API request navigate to sign in screen
+                    viewModel.forgotPasswordRequest(email)
+                    //navController.pop()
                 }
             }
 
@@ -128,6 +135,32 @@ fun ForgetPasswordScreen(navController: Navigator) {
             }
         }
 
+        val dialogErrorClicked:()->Unit = {
+            viewModel.clearErrorState()
+        }
 
+        if(state.value.isLoaded) {
+            val vm = rememberKoinInject<SettingsViewModel>()
+            AlertDialog(
+                title = "Success",
+                message = "Reset Password link has been sent successfully. \nPlease check your email and reset your password.",
+                onClose = {
+                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                },
+
+                )
+        }
+        if(state.value.error != null && state.value.error!!.isNotBlank()) {
+            AlertDialog(
+                title = "Error!",
+                message = state.value.error,
+                onClose = {
+                    dialogErrorClicked()
+                },
+
+                )
+        }
     }
+
+
 }

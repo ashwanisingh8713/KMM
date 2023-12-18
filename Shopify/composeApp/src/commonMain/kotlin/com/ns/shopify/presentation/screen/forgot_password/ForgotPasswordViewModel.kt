@@ -58,4 +58,7 @@ class ForgotPasswordViewModel(private val forgotPasswordUseCase: CustomerRecover
         }
     }
 
+    fun clearErrorState() {
+        _state.update { it.copy(error = "") }
+    }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -24,6 +26,8 @@ import com.ns.shopify.presentation.componets.CollectionList
 import com.ns.shopify.presentation.componets.Loading
 import com.ns.shopify.presentation.screen.product_detail.NewProductDetailScreen
 import com.ns.shopify.presentation.screen.product_detail.ProductDetailScreen
+import com.ns.shopify.presentation.screen.product_detail.ProductDetailStates
+import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 06,December,2023.
@@ -44,8 +48,15 @@ internal class HomeScreen(
     @Composable
     override fun Content() {
         val navController = LocalNavigator.currentOrThrow
+
+
+
         val openProductDetail:(GetCollectionsQuery.Node1) -> Unit = {
 //            navController.push(ProductDetailScreen())
+
+//            val viewModel = getScreenModel<ProductDetailViewModel>()
+//            val state: State<ProductDetailStates> = viewModel.state.collectAsState()
+            NewProductDetailScreen.productId = it.id
             navController.push(NewProductDetailScreen(productId = it.id))
         }
 

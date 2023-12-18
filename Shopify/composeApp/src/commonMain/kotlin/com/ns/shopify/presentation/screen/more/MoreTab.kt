@@ -33,7 +33,7 @@ internal object MoreTab : Tab {
     @Composable
     override fun Content() {
         Navigator(
-            screen = ProductDetailScreen(),
+            screen = MoreScreen(),
         ) { navigator ->
             SlideTransition(navigator) { screen ->
                 screen.Content()

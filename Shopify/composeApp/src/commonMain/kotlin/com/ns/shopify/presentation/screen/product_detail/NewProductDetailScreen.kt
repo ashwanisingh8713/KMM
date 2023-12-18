@@ -4,17 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.Divider
@@ -48,8 +43,11 @@ import com.ns.shopify.presentation.componets.VerticalScrollLayout
 /**
  * Created by Ashwani Kumar Singh on 12,December,2023.
  */
-class NewProductDetailScreen(private val productId: String = "gid://shopify/Product/8051846119671") :
+class NewProductDetailScreen(private val productId: String) :
     Screen {
+        companion object {
+            var productId = ""
+        }
 
     @Composable
     override fun Content() {
@@ -58,15 +56,8 @@ class NewProductDetailScreen(private val productId: String = "gid://shopify/Prod
         val viewModel = getScreenModel<ProductDetailViewModel>()
         val state: State<ProductDetailStates> = viewModel.state.collectAsState()
 
-        val requestState by rememberUpdatedState(true)
-
         val popBack: () -> Unit = {
             navigation?.pop()
-        }
-
-
-        LaunchedEffect(requestState) {
-            viewModel.getProductDetail(productId)
         }
 
         if (state.value.isLoaded) {

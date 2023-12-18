@@ -59,9 +59,10 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     private lateinit var thirdSelectedOption: OptionItem
     val Delimiter = " / "
 
-    /*var primarySelectedOptionIndex = 0
-    var secondSelectedOptionIndex = 0
-    var thirdSelectedOptionIndex = 0*/
+
+    init{
+        getProductDetail(NewProductDetailScreen.productId)
+    }
 
     fun getProductDetail(id: String) {
         coroutineScope.launch {

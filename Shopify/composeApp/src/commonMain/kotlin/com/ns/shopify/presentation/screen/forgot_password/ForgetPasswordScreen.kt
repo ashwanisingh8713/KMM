@@ -47,7 +47,7 @@ internal class ForgetPasswordScreen : Screen {
 
 @Composable
 fun ForgetPasswordUI(navController: Navigator, state: State<ForgotPasswordState>, viewModel: ForgotPasswordViewModel) {
-    var email: String = ""
+    var email = ""
     val emailErrorState = remember {
         mutableStateOf(false)
     }
@@ -102,7 +102,7 @@ fun ForgetPasswordUI(navController: Navigator, state: State<ForgotPasswordState>
                 keyboardType = KeyboardType.Email,
                 visualTransformation = VisualTransformation.None,
                 onChanged = { newEmail ->
-               //     email = newEmail
+                    email = newEmail.text
                 },
                 icon = Icons.Outlined.Email
             )
@@ -145,7 +145,7 @@ fun ForgetPasswordUI(navController: Navigator, state: State<ForgotPasswordState>
                 title = "Success",
                 message = "Reset Password link has been sent successfully. \nPlease check your email and reset your password.",
                 onClose = {
-                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                    navController.pop()
                 },
 
                 )

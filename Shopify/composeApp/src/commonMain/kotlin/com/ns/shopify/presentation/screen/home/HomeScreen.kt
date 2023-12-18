@@ -46,7 +46,7 @@ internal class HomeScreen(
         val navController = LocalNavigator.currentOrThrow
         val openProductDetail:(GetCollectionsQuery.Node1) -> Unit = {
 //            navController.push(ProductDetailScreen())
-            navController.push(NewProductDetailScreen())
+            navController.push(NewProductDetailScreen(productId = it.id))
         }
 
         HomeScreen(openProductDetail = openProductDetail)

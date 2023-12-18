@@ -121,39 +121,40 @@ fun CreateOptionUI(
 }
 
 
-
 // Product Price, Add To Cart Btn
 @Composable
-fun PriceNdAddToCart(productVariant: ProductDetailQuery.Node1) {
+fun PriceNdAddToCart(productVariant: List<ProductDetailQuery.Node1>) {
     Spacer(modifier = Modifier.height(10.dp))
-    Row {
-        Text(
-            text = "Rs.",
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+    Column(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
+        Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
+            Text(
+                text = "Rs.",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
-        )
-        Text(
-            text = productVariant.price.amount.toString(),
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+            Text(
+                text = if (productVariant.isNotEmpty()) productVariant[0].price.amount.toString() else "",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
-        )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = { /*TODO*/ },
+            enabled = if (productVariant.isNotEmpty()) productVariant[0].availableForSale else false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text(text = if (productVariant.isNotEmpty()) if (productVariant[0].availableForSale) "Add to Cart" else "Out of stock" else "N/A")
+        }
+        Spacer(modifier = Modifier.height(50.dp))
     }
-    Spacer(modifier = Modifier.height(10.dp))
-    Button(
-        onClick = { /*TODO*/ },
-        enabled = productVariant.availableForSale,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-    ) {
-        Text(text = if(productVariant.availableForSale) "Add to Cart" else "Out of stock")
-    }
-    Spacer(modifier = Modifier.height(50.dp))
 }
 

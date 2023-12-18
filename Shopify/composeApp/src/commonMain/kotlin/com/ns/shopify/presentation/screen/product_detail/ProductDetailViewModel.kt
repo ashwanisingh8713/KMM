@@ -39,7 +39,7 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     private val _state = MutableStateFlow(ProductDetailStates())
     val state = _state.asStateFlow()
 
-    private val _refreshAllOption = MutableStateFlow<ProductDetailQuery.Node1?>(null)
+    private val _refreshAllOption = MutableStateFlow<List<ProductDetailQuery.Node1>?>(null)
     val refreshAllStateFlow = _refreshAllOption.asStateFlow()
 
     lateinit var title: String
@@ -135,10 +135,18 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
         }
         primarySelectedOption =
             allNewOptions[primaryOption].values[allNewOptions[primaryOption].selectedIndex]
-        secondSelectedOption =
-            allNewOptions[secondOption].values[allNewOptions[secondOption].selectedIndex]
-        thirdSelectedOption =
-            allNewOptions[thirdOption].values[allNewOptions[thirdOption].selectedIndex]
+        if (allNewOptions.size > secondOption) {
+            secondSelectedOption =
+                allNewOptions[secondOption].values[allNewOptions[secondOption].selectedIndex]
+        } else {
+            secondSelectedOption = OptionItem(availableForSale = false, value = "")
+        }
+        if (allNewOptions.size > thirdOption) {
+            thirdSelectedOption =
+                allNewOptions[thirdOption].values[allNewOptions[thirdOption].selectedIndex]
+        } else {
+            thirdSelectedOption = OptionItem(availableForSale = false, value = "")
+        }
 
         onOptionSelection(0, 0)
     }
@@ -167,57 +175,62 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
         val filteredVariants = variants.filter { variant ->
             val primaryTitle =
                 allNewOptions[primaryOption].values[allNewOptions[primaryOption].selectedIndex].value
-            variant.title.contains(
-                primaryTitle,
-                ignoreCase = true
-            )
+            val title = variant.title
+            val variants = title.split(Delimiter)
+
+            variants[0] == primaryTitle
         }
 
-        allNewOptions[secondOption].values.forEachIndexed { secOpIndex, secOp ->
-            if (secondSelectedOption!!.value == secOp.value) {
+        val optionIndex = if (allNewOptions.size > secondOption) secondOption else 0
+        val optionIndex_1 = if (allNewOptions.size > thirdOption) thirdOption else 1
+
+        allNewOptions[optionIndex].values.forEachIndexed { secOpIndex, secOp ->
+            if (secondSelectedOption.value == secOp.value) {
                 // Third Option
-                allNewOptions[thirdOption].values.forEachIndexed { thiOpIndex, thiOp ->
+                allNewOptions[optionIndex_1].values.forEachIndexed { thiOpIndex, thiOp ->
                     val checkingTitle =
-                        "${primarySelectedOption?.value}${Delimiter}${secOp.value}${Delimiter}${thiOp.value}"
+                        "${primarySelectedOption.value}${Delimiter}${secOp.value}${Delimiter}${thiOp.value}"
                     val thirdOptionValueAvailabilityCheckList = filteredVariants.filter {
                         it.title.contains(checkingTitle, true) && it.availableForSale
                     }
-                    allNewOptions[thirdOption].values[thiOpIndex].availableForSale =
+                    allNewOptions[optionIndex_1].values[thiOpIndex].availableForSale =
                         thirdOptionValueAvailabilityCheckList.isNotEmpty()
-
                 }
 
+
                 val checkingTitle =
-                    "${primarySelectedOption?.value}${Delimiter}${secOp.value}"
+                    "${primarySelectedOption.value}${Delimiter}${secOp.value}"
                 val secondOptionValueAvailabilityCheckList = filteredVariants.filter {
                     it.title.contains(checkingTitle, true) && it.availableForSale
                 }
-                allNewOptions[secondOption].values[secOpIndex].availableForSale =
+                allNewOptions[optionIndex].values[secOpIndex].availableForSale =
                     secondOptionValueAvailabilityCheckList.isNotEmpty()
 
+
             } else {
+
                 val checkingTitle =
-                    "${primarySelectedOption?.value}${Delimiter}${secOp.value}"
+                    "${primarySelectedOption.value}${Delimiter}${secOp.value}"
                 val secondOptionValueAvailabilityCheckList = filteredVariants.filter {
                     it.title.contains(checkingTitle, true) && it.availableForSale
                 }
-                allNewOptions[secondOption].values[secOpIndex].availableForSale =
+                allNewOptions[optionIndex].values[secOpIndex].availableForSale =
                     secondOptionValueAvailabilityCheckList.isNotEmpty()
             }
 
         }
 
-        val selectedVariantOption = "${primarySelectedOption.value}${Delimiter}${secondSelectedOption.value}${Delimiter}${thirdSelectedOption.value}"
+        val selectedVariantOption =
+            "${primarySelectedOption.value}${Delimiter}${secondSelectedOption.value}${Delimiter}${thirdSelectedOption.value}"
 
         val selectedVariant = filteredVariants.filter {
             it.title == selectedVariantOption
         }
 
-        if (selectedVariant.isNotEmpty()) {
-            _refreshAllOption.update {
-                selectedVariant[0]
-            }
+        _refreshAllOption.update {
+            selectedVariant
         }
+
     }
 
 }

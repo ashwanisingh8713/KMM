@@ -16,8 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -37,13 +38,12 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.multiplatform.webview.util.KLogSeverity
-import com.multiplatform.webview.web.WebView
-import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import com.ns.shopify.ProductDetailQuery
+import com.ns.shopify.presentation.componets.ChildLayout
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.NetworkImage
 import com.ns.shopify.presentation.componets.VariantsP
+import com.ns.shopify.presentation.componets.VerticalScrollLayout
 
 /**
  * Created by Ashwani Kumar Singh on 12,December,2023.
@@ -69,49 +69,43 @@ class NewProductDetailScreen(private val productId: String = "gid://shopify/Prod
             viewModel.getProductDetail(productId)
         }
 
-
-        /*val product = state.value.success
-        val compareAtPriceRange = product?.compareAtPriceRange
-
-        val availableForSale = product?.availableForSale
-        val maxVariantPrice = compareAtPriceRange?.maxVariantPrice
-        val minVariantPrice = compareAtPriceRange?.minVariantPrice
-        val variants = product?.variants
-        val options = product?.options
-        val featuredImage = product?.images*/
-
         if (state.value.isLoaded) {
-            Column(
-                modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                    .background(color = Color(0x8DB3B0B0)),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            VerticalScrollLayout(
+                modifier = Modifier,
+                ChildLayout(
+                    contentType = "It holds all Options and Variants",
+                    content = {
+                        ProductGallery(viewModel.featuredImage, popBack)
+                    }
+                ),
+                ChildLayout(
+                    contentType = "Divider",
+                    content = {
+                        Divider(
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                            thickness = 1.dp)
+                    }
+                ),
+                ChildLayout(
+                    contentType = "ProductTitle",
+                    content = {
+                        ProductTitle(viewModel.title)
+                    }
+                ),
+                ChildLayout(
+                    contentType = "Product Variants",
+                    content = {
+                        VariantsP(viewModel)
+                    }
+                ),
+                ChildLayout(
+                    contentType = "Product Description",
+                    content = {
+                        ProductDetailComponent(viewModel.state.value.success!!.description)
+                    }
+                )
+            )
 
-                ProductGallery(viewModel.featuredImage, popBack)
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            Color.White,
-                            shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
-                        )
-                        .padding(15.dp)
-                ) {
-                    // Product Title
-                    ProductTitle(viewModel.title)
-                    // Product Variants
-                    VariantsP(viewModel)
-                    // Product Description in TextView
-                    ProductDescription(viewModel.state.value.success!!.description)
-                    // Product Description in WebView
-                    // ProductDescriptionInWeb(viewModel.state.value.success!!.descriptionHtml as String)
-                }
-
-
-
-                Spacer(modifier = Modifier.height(50.dp))
-            }
         }
     }
 
@@ -121,7 +115,6 @@ class NewProductDetailScreen(private val productId: String = "gid://shopify/Prod
 fun ProductGallery(images: ProductDetailQuery.Images, popBack: () -> Unit) {
     val imageList = images.nodes
     var selectedPicture by remember { mutableStateOf(imageList[0].url as String) }
-
     Box {
         NetworkImage(
             modifier = Modifier.height(250.dp).padding(10.dp), url = selectedPicture
@@ -147,7 +140,7 @@ fun ProductGallery(images: ProductDetailQuery.Images, popBack: () -> Unit) {
                         selectedPicture = imageList[it].url as String
                     }, modifier = Modifier.size(50.dp).border(
                         width = 1.dp,
-                        color = if (selectedPicture == imageList[it].url as String) MaterialTheme.colors.primary else Color.Transparent,
+                        color = if (selectedPicture == imageList[it].url as String) MaterialTheme.colorScheme.primary else Color.Transparent,
                         shape = RoundedCornerShape(10.dp)
                     ).background(Color.White, shape = RoundedCornerShape(10.dp))
                         .padding(5.dp).clip(RoundedCornerShape(10.dp))
@@ -176,41 +169,7 @@ fun ProductTitle(title: String) {
     Spacer(modifier = Modifier.height(20.dp))
 }
 
-@Composable
-fun ProductDescription(description: String) {
-    Text(text = description)
-    Spacer(modifier = Modifier.height(50.dp))
-}
 
-/**
- * It shows product description in WebView,
- * But as of now it is not scrolling in iOS and there is issue with height in iOS.
- */
-@Composable
-fun ProductDescriptionInWeb(htmlDescription: String) {
-    Box(Modifier.fillMaxWidth().height(500.dp)) {
-        val webViewState = rememberWebViewStateWithHTMLData(htmlDescription)
-        LaunchedEffect(Unit) {
-            webViewState.webSettings.apply {
-                zoomLevel = 1.0
-                isJavaScriptEnabled = true
-                logSeverity = KLogSeverity.Debug
-                allowFileAccessFromFileURLs = true
-                allowUniversalAccessFromFileURLs = true
-                androidWebSettings.apply {
-                    isAlgorithmicDarkeningAllowed = true
-                    safeBrowsingEnabled = true
-                    allowFileAccess = true
 
-                }
-            }
-        }
-        WebView(
-            state = webViewState,
-            modifier = Modifier.fillMaxSize().background(color = Color.Red),
-            captureBackPresses = false,
-        )
-    }
-}
 
 

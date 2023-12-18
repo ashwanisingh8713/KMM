@@ -27,9 +27,10 @@ class ForgotPasswordViewModel(private val forgotPasswordUseCase: CustomerRecover
         coroutineScope.launch {
             forgotPasswordUseCase(email)
                 .onSuccess {it1->
-                    val error = it1.customerUserErrors?.get(0)?.message
-                    if(error!=null) {
+                    val errorUser = it1.customerUserErrors
+                    if(errorUser.isNotEmpty()) {
                         _state.update { it2->
+                            val error = errorUser[0].message
                             it2.copy(
                                 isLoading = false,
                                 isLoaded = false,

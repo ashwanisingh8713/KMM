@@ -1,0 +1,10 @@
+https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/cart/manage#:~:text=You%20can%20use%20the%20cartCreate,attributes%20)%20associated%20with%20the%20cart.
+
+Get Cart By User
+https://community.shopify.com/c/shopify-discussions/get-cart-by-user/m-p/2273821
+
+Can I See What Products Added To Cart By Customers?
+https://community.shopify.com/c/shopify-discussions/can-i-see-what-products-added-to-cart-by-customers/td-p/1111976
+
+Saving and retrieving a Shopify POS cart
+https://help.shopify.com/en/manual/sell-in-person/shopify-pos/order-management/save-retrieve-order

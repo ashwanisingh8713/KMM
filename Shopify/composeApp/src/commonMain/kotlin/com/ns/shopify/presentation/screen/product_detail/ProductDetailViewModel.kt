@@ -2,6 +2,7 @@ package com.ns.shopify.presentation.screen.product_detail
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
+import com.app.printLog
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -62,6 +63,7 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
 
     init{
         getProductDetail(NewProductDetailScreen.productId)
+        printLog("Selected Product Id is ${NewProductDetailScreen.productId}")
     }
 
     fun getProductDetail(id: String) {

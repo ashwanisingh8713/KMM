@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.printLog
 import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.presentation.screen.product_detail.NewOptions
@@ -146,7 +147,11 @@ fun PriceNdAddToCart(productVariant: List<ProductDetailQuery.Node1>) {
         }
         Spacer(modifier = Modifier.height(10.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                if (productVariant.isNotEmpty()) {
+                    printLog("Add to Cart Item Id is ${productVariant[0].id}")
+                }
+            },
             enabled = if (productVariant.isNotEmpty()) productVariant[0].availableForSale else false,
             modifier = Modifier
                 .fillMaxWidth()

@@ -59,6 +59,7 @@ fun VariantsP(viewModel: ProductDetailViewModel) {
         )
         PriceNdAddToCart(optionRefreshRequired.value!!)
     }
+
 }
 
 

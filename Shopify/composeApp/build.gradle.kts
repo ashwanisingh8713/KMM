@@ -81,10 +81,11 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.sqlDelight.extensions)
 
+                // Image Caching
                 implementation(libs.kamel.image)
 
                 implementation(libs.apollo3.runtime)
-//                implementation(libs.apollo3.api)
+                // implementation(libs.apollo3.api)
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
                 implementation("co.touchlab:kermit:2.0.0-RC5")
 

@@ -33,11 +33,21 @@ fun NetworkImage(
         modifier = modifier.clip(RoundedCornerShape(shape)),
         contentScale = ContentScale.FillBounds,
         onFailure = {
-            Image(
+            /*Image(
                 painter = painterResource("img/empty.png"),
                 contentDescription = "empty_image",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds
+            )*/
+            val emptyPainter = asyncPainterResource("https://samplelib.com/lib/preview/png/sample-clouds2-400x300.png")
+            KamelImage(
+                resource = emptyPainter,
+                contentDescription = "image",
+                modifier = modifier.clip(RoundedCornerShape(shape)),
+                contentScale = ContentScale.FillBounds,
+                onLoading = {
+                    Loading(modifier = Modifier.size(30.dp))
+                },
             )
         },
         onLoading = {

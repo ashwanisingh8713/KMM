@@ -64,9 +64,9 @@ class NewProductDetailScreen(private val productId: String) :
             VerticalScrollLayout(
                 modifier = Modifier,
                 ChildLayout(
-                    contentType = "It holds all Options and Variants",
+                    contentType = "It holds all Product Images",
                     content = {
-                        ProductGallery(viewModel.featuredImage, popBack)
+                        if(viewModel.featuredImage.nodes.isNotEmpty()) ProductGallery(viewModel.featuredImage, popBack)
                     }
                 ),
                 ChildLayout(

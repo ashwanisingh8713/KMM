@@ -8,3 +8,11 @@ https://community.shopify.com/c/shopify-discussions/can-i-see-what-products-adde
 
 Saving and retrieving a Shopify POS cart
 https://help.shopify.com/en/manual/sell-in-person/shopify-pos/order-management/save-retrieve-order
+
+How to get cart details or cart ID for a given customer in shopify Storefront API
+https://stackoverflow.com/questions/76458675/how-to-get-cart-details-or-cart-id-for-a-given-customer-in-shopify-storefront-ap
+
+How To Get Cart Details Or Cart ID For A Given Customer In Storefront API
+https://community.shopify.com/c/hydrogen-headless-and-storefront/how-to-get-cart-details-or-cart-id-for-a-given-customer-in/td-p/2061812
+
+I think using Checkout API may be it should work.

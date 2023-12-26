@@ -24,7 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.ns.shopify.presentation.componets.CustomDefaultBtn
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.ns.shopify.presentation.screen.address.AddressScreen
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import org.koin.compose.rememberKoinInject
 
@@ -40,6 +42,7 @@ internal class UserScreen : Screen {
 
     @Composable
     fun UserOptionUI() {
+        val navigator = LocalNavigator.currentOrThrow
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -118,7 +121,9 @@ internal class UserScreen : Screen {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Text("Address", modifier = Modifier.weight(0.2f))
+                Text("Address", modifier = Modifier.weight(0.2f).clickable {
+                    navigator.push(AddressScreen())
+                })
                 Icon(
                     painter = rememberVectorPainter(Icons.Default.ArrowForward),
                     contentDescription = null,

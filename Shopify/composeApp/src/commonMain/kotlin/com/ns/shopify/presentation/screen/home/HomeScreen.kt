@@ -17,17 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ns.shopify.GetCollectionsQuery
 import com.ns.shopify.presentation.componets.CollectionList
 import com.ns.shopify.presentation.componets.Loading
 import com.ns.shopify.presentation.screen.product_detail.NewProductDetailScreen
-import com.ns.shopify.presentation.screen.product_detail.ProductDetailScreen
-import com.ns.shopify.presentation.screen.product_detail.ProductDetailStates
-import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel
 
 /**
  * Created by Ashwani Kumar Singh on 06,December,2023.
@@ -38,12 +33,6 @@ internal class HomeScreen(
     private val getCollection: () -> Unit,
 ) : Screen {
 
-    @Composable
-    fun OpenProductDetail(product: GetCollectionsQuery.Node1) {
-        Navigator(ProductDetailScreen()) { navigator0 ->
-
-        }
-    }
 
     @Composable
     override fun Content() {

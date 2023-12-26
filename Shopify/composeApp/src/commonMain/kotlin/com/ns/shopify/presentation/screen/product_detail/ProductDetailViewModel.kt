@@ -5,9 +5,7 @@ import cafe.adriel.voyager.core.model.coroutineScope
 import com.app.printLog
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,8 +32,6 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
 
     private val TAG = "ProductDetailViewModel"
 
-    private val _stateOld = MutableStateFlow(OldProductDetailStates())
-    val stateOld = _stateOld.asStateFlow()
 
     private val _state = MutableStateFlow(ProductDetailStates())
     val state = _state.asStateFlow()
@@ -44,8 +40,6 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     val refreshAllStateFlow = _refreshAllOption.asStateFlow()
 
     lateinit var title: String
-    lateinit var variants: List<ProductDetailQuery.Node1>
-    lateinit var options: List<ProductDetailQuery.Option>
     lateinit var featuredImage: ProductDetailQuery.Images
     val allNewOptions = mutableListOf<NewOptions>()
 
@@ -61,7 +55,7 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     val Delimiter = " / "
 
 
-    init{
+    init {
         getProductDetail(NewProductDetailScreen.productId)
         printLog("Selected Product Id is ${NewProductDetailScreen.productId}")
     }
@@ -89,8 +83,7 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
                     } else {  // Success Block
                         val product = response.data?.product
                         if (product != null) {
-                            variants = product.variants.nodes
-                            options = product.options
+
                             featuredImage = product.images
                             title = product.title
                             _state.update { its ->
@@ -117,44 +110,67 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     }
 
     private fun createNewOptions() {
-        options.forEachIndexed { optionIndex, option ->
-            val newOptions = mutableListOf<OptionItem>()
-            val values = option.values
-            values.forEach { value ->
-                newOptions.add(
-                    OptionItem(
-                        value = value,
-                        availableForSale = (optionIndex == 0)
+       val options: List<ProductDetailQuery.Option> = state.value.success!!.options
+        var hasValidOptions = true
+        if (options.size == 1) {
+            val title = options[0].name
+            val valueTitle = options[0].values[0]
+
+            if (title == "Title" && valueTitle == "Default Title") {
+                hasValidOptions = false
+            } else {
+                hasValidOptions = true
+            }
+        }
+        if (hasValidOptions) {
+            options.forEachIndexed { optionIndex, option ->
+                val newOptions = mutableListOf<OptionItem>()
+                val values = option.values
+                values.forEach { value ->
+                    newOptions.add(
+                        OptionItem(
+                            value = value,
+                            availableForSale = (optionIndex == 0)
+                        )
+                    )
+                }
+
+                allNewOptions.add(
+                    NewOptions(
+                        name = option.name,
+                        values = newOptions
                     )
                 )
             }
 
-            allNewOptions.add(
-                NewOptions(
-                    name = option.name,
-                    values = newOptions
-                )
-            )
-        }
-        primarySelectedOption =
-            allNewOptions[primaryOption].values[allNewOptions[primaryOption].selectedIndex]
-        if (allNewOptions.size > secondOption) {
-            secondSelectedOption =
-                allNewOptions[secondOption].values[allNewOptions[secondOption].selectedIndex]
-        } else {
-            secondSelectedOption = OptionItem(availableForSale = false, value = "")
-        }
-        if (allNewOptions.size > thirdOption) {
-            thirdSelectedOption =
-                allNewOptions[thirdOption].values[allNewOptions[thirdOption].selectedIndex]
-        } else {
-            thirdSelectedOption = OptionItem(availableForSale = false, value = "")
-        }
+            primarySelectedOption =
+                allNewOptions[primaryOption].values[allNewOptions[primaryOption].selectedIndex]
+            if (allNewOptions.size > secondOption) {
+                secondSelectedOption =
+                    allNewOptions[secondOption].values[allNewOptions[secondOption].selectedIndex]
+            } else {
+                secondSelectedOption = OptionItem(availableForSale = false, value = "")
+            }
+            if (allNewOptions.size > thirdOption) {
+                thirdSelectedOption =
+                    allNewOptions[thirdOption].values[allNewOptions[thirdOption].selectedIndex]
+            } else {
+                thirdSelectedOption = OptionItem(availableForSale = false, value = "")
+            }
 
-        onOptionSelection(0, 0)
+            onOptionSelection(0, 0)
+        } else {
+
+            _refreshAllOption.update {
+                state.value.success!!.variants.nodes
+            }
+
+        }
     }
 
     fun onOptionSelection(selectedOptionIndex: Int, selectedItemIndex: Int) {
+        val variants: List<ProductDetailQuery.Node1> = state.value.success!!.variants.nodes
+
         // Assigning new selected index for respective Option
         allNewOptions[selectedOptionIndex].selectedIndex = selectedItemIndex
 

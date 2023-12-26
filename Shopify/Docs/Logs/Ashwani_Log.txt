@@ -1,2 +1,4 @@
 
+- when option data is missing, Fixed some issues of Detail Page.
+It any product does not have Option & Variants then it's Response is different (different type structure for price & product availability, and variant & option)
 

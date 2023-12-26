@@ -1,0 +1,60 @@
+mutation createCart($cartInput: CartInput) {
+    cartCreate(input: $cartInput) {
+        cart {
+            id
+            createdAt
+            updatedAt
+            checkoutUrl
+            lines(first: 10) {
+                edges {
+                    node {
+                        id
+                        merchandise {
+                            ... on ProductVariant {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+            attributes {
+                key
+                value
+            }
+            cost {
+                totalAmount {
+                    amount
+                    currencyCode
+                }
+                subtotalAmount {
+                    amount
+                    currencyCode
+                }
+                totalTaxAmount {
+                    amount
+                    currencyCode
+                }
+                totalDutyAmount {
+                    amount
+                    currencyCode
+                }
+            }
+        }
+    }
+}
+
+# Inputs
+#{
+#"cartInput": {
+#"lines": [
+#{
+#"quantity": 1,
+#"merchandiseId": "gid://shopify/ProductVariant/44189727129847"
+#}
+#],
+#"attributes": {
+#"key": "cart_attribute_key",
+#"value": "This is a cart attribute value"
+#}
+#}
+#}

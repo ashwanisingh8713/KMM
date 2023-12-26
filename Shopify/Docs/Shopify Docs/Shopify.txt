@@ -1,0 +1,15 @@
+Customer-API related questions
+https://community.shopify.com/c/customers-discounts-and-orders/bd-p/customers-discounts-and-orders
+
+Partners and Developers
+https://community.shopify.com/c/partners-and-developers/ct-p/appdev
+
+Storefront-api-learning-kit
+https://github.com/Shopify/storefront-api-learning-kit
+
+Plus Member Email Support
+plus@shopify.com
+
+
+Admin Access Token
+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

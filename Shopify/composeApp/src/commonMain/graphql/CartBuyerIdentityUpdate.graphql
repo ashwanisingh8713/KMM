@@ -1,0 +1,19 @@
+mutation CartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+        cart {
+            id
+        }
+    }
+}
+
+
+
+## Inputs
+#{
+#"cartId": "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUhIWUEwRFpTNzZENTk0N1RYOTdXM0FNUg",
+#"buyerIdentity": {
+#"email": "decaci4871@newcupon.com",
+#"phone": "+91 83900 98887",
+#"customerAccessToken": "3a1a902e1aae0b6e4283a8a9f5f6401b"
+#}
+#}

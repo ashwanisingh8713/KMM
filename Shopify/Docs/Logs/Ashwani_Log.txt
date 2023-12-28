@@ -1,4 +1,11 @@
 
-- when option data is missing, Fixed some issues of Detail Page.
-It any product does not have Option & Variants then it's Response is different (different type structure for price & product availability, and variant & option)
+26th Dec
+- when option data is missing `Add to cart` Btn is not enabling, Fixed some issues of Detail Page. (Debugged data and stream flow, Change the logic)
+- It any product does not have Option & Variants then it's Response is different (different type structure for price & product availability, and variant & option)
+- Created Flow Chart for Cart
+- Created GraphQL Query/Mutation Files.
+
+27th Dec
+- Started Working on Usecase, Repo, ViewModel
+-
 

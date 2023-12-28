@@ -1,0 +1,6 @@
+# It gets total count of Cart's Items
+query CartCount($cartId: ID!) {
+    cart(id: $cartId) {
+        totalQuantity
+    }
+}

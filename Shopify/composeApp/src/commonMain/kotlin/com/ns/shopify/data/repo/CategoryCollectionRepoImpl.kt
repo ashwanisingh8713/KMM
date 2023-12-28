@@ -11,7 +11,7 @@ import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
  */
 class CategoryCollectionRepoImpl(private val apolloClient: ApolloClient): ICategoryCollectionRepo {
     override suspend fun getCategoryCollection(): ApolloResponse<GetCollectionsQuery.Data> {
-        var response = apolloClient.query(GetCollectionsQuery(first = Optional.present(3),  productsFirst = Optional.present(3))).execute()
+        val response = apolloClient.query(GetCollectionsQuery(first = Optional.present(3),  productsFirst = Optional.present(3))).execute()
         return response
     }
 }

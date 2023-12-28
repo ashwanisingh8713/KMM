@@ -1,0 +1,55 @@
+# This mutation adds lines to existing cart, returns the quantity and product id. This mutation also accepts sellingPlanId
+mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart {
+            id
+            lines(first: 10){
+                edges
+                {
+                    node{
+                        quantity
+                        merchandise{
+                            ... on ProductVariant {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+            cost {
+                totalAmount {
+                    amount
+                    currencyCode
+                }
+                subtotalAmount {
+                    amount
+                    currencyCode
+                }
+                totalTaxAmount {
+                    amount
+                    currencyCode
+                }
+                totalDutyAmount {
+                    amount
+                    currencyCode
+                }
+            }
+        }
+
+
+        userErrors {
+            field
+            message
+        }
+    }
+}
+
+
+#### INPUT
+#{
+#"cartId": "gid://shopify/Cart/c1-15db0d82dbff735c6bb2e49bea1dd037",
+#"lines": {
+#"merchandiseId": "gid://shopify/ProductVariant/44189727129847",
+#"quantity": 3
+#}
+#}

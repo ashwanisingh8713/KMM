@@ -185,3 +185,10 @@ apollo {
     }
 }
 
+libres {
+    generatedClassName = "MainRes" // "Res" by default
+    generateNamedArguments = true // false by default
+    baseLocaleLanguageCode = "en" // "en" by default
+    camelCaseNamesForAppleFramework = false // false by default
+}
+

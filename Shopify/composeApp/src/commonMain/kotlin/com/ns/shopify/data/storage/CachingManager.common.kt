@@ -9,4 +9,9 @@ expect class CachingManager {
 
     suspend fun saveLoggedInStatus(isLoggedIn: Boolean)
     fun getLoggedInStatus(): Flow<Boolean>
+
+    suspend fun saveCartId(cartId: String)
+    fun getCartId(): Flow<String>
+
+
 }

@@ -3,6 +3,7 @@ package com.ns.shopify.data.storage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import platform.Foundation.NSUserDefaults
+import platform.Foundation.setValue
 
 /**
  * Created by Ashwani Kumar Singh on 05,December,2023.
@@ -27,6 +28,15 @@ actual class CachingManager {
     actual fun getLoggedInStatus(): Flow<Boolean> = flow {
         val s = userDefault.boolForKey("logged_in")
         emit(s)
+    }
+
+    actual suspend fun saveCartId(cartId: String) {
+        userDefault.setObject(cartId, "cart_id")
+    }
+
+    actual fun getCartId(): Flow<String> = flow {
+        val s = userDefault.stringForKey("cart_id")
+        emit(s.toString())
     }
 
 }

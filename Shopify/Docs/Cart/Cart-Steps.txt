@@ -1,0 +1,4 @@
+1. Create Cart (optional - With Product )
+2. Save Cart ID locally (Because cart is anonymous)
+3. Using add product(merchandiseId) into cart
+4.

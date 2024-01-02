@@ -7,5 +7,23 @@
 
 27th Dec
 - Started Working on Usecase, Repo, ViewModel
--
+- Created Cart (Create, Add, Count) api
+- Created Models (Input and output) for (Create, Add, Count)
+- Kept all cart actions in single Cart-Repo.
+- Fixed iOS CachingManager issue.
+
+
+28th Dec
+- Completed Cart Usecase & Repo structure
+- Created Cart ViewModel, Cart (Create, Add, Count) request and response states.
+- Created CartViewmodel functions and request implementation to make api calls.
+- Worked to body params for `Cart Create` input.
+- Saving & retriving ( using Flow) Fields to save CartId and Checkout Url in `CachingManager`.
+
+
+29th Dec
+- Need to work on Tab Badge Count once item is added into Cart.
+
+
+
 

@@ -34,6 +34,11 @@ import org.koin.core.component.KoinComponent
 class CartScreen:Screen, KoinComponent {
     @Composable
     override fun Content() {
+
+        val addToCartEvent:(merchandiseId: String)->Unit = {merchandiseId->
+
+        }
+
         MoreOptionUI()
     }
 

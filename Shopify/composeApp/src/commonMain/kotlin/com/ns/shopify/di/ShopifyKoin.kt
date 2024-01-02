@@ -1,20 +1,26 @@
 package com.ns.shopify.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.ns.shopify.data.repo.CartRepoImpl
 import com.ns.shopify.data.repo.CategoryCollectionRepoImpl
 import com.ns.shopify.data.repo.LoginModuleRepoImpl
 import com.ns.shopify.data.repo.ProductDetailRepoImpl
 import com.ns.shopify.data.repo.ShopDetailsRepoImpl
 import com.ns.shopify.domain.repo.IShopDetailsRepo
+import com.ns.shopify.domain.repo.cart.ICartRepo
 import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
 import com.ns.shopify.domain.repo.login.ILoginModuleRepo
 import com.ns.shopify.domain.repo.product.IProductDetailRepo
 import com.ns.shopify.domain.usecase.ShopDetailsUseCase
+import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
+import com.ns.shopify.domain.usecase.cart.CartCountUsecase
+import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerRecoverUseCase
 import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
+import com.ns.shopify.presentation.screen.cart.CartViewModel
 import com.ns.shopify.presentation.screen.forgot_password.ForgotPasswordViewModel
 import com.ns.shopify.presentation.screen.home.HomeViewModel
 import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel
@@ -57,6 +63,7 @@ val viewModelModule = module {
     factory { SignUpViewModel(get()) }
     factory { SignInViewModel(get()) }
     factory { ForgotPasswordViewModel(get()) }
+    single { CartViewModel(get(), get(), get(), get()) }
 }
 
 val useCasesModule: Module = module {
@@ -66,6 +73,9 @@ val useCasesModule: Module = module {
     factory { CustomerRecoverUseCase(get(), get()) }
     factory { CategoryCollectionUsecase(get(), get()) }
     factory { ProductDetailUsecase(get(), get()) }
+    factory {AddMerchandiseUseCase(get(), get())}
+    factory {CartCountUsecase(get(), get())}
+    factory {CartCreateUseCase(get(), get())}
 }
 
 val repositoryModule = module {
@@ -73,6 +83,7 @@ val repositoryModule = module {
     factory<ILoginModuleRepo> { LoginModuleRepoImpl(get()) }
     factory<ICategoryCollectionRepo> { CategoryCollectionRepoImpl(get()) }
     factory<IProductDetailRepo> { ProductDetailRepoImpl(get()) }
+    factory<ICartRepo> { CartRepoImpl(get()) }
 }
 
 val apolloModule = module {

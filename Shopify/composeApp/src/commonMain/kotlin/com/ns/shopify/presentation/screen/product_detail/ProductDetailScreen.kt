@@ -31,12 +31,17 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.apollographql.apollo3.api.Optional
+import com.app.printLog
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.presentation.componets.ChildLayout
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.NetworkImage
 import com.ns.shopify.presentation.componets.VariantsP
 import com.ns.shopify.presentation.componets.VerticalScrollLayout
+import com.ns.shopify.presentation.screen.cart.CartViewModel
+import com.ns.shopify.type.CartInput
+import com.ns.shopify.type.CartLineInput
 
 /**
  * Created by Ashwani Kumar Singh on 12,December,2023.
@@ -58,6 +63,12 @@ class NewProductDetailScreen(private val productId: String) :
             navigation?.pop()
         }
 
+        val cartViewModel = getScreenModel<CartViewModel>()
+
+        val addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit = { merchandiseId, quantity ->
+            cartViewModel.addToCart(merchandiseId, quantity)
+        }
+
         if (state.value.isLoaded) {
             VerticalScrollLayout(
                 modifier = Modifier,
@@ -71,7 +82,7 @@ class NewProductDetailScreen(private val productId: String) :
                     contentType = "Divider",
                     content = {
                         Divider(
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onBackground,
                             thickness = 1.dp)
                     }
                 ),
@@ -84,7 +95,7 @@ class NewProductDetailScreen(private val productId: String) :
                 ChildLayout(
                     contentType = "Product Variants",
                     content = {
-                        VariantsP(viewModel)
+                        VariantsP(viewModel, addToCartEvent)
                     }
                 ),
                 ChildLayout(

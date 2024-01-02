@@ -9,7 +9,7 @@ import com.ns.shopify.data.storage.CachingManager
 
 actual fun platformModule() = module {
 
-    single {
+    single<CachingManager> {
         CachingManager(get())
     }
 }

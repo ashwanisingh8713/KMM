@@ -13,5 +13,12 @@ expect class CachingManager {
     suspend fun saveCartId(cartId: String)
     fun getCartId(): Flow<String>
 
+    /*val cartId: Flow<String?>*/
+
+    suspend fun saveCheckoutUrl(checkoutUrl: String)
+    fun getCheckoutUrl(): Flow<String>
+
+    suspend fun saveCartCount(count: Int)
+    fun getCartCount(): Flow<Int>
 
 }

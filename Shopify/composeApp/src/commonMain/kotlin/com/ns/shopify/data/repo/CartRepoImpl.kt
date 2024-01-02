@@ -6,7 +6,6 @@ import com.apollographql.apollo3.api.Optional
 import com.ns.shopify.CartCountQuery
 import com.ns.shopify.CartCreateMutation
 import com.ns.shopify.CartLinesAddMutation
-import com.ns.shopify.GetCollectionsQuery
 import com.ns.shopify.domain.repo.cart.ICartRepo
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput

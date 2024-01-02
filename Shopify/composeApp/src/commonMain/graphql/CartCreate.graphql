@@ -12,6 +12,7 @@ mutation CartCreate($cartInput: CartInput) {
             createdAt
             updatedAt
             checkoutUrl
+            totalQuantity
             lines(first: 10) {
                 edges {
                     node {

@@ -1,5 +1,6 @@
 package com.ns.shopify.data.storage
 
+import com.app.printLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import platform.Foundation.NSUserDefaults
@@ -32,11 +33,34 @@ actual class CachingManager {
 
     actual suspend fun saveCartId(cartId: String) {
         userDefault.setObject(cartId, "cart_id")
+        printLog("Save Cart - Id :: $cartId")
     }
 
     actual fun getCartId(): Flow<String> = flow {
-        val s = userDefault.stringForKey("cart_id")
+        val cartId = userDefault.stringForKey("cart_id")
+        printLog("Get Cart - Id :: $cartId")
+        emit(cartId.toString())
+    }
+
+    actual suspend fun saveCheckoutUrl(checkoutUrl: String) {
+        userDefault.setObject(checkoutUrl, "checkout_url")
+        printLog("Save Cart - Checkout Url :: $checkoutUrl")
+    }
+
+    actual fun getCheckoutUrl(): Flow<String> = flow {
+        val s = userDefault.stringForKey("checkout_url")
+        printLog("Get Cart - Checkout Url :: $s")
         emit(s.toString())
     }
+
+    actual suspend fun saveCartCount(count: Int) {
+        userDefault.setInteger(count.toLong(), "cart_count")
+    }
+
+    actual fun getCartCount(): Flow<Int>  = flow {
+        val s = userDefault.integerForKey("cart_count")
+        emit(s.toInt())
+    }
+
 
 }

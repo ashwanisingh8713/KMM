@@ -21,6 +21,9 @@ class SettingsViewModel(
     var loggedInStatus by mutableStateOf(false)
         private set
 
+    var cartCount by mutableStateOf(0)
+        private set
+
     init {
         observerValue()
     }
@@ -38,19 +41,25 @@ class SettingsViewModel(
                 index = it
             }
         }
+
+        coroutineScope.launch {
+            cachingManager.getCartCount().collectLatest {
+                cartCount = it
+            }
+        }
     }
 
     fun saveThemeIndex(index: Int) {
         coroutineScope.launch(appDispatcher) {
             cachingManager.saveThemeIndex(index)
-            observerValue()
         }
     }
 
     fun saveLoggedInStatus(isLoggedIn: Boolean) {
         coroutineScope.launch(appDispatcher) {
             cachingManager.saveLoggedInStatus(isLoggedIn)
-            observerValue()
         }
     }
+
+
 }

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import com.ns.shopify.ProductDetailQuery
@@ -40,7 +41,7 @@ import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel
  */
 
 @Composable
-fun VariantsP(viewModel: ProductDetailViewModel) {
+fun VariantsP(viewModel: ProductDetailViewModel, addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit) {
 
     val optionRefreshRequired = viewModel.refreshAllStateFlow.collectAsState()
 
@@ -57,7 +58,7 @@ fun VariantsP(viewModel: ProductDetailViewModel) {
             allNewOptions = viewModel.allNewOptions,
             onOptionSelection = onOptionSelection
         )
-        PriceNdAddToCart(optionRefreshRequired.value!!)
+        PriceNdAddToCart(optionRefreshRequired.value!!, addToCartEvent)
     }
 
 }
@@ -125,7 +126,7 @@ fun CreateOptionUI(
 
 // Product Price, Add To Cart Btn
 @Composable
-fun PriceNdAddToCart(productVariant: List<ProductDetailQuery.Node1>) {
+fun PriceNdAddToCart(productVariant: List<ProductDetailQuery.Node1>, addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit) {
     Spacer(modifier = Modifier.height(10.dp))
     Column(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
         Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
@@ -150,7 +151,7 @@ fun PriceNdAddToCart(productVariant: List<ProductDetailQuery.Node1>) {
         Button(
             onClick = {
                 if (productVariant.isNotEmpty()) {
-                    printLog("Add to Cart Item Id is ${productVariant[0].id}")
+                    addToCartEvent(productVariant[0].id, Optional.Present(1))
                 }
             },
             enabled = if (productVariant.isNotEmpty()) productVariant[0].availableForSale else false,

@@ -9,7 +9,9 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.app.util.Other
 import com.ns.shopify.presentation.componets.AnimVisible
+import com.ns.shopify.presentation.componets.CartTabItem
 import com.ns.shopify.presentation.componets.TabItem
+import com.ns.shopify.presentation.componets.TabItemWithBadgeCount
 import com.ns.shopify.presentation.screen.cart.CartTab
 import com.ns.shopify.presentation.screen.home.HomeTab
 import com.ns.shopify.presentation.screen.sign_in.SignInScreen
@@ -54,7 +56,7 @@ fun App(
                             ) {
                                 NavigationBar {
                                     TabItem(HomeTab)
-                                    TabItem(CartTab)
+                                    CartTabItem(count=vm.cartCount, tab = CartTab)
                                     TabItem(UserTab)
                                     TabItem(MoreTab)
 //                                    TabItem(Settings(vm))

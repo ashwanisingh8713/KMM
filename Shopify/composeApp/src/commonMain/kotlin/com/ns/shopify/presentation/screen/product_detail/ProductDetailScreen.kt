@@ -40,13 +40,14 @@ import com.ns.shopify.presentation.componets.NetworkImage
 import com.ns.shopify.presentation.componets.VariantsP
 import com.ns.shopify.presentation.componets.VerticalScrollLayout
 import com.ns.shopify.presentation.screen.cart.CartViewModel
+import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 
 /**
  * Created by Ashwani Kumar Singh on 12,December,2023.
  */
-class NewProductDetailScreen(private val productId: String) :
+class NewProductDetailScreen(private val productId: String):
     Screen {
         companion object {
             var productId = ""
@@ -57,16 +58,39 @@ class NewProductDetailScreen(private val productId: String) :
         val navigation = LocalNavigator.current
 
         val viewModel = getScreenModel<ProductDetailViewModel>()
+        val settingsViewModel = getScreenModel<SettingsViewModel>()
+        val cartViewModel = getScreenModel<CartViewModel>()
+
+        var cartId = settingsViewModel.cartId
+
         val state: State<ProductDetailStates> = viewModel.state.collectAsState()
 
         val popBack: () -> Unit = {
             navigation?.pop()
         }
 
-        val cartViewModel = getScreenModel<CartViewModel>()
+        cartViewModel.addMerchandiseState.collectAsState().value.let {
+            printLog("Add Merchandise State is ${it.success}")
+            val cart = it.success
+            cart?.let {
+                val checkoutUrl = it.checkoutUrl
+                val totalQuantity = it.totalQuantity
+                settingsViewModel.saveCartCount(totalQuantity)
+                settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
+            }
+        }
+
+        cartViewModel.cartCreateState.collectAsState().value.let {
+            printLog("Cart Created State is ${it.success}")
+            val cart = it.success
+            cart?.let {
+                settingsViewModel.saveCartId(it.id)
+                cartId = it.id
+            }
+        }
 
         val addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit = { merchandiseId, quantity ->
-            cartViewModel.addToCart(merchandiseId, quantity)
+            cartViewModel.addToCart(merchandiseId, quantity, cartId)
         }
 
         if (state.value.isLoaded) {

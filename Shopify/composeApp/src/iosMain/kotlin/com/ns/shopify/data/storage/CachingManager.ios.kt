@@ -1,5 +1,9 @@
 package com.ns.shopify.data.storage
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.app.printLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -55,12 +59,16 @@ actual class CachingManager {
 
     actual suspend fun saveCartCount(count: Int) {
         userDefault.setInteger(count.toLong(), "cart_count")
+        printLog("Save Cart - Count :: $count")
     }
 
     actual fun getCartCount(): Flow<Int>  = flow {
-        val s = userDefault.integerForKey("cart_count")
-        emit(s.toInt())
+        val count = userDefault.integerForKey("cart_count")
+        emit(count.toInt())
+        printLog("Get Cart - Count :: $count")
     }
+
+
 
 
 }

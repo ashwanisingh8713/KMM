@@ -21,8 +21,9 @@
 - Saving & retriving ( using Flow) Fields to save CartId and Checkout Url in `CachingManager`.
 
 
-29th Dec
-- Need to work on Tab Badge Count once item is added into Cart.
+2nd Jan
+- Created Tab Badge Count UI to show count after each added item into cart.
+- Created Cart Count API request and response states and observer connection.
 
 
 

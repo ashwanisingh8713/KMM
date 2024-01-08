@@ -4,6 +4,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.ns.shopify.CartCountQuery
 import com.ns.shopify.CartCreateMutation
 import com.ns.shopify.CartLinesAddMutation
+import com.ns.shopify.CartQuery
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 
@@ -18,5 +19,7 @@ interface ICartRepo {
     // It adds the selected merchandise in cart
     suspend fun addMerchandise(cartId: String, cartLineInputs: List<CartLineInput>): ApolloResponse<CartLinesAddMutation.Data>
     // It returns total number of items in Cart
-    suspend fun cartCount(cartID: String):ApolloResponse<CartCountQuery.Data>
+    suspend fun cartCount(cartId: String):ApolloResponse<CartCountQuery.Data>
+
+    suspend fun CartQuery(cartId: String):ApolloResponse<CartQuery.Data>
 }

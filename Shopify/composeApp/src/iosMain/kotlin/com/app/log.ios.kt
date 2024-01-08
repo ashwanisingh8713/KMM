@@ -9,5 +9,5 @@ import platform.Foundation.NSLog
  */
 
 actual fun printLog(msg: String) {
-    NSLog(TAG, msg)
+    NSLog("$TAG $msg")
 }

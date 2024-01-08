@@ -8,6 +8,7 @@ import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
+import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,29 +23,32 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 28,December,2023.
  */
-class CartViewModel(private val cachingManager: CachingManager, private val cartCreateUseCase: CartCreateUseCase,
-    private val addMerchandiseUseCase: AddMerchandiseUseCase,
-    private val cartCountUseCase: CartCountUsecase): ScreenModel, KoinComponent {
+class CartViewModel(/*private val cachingManager: CachingManager,*/
+                    private val cartCreateUseCase: CartCreateUseCase,
+                    private val addMerchandiseUseCase: AddMerchandiseUseCase,
+                    private val cartCountUseCase: CartCountUsecase,
+                    private val cartQueryUseCase: CartQueryUseCase): ScreenModel, KoinComponent {
 
     private val _cartCreateState = MutableStateFlow(CreateCartState())
-    private val cartCreateState = _cartCreateState.asStateFlow()
+    val cartCreateState = _cartCreateState.asStateFlow()
 
     private val _addMerchandiseState = MutableStateFlow(AddMerchandiseState())
-    private val addMerchandiseState = _addMerchandiseState.asStateFlow()
+    val addMerchandiseState = _addMerchandiseState.asStateFlow()
 
     private val _cartCountState = MutableStateFlow(CartCountState())
-    private val cartCountState = _cartCountState.asStateFlow()
+    val cartCountState = _cartCountState.asStateFlow()
 
-    fun addToCart(merchandiseId: String, quantity : Optional.Present<Int>) {
+    private val _cartQueryState = MutableStateFlow(CreateQueryState())
+    val cartQueryState = _cartQueryState.asStateFlow()
+
+    fun addToCart(merchandiseId: String, quantity : Optional.Present<Int>, cartId: String) {
         printLog("Add to Cart Merchandise Id is $merchandiseId")
         coroutineScope.launch {
-            val checkoutUrl = cachingManager.getCheckoutUrl().first()
-            printLog("Checkout Url is $checkoutUrl")
-            val cartId = cachingManager.getCartId().first()
-            if(cartId.isNotEmpty()) {
-                addMerchandise(cartId, CartLineInput(merchandiseId = merchandiseId, quantity = quantity))
-            } else {
+            printLog("Cart Id is $cartId")
+            if(cartId.isEmpty() || cartId == "null") {
                 cartCreate(merchandiseId, quantity)
+            } else {
+                addMerchandise(cartId, CartLineInput(merchandiseId = merchandiseId, quantity = quantity))
             }
         }
     }
@@ -72,10 +76,10 @@ class CartViewModel(private val cachingManager: CachingManager, private val cart
                             }
                             cart?.let {it1->
                                 _cartCreateState.update { it.copy(success = cart, isLoaded = true, isLoading = false) }
-                                val checkoutUrl = it1.checkoutUrl as String
-                                val cartId = cart.id
-                                cachingManager.saveCartId(cartId)
-                                cachingManager.saveCheckoutUrl(checkoutUrl)
+//                                val checkoutUrl = it1.checkoutUrl as String
+//                                val cartId = cart.id
+//                                cachingManager.saveCartId(cartId)
+//                                cachingManager.saveCheckoutUrl(checkoutUrl)
                             }
                         }
 
@@ -103,8 +107,6 @@ class CartViewModel(private val cachingManager: CachingManager, private val cart
                         _addMerchandiseState.update {
                             it.copy(isLoading = false, success = cart, isLoaded = true)
                         }
-                        cachingManager.saveCheckoutUrl(cart?.checkoutUrl as String)
-                        cachingManager.saveCartCount(cart.totalQuantity ?: 0)
                     }
 
                 }
@@ -136,5 +138,29 @@ class CartViewModel(private val cachingManager: CachingManager, private val cart
                 }
         }
     }
+
+    fun cartQuery(cartId: String) {
+        coroutineScope.launch {
+            cartQueryUseCase(cartId)
+                .onSuccess { response->
+                    val error = response.errors
+                    if(error != null && error.isNotEmpty()) {
+                        _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
+                    } else {
+//                        val totalQuantity = response.data?.cart?.totalQuantity
+//                        val checkoutUrl = response.data?.cart?.checkoutUrl
+//                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
+//                        cachingManager.saveCartCount(totalQuantity ?: 0 )
+                        _cartQueryState.update { it.copy(isLoading = false, isLoaded = true, success = response.data!!.cart) }
+                    }
+
+                }
+                .onFailure {it1->
+                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message) }
+                }
+        }
+    }
+
+
 
 }

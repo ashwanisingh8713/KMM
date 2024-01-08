@@ -14,3 +14,12 @@ data class CartScreenState(
     val error: String = "",
     val isLoaded: Boolean = false
 )
+
+data class UserCartUiData(
+    val userId: String = "",
+    val productId: Int = 0,
+    val price: Int = 0,
+    val quantity: Int = 0,
+    val title: String = "",
+    val imageUrl: String = "",
+)

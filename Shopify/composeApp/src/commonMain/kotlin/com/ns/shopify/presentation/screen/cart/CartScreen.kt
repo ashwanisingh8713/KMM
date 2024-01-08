@@ -1,31 +1,24 @@
 package com.ns.shopify.presentation.screen.cart
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
+import com.app.printLog
+import com.ns.shopify.presentation.settings.SettingsViewModel
+import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
 
 /**
@@ -34,130 +27,53 @@ import org.koin.core.component.KoinComponent
 class CartScreen:Screen, KoinComponent {
     @Composable
     override fun Content() {
+        val cartViewModel = getScreenModel<CartViewModel>()
+        val settingsViewModel = getScreenModel<SettingsViewModel>()
+        val cartQueryState = cartViewModel.cartQueryState.collectAsState()
 
-        val addToCartEvent:(merchandiseId: String)->Unit = {merchandiseId->
+        val cartId = settingsViewModel.cartId
 
+        LaunchedEffect(Unit) {
+            coroutineScope {
+                cartViewModel.cartQuery(cartId)
+            }
         }
 
-        MoreOptionUI()
+
+
+        if(cartQueryState.value.isLoaded) {
+            val lines = cartQueryState.value.success!!.lines
+            lines.edges.forEach {
+                printLog("CartScreen lineItem: ${it.node.merchandise.onProductVariant?.title}")
+            }
+
+            CartList()
+        } else {
+            Box(modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center) {
+                Text(text = "Cart is Empty",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center)
+            }
+        }
     }
 
     @Composable
-    fun MoreOptionUI() {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
-        ) {
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-
-                    .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-
-                    }
-                    .padding(5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text("Notification", modifier = Modifier.weight(0.2f))
-                Icon(
-                    painter = rememberVectorPainter(Icons.Default.ArrowForward),
-                    contentDescription = null,
-                    modifier = Modifier.weight(0.05f),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-
-                    .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-
-                    }
-                    .padding(start = 15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Settings", modifier = Modifier.weight(0.2f))
-                Icon(
-                    painter = rememberVectorPainter(Icons.Default.ArrowForward),
-                    contentDescription = null,
-                    modifier = Modifier.weight(0.05f),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-
-                    .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-
-                    }
-                    .padding(start = 15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text("Help Center", modifier = Modifier.weight(0.2f))
-                Icon(
-                    painter = rememberVectorPainter(Icons.Default.ArrowForward),
-                    contentDescription = null,
-                    modifier = Modifier.weight(0.05f),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-
-                    }
-                    .padding(start = 15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text("FAQs", modifier = Modifier.weight(0.2f))
-                Icon(
-                    painter = rememberVectorPainter(Icons.Default.ArrowForward),
-                    contentDescription = null,
-                    modifier = Modifier.weight(0.05f),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+    fun CartList() {
+        LazyColumn {
+            // LazyColumn is a vertically scrolling list
+            items(10) {
+                CartItem(
+                    cartUiData = UserCartUiData(),
+                    onCartItemClicked = {},
+                    onIncrement = {},
+                    onDecrement = {})
             }
 
         }
-    }
 
-}
+    }
+    }

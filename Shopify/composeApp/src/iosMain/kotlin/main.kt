@@ -1,9 +1,9 @@
 import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
+import androidx.compose.ui.window.Window
 import com.app.App
 import platform.UIKit.UIScreen
 import platform.UIKit.UIUserInterfaceStyle
-import platform.UIKit.UIViewController
 
 /*
 fun MainViewController(): UIViewController {
@@ -23,3 +23,5 @@ fun MainViewController() = ComposeUIViewController(
         isDark = isDark
     )
 }
+
+

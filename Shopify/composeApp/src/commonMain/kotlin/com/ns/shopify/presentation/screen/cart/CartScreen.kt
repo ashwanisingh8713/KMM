@@ -57,6 +57,15 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
         }
     }
 
+
+    // Comment,
+    // On click of cart item, we will navigate to product detail screen
+    // On Click on increment or decrement, we will update the cart
+    // Whole cart items will be added into new Cart with updated quantities.
+    // On click of increment, we will increment the quantity of product
+    // On click of decrement, we will decrement the quantity of product
+    // Comment,
+
     @Composable
     fun CartList(cartItems: List<UserCartUiData> = emptyList()) {
         LazyColumn {

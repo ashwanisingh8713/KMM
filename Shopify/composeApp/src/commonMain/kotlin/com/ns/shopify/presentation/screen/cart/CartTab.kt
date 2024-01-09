@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -28,8 +29,9 @@ internal object CartTab : Tab {
 
     @Composable
     override fun Content() {
+        val cartViewModel = getScreenModel<CartViewModel>()
         Navigator(
-            screen = CartScreen(),
+            screen = CartScreen(cartViewModel),
         ) { navigator ->
             SlideTransition(navigator) { screen ->
                 screen.Content()

@@ -24,30 +24,26 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 18,December,2023.
  */
-class CartScreen:Screen, KoinComponent {
+class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent {
     @Composable
     override fun Content() {
-        val cartViewModel = getScreenModel<CartViewModel>()
         val settingsViewModel = getScreenModel<SettingsViewModel>()
         val cartQueryState = cartViewModel.cartQueryState.collectAsState()
 
         val cartId = settingsViewModel.cartId
 
-        LaunchedEffect(Unit) {
-            coroutineScope {
+        LaunchedEffect(true) {
+            /*if(cartQueryState.value.isLoaded.not()) {
                 cartViewModel.cartQuery(cartId)
-            }
+            }*/
+            cartViewModel.cartQuery(cartId)
+
         }
 
 
 
         if(cartQueryState.value.isLoaded) {
-            val lines = cartQueryState.value.success!!.lines
-            lines.edges.forEach {
-                printLog("CartScreen lineItem: ${it.node.merchandise.onProductVariant?.title}")
-            }
-
-            CartList()
+            CartList(cartQueryState.value.success)
         } else {
             Box(modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center) {
@@ -62,12 +58,12 @@ class CartScreen:Screen, KoinComponent {
     }
 
     @Composable
-    fun CartList() {
+    fun CartList(cartItems: List<UserCartUiData> = emptyList()) {
         LazyColumn {
             // LazyColumn is a vertically scrolling list
-            items(10) {
+            items(cartItems.size) {
                 CartItem(
-                    cartUiData = UserCartUiData(),
+                    cartUiData = cartItems[it],
                     onCartItemClicked = {},
                     onIncrement = {},
                     onDecrement = {})

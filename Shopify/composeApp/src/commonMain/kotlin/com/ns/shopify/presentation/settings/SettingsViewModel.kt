@@ -69,9 +69,6 @@ class SettingsViewModel(
             }
         }
 
-
-
-
     }
 
     fun saveThemeIndex(index: Int) {

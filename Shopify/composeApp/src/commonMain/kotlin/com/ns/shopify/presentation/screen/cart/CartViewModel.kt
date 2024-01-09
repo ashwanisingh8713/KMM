@@ -38,7 +38,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
     private val _cartCountState = MutableStateFlow(CartCountState())
     val cartCountState = _cartCountState.asStateFlow()
 
-    private val _cartQueryState = MutableStateFlow(CreateQueryState())
+    private val _cartQueryState = MutableStateFlow(CartScreenStateMapper())
     val cartQueryState = _cartQueryState.asStateFlow()
 
     fun addToCart(merchandiseId: String, quantity : Optional.Present<Int>, cartId: String) {
@@ -151,12 +151,31 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 //                        val checkoutUrl = response.data?.cart?.checkoutUrl
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
 //                        cachingManager.saveCartCount(totalQuantity ?: 0 )
-                        _cartQueryState.update { it.copy(isLoading = false, isLoaded = true, success = response.data!!.cart) }
+                        val cartData = response.data!!.cart
+                        cartData?.let {
+                            val lines = cartData.lines
+                            val edges = lines.edges
+                            val list = mutableListOf<UserCartUiData>()
+                            edges.forEach {
+                                val node = it.node
+                                val merchandise = node.merchandise
+                                val onProductVariant = merchandise.onProductVariant
+                                val title = onProductVariant?.product?.title ?: ""
+                                val quantity = node.quantity
+                                val amount = onProductVariant?.price?.amount ?: ""
+                                val imageUrl = onProductVariant?.image?.url ?: ""
+                                val productId = onProductVariant?.id ?: ""
+                                val userCartUiData = UserCartUiData(productId = productId, price = amount as String,
+                                    quantity = quantity, title = title, imageUrl = imageUrl as String)
+                                list.add(userCartUiData)
+                            }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true) }
+                        }
                     }
 
                 }
                 .onFailure {it1->
-                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message) }
+                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message ?: "Error Occurred!") }
                 }
         }
     }

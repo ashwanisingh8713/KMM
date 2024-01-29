@@ -72,12 +72,13 @@ class NewProductDetailScreen(private val productId: String):
         cartViewModel.addMerchandiseState.collectAsState().value.let {
             printLog("Add Merchandise State is ${it.success}")
             val cart = it.success
-            cart?.let {
+            // TODO, show alert msg item is added into cart successfully
+            /*cart?.let {
                 val checkoutUrl = it.checkoutUrl
                 val totalQuantity = it.totalQuantity
                 settingsViewModel.saveCartCount(totalQuantity)
                 settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
-            }
+            }*/
         }
 
         cartViewModel.cartCreateState.collectAsState().value.let {

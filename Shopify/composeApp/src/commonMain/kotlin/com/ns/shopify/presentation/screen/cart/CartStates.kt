@@ -3,6 +3,7 @@ package com.ns.shopify.presentation.screen.cart
 import androidx.compose.runtime.Stable
 import com.ns.shopify.CartCreateMutation
 import com.ns.shopify.CartLinesAddMutation
+import com.ns.shopify.CartLinesUpdateMutation
 import com.ns.shopify.CartQuery
 
 /**
@@ -22,8 +23,3 @@ data class AddMerchandiseState(val isLoading: Boolean = true,
 @Stable
 data class CartCountState(val isLoading: Boolean = true, val count: Int = 0, val error: String? = null)
 
-@Stable
-data class CreateQueryState(val isLoading: Boolean = true,
-                           val success: CartQuery.Cart? = null,
-                           val isLoaded : Boolean = false,
-                           val error: String? = null)

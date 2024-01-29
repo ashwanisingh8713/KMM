@@ -1,0 +1,66 @@
+# This mutation is used to add a product variant of the same type
+# to the cart. In the below example, the quantity of the variant
+# (in variables.json) is increased and the id and quantity are
+# returned to confirm they are correct.
+mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart {
+            id
+            createdAt
+            updatedAt
+            checkoutUrl
+            totalQuantity
+            lines(first: 10) {
+                edges {
+                    node {
+                        id
+                        quantity
+                        merchandise {
+                            ... on ProductVariant {
+                                title
+
+                                id
+                                price {
+                                    amount
+                                }
+
+                                price {
+                                    amount
+                                }
+                                product {
+                                    title
+                                    options {
+                                        id
+                                        name
+                                        values
+                                    }
+                                }
+                                image {
+                                    url
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            cost {
+                totalAmount {
+                    amount
+                    currencyCode
+                }
+                subtotalAmount {
+                    amount
+                    currencyCode
+                }
+                totalTaxAmount {
+                    amount
+                    currencyCode
+                }
+                totalDutyAmount {
+                    amount
+                    currencyCode
+                }
+            }
+        }
+    }
+}

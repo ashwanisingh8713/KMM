@@ -31,4 +31,5 @@ data class UserCartUiData(
     val quantity: Int = 0,
     val title: String = "",
     val imageUrl: String = "",
+    val lineId: String = ""
 )

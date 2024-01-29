@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ns.MainRes
@@ -33,8 +34,8 @@ import io.github.skeptick.libres.compose.painterResource
 fun CartItem(
     cartUiData: UserCartUiData,
     onCartItemClicked: (UserCartUiData) -> Unit,
-    onIncrement: () -> Unit,
-    onDecrement: () -> Unit,
+    onIncrement: (UserCartUiData) -> Unit,
+    onDecrement: (UserCartUiData) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -82,17 +83,23 @@ fun CartItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Icon(
-                    painter = MainRes.image.ic_plus.painterResource(),
-                    contentDescription = "Increment",
-                    modifier = Modifier.clickable { onIncrement() },
-                )
-                Text(text = cartUiData.quantity.toString(), fontWeight = FontWeight.Bold)
+
                 Icon(
                     painter = MainRes.image.ic_minus.painterResource(),
                     contentDescription = "Decrement",
-                    modifier = Modifier.clickable { onDecrement() },
+                    modifier = Modifier.clickable { onDecrement(cartUiData) },
                 )
+                Text(modifier = Modifier.width(25.dp),
+                    textAlign = TextAlign.Center,
+                    text = cartUiData.quantity.toString(),
+                    fontWeight = FontWeight.Bold, )
+                Icon(
+                    painter = MainRes.image.ic_plus.painterResource(),
+                    contentDescription = "Increment",
+                    modifier = Modifier.clickable { onIncrement(cartUiData) },
+                )
+
+
             }
         }
     }

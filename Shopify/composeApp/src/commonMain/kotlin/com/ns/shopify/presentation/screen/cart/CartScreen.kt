@@ -16,8 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.presentation.settings.SettingsViewModel
+import com.ns.shopify.type.CartLineInput
+import com.ns.shopify.type.CartLineUpdateInput
 import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
 
@@ -40,10 +43,19 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
 
         }
 
+        val onDecrement: (UserCartUiData) -> Unit = {
+            val input = CartLineUpdateInput(id = it.lineId, quantity = Optional.Present((it.quantity-1)))
+            cartViewModel.cartUpdate(cartId, input)
+        }
+
+        val onIncrement: (UserCartUiData) -> Unit = {
+            val input = CartLineUpdateInput(id = it.lineId, quantity = Optional.Present((it.quantity+1)))
+            cartViewModel.cartUpdate(cartId, input)
+        }
 
 
         if(cartQueryState.value.isLoaded) {
-            CartList(cartQueryState.value.success)
+            CartList(cartQueryState.value.success, onIncrement= onIncrement, onDecrement= onDecrement)
         } else {
             Box(modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center) {
@@ -67,7 +79,7 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
     // Comment,
 
     @Composable
-    fun CartList(cartItems: List<UserCartUiData> = emptyList()) {
+    fun CartList(cartItems: List<UserCartUiData> = emptyList(), onIncrement:(UserCartUiData)->Unit, onDecrement:(UserCartUiData)->Unit) {
         val onCartItemClicked: (UserCartUiData) -> Unit = {
             printLog("Cart Item Clicked")
         }
@@ -76,9 +88,10 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
             items(cartItems.size) {
                 CartItem(
                     cartUiData = cartItems[it],
-                    onCartItemClicked = {},
-                    onIncrement = {},
-                    onDecrement = {})
+                    onCartItemClicked = onCartItemClicked,
+                    onIncrement = onIncrement,
+                    onDecrement = onDecrement
+                )
             }
 
         }

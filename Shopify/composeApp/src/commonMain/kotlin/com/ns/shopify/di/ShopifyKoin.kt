@@ -18,6 +18,7 @@ import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
+import com.ns.shopify.domain.usecase.cart.CartUpdateUseCase
 import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
@@ -67,7 +68,7 @@ val viewModelModule = module {
     factory { SignUpViewModel(get()) }
     factory { SignInViewModel(get()) }
     factory { ForgotPasswordViewModel(get()) }
-    single { CartViewModel(get(), get(), get(), get()) }
+    single { CartViewModel(get(), get(), get(), get(), get(), get()) }
     factory { AddressViewModel(get()) }
 }
 
@@ -81,6 +82,7 @@ val useCasesModule: Module = module {
     factory {AddMerchandiseUseCase(get(), get())}
     factory {CartCountUsecase(get(), get())}
     factory {CartCreateUseCase(get(), get())}
+    factory {CartUpdateUseCase(get(), get())}
     factory { CartQueryUseCase(get(), get()) }
     factory {AddAddressUseCase(get(), get())}
 }

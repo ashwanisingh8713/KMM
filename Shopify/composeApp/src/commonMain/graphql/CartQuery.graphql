@@ -11,7 +11,6 @@ query CartQuery($cartId: ID!) {
                 node {
                     id
                     quantity
-
                     merchandise {
                         ... on ProductVariant {
                             title

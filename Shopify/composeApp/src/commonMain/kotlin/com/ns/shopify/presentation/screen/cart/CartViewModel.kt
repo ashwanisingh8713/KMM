@@ -4,18 +4,17 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
-import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
+import com.ns.shopify.domain.usecase.cart.CartUpdateUseCase
+import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
+import com.ns.shopify.type.CartLineUpdateInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -27,7 +26,10 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                     private val cartCreateUseCase: CartCreateUseCase,
                     private val addMerchandiseUseCase: AddMerchandiseUseCase,
                     private val cartCountUseCase: CartCountUsecase,
-                    private val cartQueryUseCase: CartQueryUseCase): ScreenModel, KoinComponent {
+                    private val cartQueryUseCase: CartQueryUseCase,
+                    private val cartUpdateUseCase: CartUpdateUseCase,
+                    private val settingsViewModel: SettingsViewModel
+    ): ScreenModel, KoinComponent {
 
     private val _cartCreateState = MutableStateFlow(CreateCartState())
     val cartCreateState = _cartCreateState.asStateFlow()
@@ -40,6 +42,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 
     private val _cartQueryState = MutableStateFlow(CartScreenStateMapper())
     val cartQueryState = _cartQueryState.asStateFlow()
+
 
     fun addToCart(merchandiseId: String, quantity : Optional.Present<Int>, cartId: String) {
         printLog("Add to Cart Merchandise Id is $merchandiseId")
@@ -97,18 +100,23 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
         coroutineScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
             addMerchandiseUseCase(pair)
-                .onSuccess {
-                    val error = it.errors
+                .onSuccess {it1->
+                    val error = it1.errors
                     if(error != null && error.isNotEmpty()) {
                         _addMerchandiseState.update { it.copy(isLoading = false, error = error[0].message) }
-
                     } else {
-                        val cart = it.data?.cartLinesAdd?.cart
-                        _addMerchandiseState.update {
+                        val cart = it1.data?.cartLinesAdd?.cart
+                        /*_addMerchandiseState.update {
                             it.copy(isLoading = false, success = cart, isLoaded = true)
+                        }*/
+                        cart?.let {
+                            val checkoutUrl = cart.checkoutUrl
+                            val totalQuantity = cart.totalQuantity
+                            settingsViewModel.saveCartCount(totalQuantity)
+                            settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
                         }
-                    }
 
+                    }
                 }
                 .onFailure {it1->
                     _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
@@ -151,9 +159,9 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 //                        val checkoutUrl = response.data?.cart?.checkoutUrl
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
 //                        cachingManager.saveCartCount(totalQuantity ?: 0 )
-                        val cartData = response.data!!.cart
-                        cartData?.let {
-                            val lines = cartData.lines
+                        val cart = response.data!!.cart
+                        cart?.let {
+                            val lines = cart.lines
                             val edges = lines.edges
                             val list = mutableListOf<UserCartUiData>()
                             edges.forEach {
@@ -162,11 +170,13 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val onProductVariant = merchandise.onProductVariant
                                 val title = onProductVariant?.product?.title ?: ""
                                 val quantity = node.quantity
+                                val lineId = node.id
                                 val amount = onProductVariant?.price?.amount ?: ""
                                 val imageUrl = onProductVariant?.image?.url ?: ""
                                 val productId = onProductVariant?.id ?: ""
-                                val userCartUiData = UserCartUiData(productId = productId, price = amount as String,
-                                    quantity = quantity, title = title, imageUrl = imageUrl as String)
+                                val userCartUiData = UserCartUiData(productId = productId,
+                                    price = amount as String, quantity = quantity, title = title,
+                                    imageUrl = imageUrl as String, lineId = lineId)
                                 list.add(userCartUiData)
                             }
                             _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true) }
@@ -178,6 +188,54 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                     _cartQueryState.update { it.copy(isLoading = false, error = it1.message ?: "Error Occurred!") }
                 }
         }
+    }
+
+
+    fun cartUpdate(cartId: String, cartLineInput: CartLineUpdateInput) {
+        coroutineScope.launch {
+            val pair = Pair(cartId, listOf(cartLineInput))
+            cartUpdateUseCase(pair)
+                .onSuccess {it1->
+                    val error = it1.errors
+                    if(error != null && error.isNotEmpty()) {
+                        _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
+                    } else {
+                        val cart = it1.data?.cartLinesUpdate?.cart
+                        cart?.let {
+                            val lines = cart.lines
+                            val edges = lines.edges
+                            val list = mutableListOf<UserCartUiData>()
+                            edges.forEach {
+                                val node = it.node
+                                val merchandise = node.merchandise
+                                val onProductVariant = merchandise.onProductVariant
+                                val title = onProductVariant?.product?.title ?: ""
+                                val quantity = node.quantity
+                                val lineId = node.id
+                                val amount = onProductVariant?.price?.amount ?: ""
+                                val imageUrl = onProductVariant?.image?.url ?: ""
+                                val productId = onProductVariant?.id ?: ""
+                                val userCartUiData = UserCartUiData(productId = productId,
+                                    price = amount as String, quantity = quantity, title = title,
+                                    imageUrl = imageUrl as String, lineId = lineId)
+                                list.add(userCartUiData)
+                            }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true) }
+
+                            cart.let {
+                                val checkoutUrl = cart.checkoutUrl
+                                val totalQuantity = cart.totalQuantity
+                                settingsViewModel.saveCartCount(totalQuantity)
+                                settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
+                            }
+                        }
+                    }
+                }
+                .onFailure {it1->
+                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message ?: "Error Occurred!") }
+                }
+        }
+
     }
 
 

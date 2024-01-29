@@ -21,7 +21,8 @@ data class CartScreenStateMapper(
     val success: List<UserCartUiData> = emptyList(),
     val isLoading: Boolean = false,
     val error: String = "",
-    val isLoaded: Boolean = false
+    val isLoaded: Boolean = false,
+    val totalAmount: String = ""
 )
 
 

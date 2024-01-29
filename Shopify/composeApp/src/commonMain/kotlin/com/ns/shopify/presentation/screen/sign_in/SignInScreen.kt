@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
@@ -114,7 +114,7 @@ class SignInScreen : Screen {
                     }
                 }*/
                 Box(modifier = Modifier.weight(1.0f)) {
-                    Text(text = "Sign in", color = MaterialTheme.colors.onPrimary, fontSize = 18.sp)
+                    Text(text = "Sign in", color = MaterialTheme.colorScheme.onPrimary, fontSize = 18.sp)
                 }
 
             }
@@ -122,7 +122,7 @@ class SignInScreen : Screen {
             Text(text = "Welcome! Sign In", fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Text(
                 text = "Sign in with your email or password\nor continue with social media.",
-                color = MaterialTheme.colors.onPrimary,
+                color = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(50.dp))
@@ -174,17 +174,17 @@ class SignInScreen : Screen {
                         checked = checkBox, onCheckedChange = {
                             checkBox = it
                         },
-                        colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+                        colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary)
                     )
                     Text(
                         text = "Remember me",
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp
                     )
                 }
                 Text(
                     text = "Forget Password",
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     style = TextStyle(textDecoration = TextDecoration.Underline),
                     modifier = Modifier.clickable {
                         // TODO: Forgot Password Navigation
@@ -225,7 +225,7 @@ class SignInScreen : Screen {
                         modifier = Modifier
                             .size(50.dp)
                             .background(
-                                MaterialTheme.colors.secondary,
+                                MaterialTheme.colorScheme.secondary,
                                 shape = CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -239,7 +239,7 @@ class SignInScreen : Screen {
                         modifier = Modifier
                             .size(50.dp)
                             .background(
-                                MaterialTheme.colors.secondary,
+                                MaterialTheme.colorScheme.secondary,
                                 shape = CircleShape
                             )
                             .clickable {
@@ -256,7 +256,7 @@ class SignInScreen : Screen {
                         modifier = Modifier
                             .size(50.dp)
                             .background(
-                                MaterialTheme.colors.secondary,
+                                MaterialTheme.colorScheme.secondary,
                                 shape = CircleShape
                             )
                             .clickable {
@@ -277,10 +277,10 @@ class SignInScreen : Screen {
                         .padding(top = 30.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "Don't have an account? ", color = MaterialTheme.colors.primary)
+                    Text(text = "Don't have an account? ", color = MaterialTheme.colorScheme.primary)
                     Text(
                         text = "Sign Up",
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.clickable {
                             // TODO: Sign Up Navigation
                             navController.push(SignUpScreen())

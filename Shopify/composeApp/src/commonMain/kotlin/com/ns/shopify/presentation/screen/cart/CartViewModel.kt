@@ -160,6 +160,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
 //                        cachingManager.saveCartCount(totalQuantity ?: 0 )
                         val cart = response.data!!.cart
+                        val totalAmount = cart?.cost?.totalAmount?.amount as String
                         cart?.let {
                             val lines = cart.lines
                             val edges = lines.edges
@@ -179,7 +180,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                     imageUrl = imageUrl as String, lineId = lineId)
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true) }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true, totalAmount = totalAmount) }
                         }
                     }
 
@@ -201,6 +202,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                         _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
                     } else {
                         val cart = it1.data?.cartLinesUpdate?.cart
+                        val totalAmount = cart?.cost?.totalAmount?.amount as String
                         cart?.let {
                             val lines = cart.lines
                             val edges = lines.edges
@@ -220,7 +222,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                     imageUrl = imageUrl as String, lineId = lineId)
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true) }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true, totalAmount = totalAmount) }
 
                             cart.let {
                                 val checkoutUrl = cart.checkoutUrl

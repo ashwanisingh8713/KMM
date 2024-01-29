@@ -112,7 +112,7 @@ fun ProductItem(product: GetCollectionsQuery.Node1, onItemClick: (GetCollections
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "$ ${product.priceRange.minVariantPrice.amount}",
+                text = "Rs. ${product.priceRange.minVariantPrice.amount}",
                 fontWeight = FontWeight(600),
                 color = MaterialTheme.colors.primary
             )

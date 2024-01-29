@@ -125,6 +125,7 @@ class SignInScreen : Screen {
             )
             Spacer(modifier = Modifier.height(50.dp))
             CustomTextField(
+                initialValue = SignUpScreen.temp_email,
                 placeholder = "example@email.com",
                 label = "Email",
                 errorState = emailErrorState,
@@ -137,12 +138,14 @@ class SignInScreen : Screen {
             )
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(
+                initialValue = SignUpScreen.temp_passwd,
                 placeholder = "********",
                 label = "Password",
                 keyboardType = KeyboardType.Password,
                 errorState = passwordErrorState,
                 visualTransformation = PasswordVisualTransformation(),
                 onChanged = { newPass ->
+//                    password = newPass
                     password = newPass
                 },
                 icon = Icons.Outlined.Lock

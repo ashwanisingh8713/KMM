@@ -62,7 +62,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 //        val lines : Optional.Present<List<CartLineInput>> = Optional.Present(listOf(cartLineInput))
 //        val cartInput = CartInput(lines = lines)
             coroutineScope.launch {
-                val cartInput: CartInput = CartInput(lines = Optional.Present(listOf(CartLineInput(merchandiseId = merchandiseId, quantity = quantity))))
+                val cartInput = CartInput(lines = Optional.Present(listOf(CartLineInput(merchandiseId = merchandiseId, quantity = quantity))))
                 cartCreateUseCase(cartInput)
                     .onSuccess {
                         val error = it.errors

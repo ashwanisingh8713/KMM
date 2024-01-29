@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,14 +42,18 @@ import com.ns.shopify.presentation.componets.Loading
 
 internal class SignUpScreen(
 
-    private val temp_email: String = "decaci4871@newcupon.com",
-    private val temp_passwd: String = "12345678",
     private val temp_firstName: String = "Ashwani",
     private val temp_lastName: String = "Singh",
     private val temp_address: String = "My Address",
-    private val temp_phoneNumber: String = "+918390098887"
+    private val temp_phoneNumber: String = "+918390098880"
 
 ) : Screen {
+
+    companion object {
+        val temp_email: String = "kaxori9962@rentaen.com"
+        val temp_passwd: String = "12345678"
+    }
+
 
     @Composable
     override fun Content() {

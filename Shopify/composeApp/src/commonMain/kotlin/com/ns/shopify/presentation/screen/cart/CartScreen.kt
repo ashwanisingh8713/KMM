@@ -47,7 +47,7 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
         } else {
             Box(modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center) {
-                Text(text = "Cart is Empty",
+                Text(text = "Loading...",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -68,6 +68,9 @@ class CartScreen(private val cartViewModel: CartViewModel):Screen, KoinComponent
 
     @Composable
     fun CartList(cartItems: List<UserCartUiData> = emptyList()) {
+        val onCartItemClicked: (UserCartUiData) -> Unit = {
+            printLog("Cart Item Clicked")
+        }
         LazyColumn {
             // LazyColumn is a vertically scrolling list
             items(cartItems.size) {

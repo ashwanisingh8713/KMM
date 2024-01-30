@@ -3,6 +3,7 @@ package com.ns.shopify.presentation.screen.cart
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.ns.shopify.CartCreateMutation
+import com.ns.shopify.type.CurrencyCode
 
 /**
  * Created by Ashwani Kumar Singh on 26,December,2023.
@@ -22,15 +23,19 @@ data class CartScreenStateMapper(
     val isLoading: Boolean = false,
     val error: String = "",
     val isLoaded: Boolean = false,
-    val totalAmount: String = ""
+    val totalAmount: Double = 0.0,
+    val subTotalAmount: Double = 0.0,
+    val taxAmount: Double = 0.0,
+    val currencyCode: CurrencyCode = CurrencyCode.INR
 )
 
 
 data class UserCartUiData(
     val productId: String = "",
-    val price: String = "",
+    val price: Double = 0.0,
     val quantity: Int = 0,
     val title: String = "",
     val imageUrl: String = "",
-    val lineId: String = ""
+    val lineId: String = "",
+    val currencyCode: CurrencyCode = CurrencyCode.INR
 )

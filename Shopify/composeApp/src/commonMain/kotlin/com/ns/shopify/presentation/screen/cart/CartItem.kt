@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ns.MainRes
+import com.ns.shopify.data.utils.amountFormatter
 import com.ns.shopify.presentation.componets.NetworkImage
 import io.github.skeptick.libres.compose.painterResource
 
@@ -52,6 +53,7 @@ fun CartItem(
         ),
         shape = RoundedCornerShape(10.dp),
     ) {
+        val amount = cartUiData.price * cartUiData.quantity
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,7 +77,7 @@ fun CartItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = cartUiData.price.toString())
+                Text(text = amountFormatter(cartUiData.currencyCode, amount))
                 Spacer(modifier = Modifier.height(4.dp))
             }
             Spacer(modifier = Modifier.weight(1f))

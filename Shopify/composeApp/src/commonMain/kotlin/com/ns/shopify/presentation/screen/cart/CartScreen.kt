@@ -29,10 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
+import com.ns.shopify.data.utils.amountFormatter
+import com.ns.shopify.presentation.screen.payment.PaymentCardScreen
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartLineUpdateInput
+import com.ns.shopify.type.CurrencyCode
 import org.koin.core.component.KoinComponent
 
 /**
@@ -45,6 +49,8 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
         val cartQueryState = cartViewModel.cartQueryState.collectAsState()
 
         val cartId = settingsViewModel.cartId
+
+        val navigation = LocalNavigator.current
 
         LaunchedEffect(true) {
             /*if(cartQueryState.value.isLoaded.not()) {
@@ -66,67 +72,27 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
             cartViewModel.cartUpdate(cartId, input)
         }
 
+        val onPlaceOrderClicked:() -> Unit = {
+            navigation?.push(PaymentCardScreen())
+        }
+
 
         if (cartQueryState.value.isLoaded) {
             Scaffold(topBar = {},
                 bottomBar = {
-                    Column(modifier = Modifier.fillMaxWidth().height(140.dp)) {
-                        Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
-                        Row {
-                            Column {
-                                Text(
-                                    text = "Total Amount:",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier
-                                        .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Text(
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    text = cartQueryState.value.totalAmount,
-                                    modifier = Modifier
-                                        .padding(start = 16.dp, bottom = 10.dp),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                                horizontalArrangement = Arrangement.End
-
-                            ) {
-                                Button(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.6f)
-                                        .padding(top = 3.dp, bottom = 8.dp)
-                                        .height(45.dp)
-                                        .clip(RoundedCornerShape(5.dp)),
-                                    onClick = {
-
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = Color.White
-                                    ),
-                                ) {
-                                    Text(text = "Place Order", fontSize = 16.sp, )
-                                }
-                            }
-
-                        }
+                    BottomBarUIs(onPlaceOrderClicked, cartQueryState.value)
+                },
+                content = {
+                    Box(modifier = Modifier.fillMaxSize().padding(it)) {
+                        CartList(
+                            cartQueryState.value.success,
+                            onIncrement = onIncrement,
+                            onDecrement = onDecrement
+                        )
                     }
                 }
             )
-            {
-                CartList(
-                    cartQueryState.value.success,
-                    onIncrement = onIncrement,
-                    onDecrement = onDecrement
-                )
-            }
+
 
         } else {
             Box(
@@ -142,6 +108,122 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
                     textAlign = TextAlign.Center
                 )
             }
+        }
+    }
+
+
+    @Composable
+    fun BottomBarUIs(onPlaceOrderClicked:()->Unit, cartQueryState: CartScreenStateMapper) {
+        Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
+        Column(modifier = Modifier.fillMaxWidth().padding(bottom = 85.dp)) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.End
+
+            ) {
+                Text(
+                    text = "Product Amount :",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    text = amountFormatter(
+                        CurrencyCode.ALL,
+                        cartQueryState.subTotalAmount
+                    ),
+                    modifier = Modifier.fillMaxWidth(0.4f)
+                        .padding(start = 16.dp, top = 10.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.End
+
+            ) {
+                Text(
+                    text = "Taxes Amount :",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    text = amountFormatter(
+                        CurrencyCode.ALL,
+                        cartQueryState.taxAmount
+                    ),
+                    modifier = Modifier.fillMaxWidth(0.4f)
+                        .padding(start = 16.dp, top = 10.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.End
+
+            ) {
+                Text(
+                    text = "Total Amount :",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.fillMaxWidth(0.4f)
+                        .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    text = amountFormatter(
+                        cartQueryState.currencyCode,
+                        cartQueryState.totalAmount
+                    ),
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 10.dp, bottom = 2.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .padding(top = 3.dp, bottom = 8.dp)
+                        .height(45.dp)
+                        .clip(RoundedCornerShape(5.dp)),
+                    onClick = {
+                        onPlaceOrderClicked()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.White
+                    ),
+                ) {
+                    Text(text = "Place Order", fontSize = 16.sp)
+                }
+            }
+
         }
     }
 
@@ -177,4 +259,6 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
         }
 
     }
+
+
 }

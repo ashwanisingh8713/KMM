@@ -160,8 +160,17 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
 //                        cachingManager.saveCartCount(totalQuantity ?: 0 )
                         val cart = response.data!!.cart
-                        val totalAmount = cart?.cost?.totalAmount?.amount as String
-                        cart?.let {
+                        val rawTotalAmount = cart?.cost?.totalAmount?.amount as String
+                        val totalAmount = rawTotalAmount.toDoubleOrNull() ?: 0.0
+
+                        val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
+                        val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
+
+                        val rawTaxAmount = cart.cost.totalTaxAmount?.amount as String
+                        val taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+
+                        val currencyCode = cart.cost.totalAmount.currencyCode
+                        cart.let {
                             val lines = cart.lines
                             val edges = lines.edges
                             val list = mutableListOf<UserCartUiData>()
@@ -172,15 +181,20 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val title = onProductVariant?.product?.title ?: ""
                                 val quantity = node.quantity
                                 val lineId = node.id
-                                val amount = onProductVariant?.price?.amount ?: ""
+                                val rawAmount = onProductVariant?.price?.amount as String
+                                val amount = rawAmount.toDoubleOrNull() ?: 0.0
                                 val imageUrl = onProductVariant?.image?.url ?: ""
                                 val productId = onProductVariant?.id ?: ""
                                 val userCartUiData = UserCartUiData(productId = productId,
-                                    price = amount as String, quantity = quantity, title = title,
-                                    imageUrl = imageUrl as String, lineId = lineId)
+                                    price = amount, quantity = quantity, title = title,
+                                    imageUrl = imageUrl as String, lineId = lineId, currencyCode = currencyCode)
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true, totalAmount = totalAmount) }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true,
+                                totalAmount = totalAmount,
+                                subTotalAmount = subTotalAmount,
+                                taxAmount = taxAmount,
+                                currencyCode = currencyCode) }
                         }
                     }
 
@@ -202,8 +216,14 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                         _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
                     } else {
                         val cart = it1.data?.cartLinesUpdate?.cart
-                        val totalAmount = cart?.cost?.totalAmount?.amount as String
-                        cart?.let {
+                        val rawTotalAmount = cart?.cost?.totalAmount?.amount as String
+                        val totalAmount = rawTotalAmount.toDoubleOrNull() ?: 0.0
+                        val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
+                        val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
+                        val rawTaxAmount = cart.cost.totalTaxAmount?.amount as String
+                        val taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+                        val currencyCode = cart.cost.totalAmount.currencyCode
+                        cart.let {
                             val lines = cart.lines
                             val edges = lines.edges
                             val list = mutableListOf<UserCartUiData>()
@@ -214,15 +234,20 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val title = onProductVariant?.product?.title ?: ""
                                 val quantity = node.quantity
                                 val lineId = node.id
-                                val amount = onProductVariant?.price?.amount ?: ""
+                                val rawAmount = onProductVariant?.price?.amount as String
+                                val amount = rawAmount.toDoubleOrNull() ?: 0.0
                                 val imageUrl = onProductVariant?.image?.url ?: ""
                                 val productId = onProductVariant?.id ?: ""
                                 val userCartUiData = UserCartUiData(productId = productId,
-                                    price = amount as String, quantity = quantity, title = title,
-                                    imageUrl = imageUrl as String, lineId = lineId)
+                                    price = amount, quantity = quantity, title = title,
+                                    imageUrl = imageUrl as String, lineId = lineId, currencyCode = currencyCode )
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true, totalAmount = totalAmount) }
+                            _cartQueryState.update { it.copy(isLoading = false, success = list,
+                                isLoaded = true,
+                                totalAmount = totalAmount,
+                                subTotalAmount = subTotalAmount,
+                                taxAmount = taxAmount, currencyCode = currencyCode) }
 
                             cart.let {
                                 val checkoutUrl = cart.checkoutUrl

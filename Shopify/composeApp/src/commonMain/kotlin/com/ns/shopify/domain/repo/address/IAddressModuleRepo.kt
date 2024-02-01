@@ -6,5 +6,5 @@ import com.ns.shopify.type.MailingAddressInput
 interface IAddressModuleRepo {
 
     //For Add Address
-    suspend fun createAddress(input : MailingAddressInput) : CustomerAddressCreateMutation.CustomerAddressCreate
+    suspend fun createAddress(customerAccessToken: String, input : MailingAddressInput) : CustomerAddressCreateMutation.CustomerAddressCreate
 }

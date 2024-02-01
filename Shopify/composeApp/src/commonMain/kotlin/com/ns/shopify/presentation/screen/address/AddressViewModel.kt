@@ -3,7 +3,7 @@ package com.ns.shopify.presentation.screen.address
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.apollographql.apollo3.api.Optional
-import com.ns.shopify.domain.usecase.AddAddressUseCase
+import com.ns.shopify.domain.usecase.address.AddAddressUseCase
 import com.ns.shopify.type.MailingAddressInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,17 +32,20 @@ class AddressViewModel(private val addressUseCase: AddAddressUseCase) : ScreenMo
         coroutineScope.launch {
 
             addressUseCase(
-                MailingAddressInput(
-                    address1 = Optional.present(address1),
-                    address2 = Optional.present(address2),
-                    city = Optional.present(city),
-                    country = Optional.present(country),
-                    company = Optional.present(company),
-                    firstName = Optional.present(firstName),
-                    lastName = Optional.present(lastName),
-                    phone = Optional.present(phone),
-                    province = Optional.present(province),
-                    zip = Optional.present(zip)
+                Pair(
+                    "",
+                    MailingAddressInput(
+                        address1 = Optional.present(address1),
+                        address2 = Optional.present(address2),
+                        city = Optional.present(city),
+                        company = Optional.present(company),
+                        country = Optional.present(country),
+                        firstName = Optional.present(firstName),
+                        lastName = Optional.present(lastName),
+                        phone = Optional.present(phone),
+                        province = Optional.present(province),
+                        zip = Optional.present(zip)
+                    )
                 )
             ).onSuccess { it1 ->
                     val errorData = it1.customerUserErrors

@@ -1,7 +1,29 @@
-mutation CartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
-    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+# cartBuyerIdentityUpdate is used to associate customer info
+# with a cart and is used to determine international pricing.
+# The below example is updating the buyerIdentity and returning
+# the info (email, phone, delivery address preferences) to ensure
+# that it updated correctly
+mutation CartBuyerIdentityUpdate($buyerIdentity: CartBuyerIdentityInput!, $cartId: ID!) {
+    cartBuyerIdentityUpdate(buyerIdentity: $buyerIdentity, cartId: $cartId) {
         cart {
             id
+            buyerIdentity {
+                email
+                phone
+                deliveryAddressPreferences {
+                    ... on MailingAddress {
+                        address1
+                        city
+                        country
+                        firstName
+                        lastName
+                    }
+                }
+            }
+        }
+        userErrors {
+            field
+            message
         }
     }
 }

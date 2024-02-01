@@ -1,6 +1,7 @@
 package com.ns.shopify.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.ns.shopify.data.repo.AddressModuleRepoImpl
 import com.ns.shopify.data.repo.CartRepoImpl
 import com.ns.shopify.data.repo.CategoryCollectionRepoImpl
 import com.ns.shopify.data.repo.LoginModuleRepoImpl
@@ -12,7 +13,7 @@ import com.ns.shopify.domain.repo.cart.ICartRepo
 import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
 import com.ns.shopify.domain.repo.login.ILoginModuleRepo
 import com.ns.shopify.domain.repo.product.IProductDetailRepo
-import com.ns.shopify.domain.usecase.AddAddressUseCase
+import com.ns.shopify.domain.usecase.address.AddAddressUseCase
 import com.ns.shopify.domain.usecase.ShopDetailsUseCase
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
@@ -84,7 +85,7 @@ val useCasesModule: Module = module {
     factory {CartCreateUseCase(get(), get())}
     factory {CartUpdateUseCase(get(), get())}
     factory { CartQueryUseCase(get(), get()) }
-    factory {AddAddressUseCase(get(), get())}
+    factory { AddAddressUseCase(get(), get()) }
 }
 
 val repositoryModule = module {
@@ -93,6 +94,7 @@ val repositoryModule = module {
     factory<ICategoryCollectionRepo> { CategoryCollectionRepoImpl(get()) }
     factory<IProductDetailRepo> { ProductDetailRepoImpl(get()) }
     factory<ICartRepo> { CartRepoImpl(get()) }
+    factory<IAddressModuleRepo> { AddressModuleRepoImpl(get()) }
 }
 
 val apolloModule = module {

@@ -1,5 +1,14 @@
 Checkout Reference Link:
+
+Checkout
     https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/checkout
 
+Create a checkout with the Storefront API
+    https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/checkout/create
 
 
+Stackoverflow
+https://stackoverflow.com/questions/56997821/shopify-graphql-checkout-create-mutation
+
+Turned your app into a sales channel
+    https://shopify.dev/docs/apps/selling-strategies/channels/getting-started

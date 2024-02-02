@@ -15,6 +15,7 @@ import com.ns.shopify.domain.repo.login.ILoginModuleRepo
 import com.ns.shopify.domain.repo.product.IProductDetailRepo
 import com.ns.shopify.domain.usecase.address.AddAddressUseCase
 import com.ns.shopify.domain.usecase.ShopDetailsUseCase
+import com.ns.shopify.domain.usecase.address.AddressListUseCase
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
@@ -25,7 +26,8 @@ import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerRecoverUseCase
 import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
-import com.ns.shopify.presentation.screen.address.AddressViewModel
+import com.ns.shopify.presentation.screen.address.AddAddressViewModel
+import com.ns.shopify.presentation.screen.address.AddressListViewModel
 import com.ns.shopify.presentation.screen.cart.CartViewModel
 import com.ns.shopify.presentation.screen.forgot_password.ForgotPasswordViewModel
 import com.ns.shopify.presentation.screen.home.HomeViewModel
@@ -70,7 +72,8 @@ val viewModelModule = module {
     factory { SignInViewModel(get()) }
     factory { ForgotPasswordViewModel(get()) }
     single { CartViewModel(get(), get(), get(), get(), get(), get()) }
-    factory { AddressViewModel(get()) }
+    factory { AddAddressViewModel(get(), get()) }
+    factory { AddressListViewModel(get(), get()) }
 }
 
 val useCasesModule: Module = module {
@@ -80,12 +83,13 @@ val useCasesModule: Module = module {
     factory { CustomerRecoverUseCase(get(), get()) }
     factory { CategoryCollectionUsecase(get(), get()) }
     factory { ProductDetailUsecase(get(), get()) }
-    factory {AddMerchandiseUseCase(get(), get())}
-    factory {CartCountUsecase(get(), get())}
-    factory {CartCreateUseCase(get(), get())}
-    factory {CartUpdateUseCase(get(), get())}
+    factory { AddMerchandiseUseCase(get(), get()) }
+    factory { CartCountUsecase(get(), get()) }
+    factory { CartCreateUseCase(get(), get()) }
+    factory { CartUpdateUseCase(get(), get()) }
     factory { CartQueryUseCase(get(), get()) }
     factory { AddAddressUseCase(get(), get()) }
+    factory { AddressListUseCase(get(), get()) }
 }
 
 val repositoryModule = module {
@@ -115,11 +119,9 @@ val apolloModule = module {
 }
 
 
-
 val dispatcherModule = module {
     factory { Dispatchers.Default }
 }
-
 
 
 fun initKoin() = shopifyInitKoin {}

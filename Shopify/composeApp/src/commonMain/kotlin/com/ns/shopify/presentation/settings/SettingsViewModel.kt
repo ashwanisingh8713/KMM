@@ -104,5 +104,12 @@ class SettingsViewModel(
         }
     }
 
+    fun saveCustomerAccessToken(customerAccessToken: String) {
+        coroutineScope.launch(appDispatcher) {
+            cachingManager.saveCustomerAccessToken(customerAccessToken)
+            observerValue()
+        }
+    }
+
 
 }

@@ -23,6 +23,7 @@ actual class CachingManager(private val context: Context) {
     private val cartId_key = stringPreferencesKey("cartId_key")
     private val checkoutUrl_key = stringPreferencesKey("checkoutUrl_key")
     private val cartCount_key = intPreferencesKey("cartCount_key")
+    private val customerAccessToken_key = stringPreferencesKey("customerAccessToken_key")
     actual suspend fun saveThemeIndex(index: Int) {
         context.dataStore.edit {
             it[theme_key] = index
@@ -85,4 +86,18 @@ actual class CachingManager(private val context: Context) {
         printLog("Get Cart - Count :: $cartCount")
         cartCount
     }
+
+    actual suspend fun saveCustomerAccessToken(customerAccessToken: String) {
+        context.dataStore.edit {
+            it[customerAccessToken_key] = customerAccessToken
+            printLog("CustomerAccessToken :: $customerAccessToken")
+        }
+    }
+
+    actual fun getCustomerAccessToken(): Flow<String> = context.dataStore.data.map {
+        val customerAccessToken = it[customerAccessToken_key] ?: ""
+        printLog("CustomerAccessToken :: $customerAccessToken")
+        customerAccessToken
+    }
+
 }

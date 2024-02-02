@@ -24,4 +24,7 @@ expect class CachingManager {
     suspend fun saveCartCount(count: Int)
     fun getCartCount(): Flow<Int>
 
+    suspend fun saveCustomerAccessToken(customerAccessToken: String)
+    fun getCustomerAccessToken(): Flow<String>
+
 }

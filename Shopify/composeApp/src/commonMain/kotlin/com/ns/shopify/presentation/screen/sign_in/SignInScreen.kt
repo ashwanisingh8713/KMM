@@ -290,17 +290,19 @@ class SignInScreen : Screen {
         }
 
         if(state.value.isLoaded) {
-            val vm = rememberKoinInject<SettingsViewModel>()
+            val settingsViewModel = rememberKoinInject<SettingsViewModel>()
             AlertDialog(
                 title = "Success",
                 message = "Account created successfully. \nPlease go to your registered email and verify your account, before login.",
                 onClose = {
-                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                    settingsViewModel.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                    val accessToken = state.value.success?.customerAccessToken?.accessToken?:""
+                    settingsViewModel.saveCustomerAccessToken(accessToken)
                 },
 
                 )
         }
-        if(state.value.error != null && state.value.error!!.isNotBlank()) {
+        if(state.value.error != null && state.value.error.isNotBlank()) {
             AlertDialog(
                 title = "Error!",
                 message = state.value.error,

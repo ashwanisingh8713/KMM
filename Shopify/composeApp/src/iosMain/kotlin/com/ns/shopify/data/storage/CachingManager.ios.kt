@@ -68,7 +68,14 @@ actual class CachingManager {
         printLog("Get Cart - Count :: $count")
     }
 
+    actual suspend fun saveCustomerAccessToken(customerAccessToken: String) {
+        userDefault.setObject(customerAccessToken, "customerAccessToken")
+    }
 
+    actual fun getCustomerAccessToken(): Flow<String> = flow {
+        val s = userDefault.stringForKey("customerAccessToken")
+        emit(s.toString())
+    }
 
 
 }

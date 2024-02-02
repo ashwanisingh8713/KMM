@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.ns.shopify.presentation.screen.address.AddressScreen
+import com.ns.shopify.presentation.screen.address.AddAddressScreen
+import com.ns.shopify.presentation.screen.address.AddressListScreen
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import org.koin.compose.rememberKoinInject
 
@@ -122,7 +123,7 @@ internal class UserScreen : Screen {
             ) {
 
                 Text("Address", modifier = Modifier.weight(0.2f).clickable {
-                    navigator.push(AddressScreen())
+                    navigator.push(AddressListScreen())
                 })
                 Icon(
                     painter = rememberVectorPainter(Icons.Default.ArrowForward),

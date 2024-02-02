@@ -18,46 +18,78 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.ns.shopify.presentation.componets.AlertDialog
-import com.ns.shopify.presentation.componets.CustomDefaultBtn
 import com.ns.shopify.presentation.componets.CustomTextField
 import com.ns.shopify.presentation.componets.DefaultBackArrow
-import com.ns.shopify.presentation.settings.SettingsViewModel
-import org.koin.compose.rememberKoinInject
 
-internal class AddressScreen : Screen {
+internal class AddAddressScreen : Screen {
     @Composable
     override fun Content() {
 
+        val viewModel = getScreenModel<AddAddressViewModel>()
+
         val navigation = LocalNavigator.current
+
+        val onBackPress:()-> Unit = {
+            navigation?.pop()
+        }
+
+        var address1 = mutableStateOf(TextFieldValue())
+
+        var firstName = mutableStateOf(TextFieldValue())
+        var lastName = mutableStateOf(TextFieldValue())
+        var address2 = mutableStateOf(TextFieldValue())
+        var city = mutableStateOf(TextFieldValue())
+        var country = mutableStateOf(TextFieldValue())
+        var company = mutableStateOf(TextFieldValue())
+        var province = mutableStateOf(TextFieldValue())
+        var phone = mutableStateOf(TextFieldValue())
+        var pinCode = mutableStateOf(TextFieldValue())
+
+        val onSubmitAddress:()->Unit = {
+                    //address1, address2, city, country, company, firstName, lastName, province, phone, pinCode ->
+
+            viewModel.addAddressRequest(
+                address1 = address1.value.text,
+                address2 = address2.value.text,
+                city = city.value.text,
+                country = country.value.text,
+                company = company.value.text,
+                firstName = firstName.value.text,
+                lastName = lastName.value.text,
+                phone = phone.value.text,
+                province = province.value.text,
+                zip = pinCode.value.text
+            )
+
+        }
 
         Scaffold(
             topBar = {
-                Row {
+                Row ( modifier = Modifier.fillMaxWidth(0.7f),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                )  {
                     Box(
                         modifier = Modifier
                             .size(50.dp)
                             .padding(top = 10.dp, start = 10.dp)
                     ) {
                         DefaultBackArrow{
-                            navigation?.pop()
+                            onBackPress()
                         }
                     }
 
@@ -82,7 +114,7 @@ internal class AddressScreen : Screen {
                             .height(45.dp)
                             .clip(RoundedCornerShape(5.dp)),
                         onClick = {
-
+                            onSubmitAddress()
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
@@ -95,7 +127,9 @@ internal class AddressScreen : Screen {
             },
             content = {
                 Column (modifier = Modifier.fillMaxSize().padding(it).verticalScroll(rememberScrollState())) {
-                    AddressUI()
+                    AddressUI(viewModel = viewModel, onPopBack = onBackPress, address1 = address1, address2 = address2, city = city, country = country,
+                        company = company, firstName = firstName, lastName = lastName, province = province,
+                        phone = phone, pinCode = pinCode)
                 }
             }
         )
@@ -104,8 +138,13 @@ internal class AddressScreen : Screen {
     }
 
     @Composable
-    fun AddressUI() {
-        val viewModel = getScreenModel<AddressViewModel>()
+    fun AddressUI(viewModel: AddAddressViewModel, onPopBack:()->Unit,
+                  address1: MutableState<TextFieldValue>, address2: MutableState<TextFieldValue>,
+                  city: MutableState<TextFieldValue>, country: MutableState<TextFieldValue>,
+                  company: MutableState<TextFieldValue>, firstName: MutableState<TextFieldValue>,
+                  lastName: MutableState<TextFieldValue>, province: MutableState<TextFieldValue>,
+                  phone: MutableState<TextFieldValue>, pinCode: MutableState<TextFieldValue>) {
+
         val state = viewModel.state.collectAsState()
 
         val firstNameErrorState = mutableStateOf(false)
@@ -113,16 +152,7 @@ internal class AddressScreen : Screen {
         val phoneNumberErrorState = mutableStateOf(false)
         val pinCodeErrorState = mutableStateOf(false)
 
-        var firstName by remember { mutableStateOf(TextFieldValue()) }
-        var lastName by remember { mutableStateOf(TextFieldValue()) }
-        var address1 by remember { mutableStateOf(TextFieldValue()) }
-        var address2 by remember { mutableStateOf(TextFieldValue()) }
-        var city by remember { mutableStateOf(TextFieldValue()) }
-        var country by remember { mutableStateOf(TextFieldValue()) }
-        var company by remember { mutableStateOf(TextFieldValue()) }
-        var province by remember { mutableStateOf(TextFieldValue()) }
-        var phoneNumber by remember { mutableStateOf(TextFieldValue()) }
-        var pinCode by remember { mutableStateOf(TextFieldValue()) }
+        /**/
 
         Column(
             modifier = Modifier
@@ -137,7 +167,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    address1 = it
+                    address1.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -150,7 +180,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    address2 = it
+                    address2.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -163,7 +193,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    city = it
+                    city.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -176,7 +206,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    country = it
+                    country.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -190,7 +220,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    company = it
+                    company.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -203,7 +233,7 @@ internal class AddressScreen : Screen {
                 keyboardType = KeyboardType.Text,
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 onChanged = {
-                    firstName = it
+                    firstName.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -216,7 +246,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = lastNameErrorState,
                 onChanged = {
-                    lastName = it
+                    lastName.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -229,7 +259,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = mutableStateOf(false),
                 onChanged = {
-                    province = it
+                    province.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -242,7 +272,7 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = phoneNumberErrorState,
                 onChanged = {
-                    phoneNumber = it
+                    phone.value = it
                 },
                 icon = null,
                 initialValue = ""
@@ -255,35 +285,24 @@ internal class AddressScreen : Screen {
                 visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
                 errorState = pinCodeErrorState,
                 onChanged = {
-                    pinCode = it
+                    pinCode.value = it
                 },
                 icon = null,
                 initialValue = ""
             )
 
-            /*CustomDefaultBtn(shapeSize = 50f, btnText = "Add Address") {
-                viewModel.addAddressRequest(
-                    address1 = address1.text,
-                    address2 = address2.text,
-                    city = city.text,
-                    country = country.text,
-                    company = company.text,
-                    firstName = firstName.text,
-                    lastName = lastName.text,
-                    phone = phoneNumber.text,
-                    province = province.text,
-                    zip = pinCode.text
-                )
-            }*/
+        }
+
+        val dialogErrorClicked:()->Unit = {
+            viewModel.clearErrorState()
         }
 
         if(state.value.isLoaded) {
-            val vm = rememberKoinInject<SettingsViewModel>()
             AlertDialog(
-                title = "Address Added!",
-                message = "Added Successfully",
+                title = "Success!",
+                message = "Address added successfully.",
                 onClose = {
-                    vm.saveLoggedInStatus(true) // From here it sends callback to App.kt
+                    onPopBack()
                 },
 
                 )
@@ -293,7 +312,7 @@ internal class AddressScreen : Screen {
                 title = "Error!",
                 message = state.value.error,
                 onClose = {
-//                    dialogErrorClicked()
+                    dialogErrorClicked()
                 },
 
                 )

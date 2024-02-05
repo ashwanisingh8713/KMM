@@ -77,5 +77,32 @@ actual class CachingManager {
         emit(s.toString())
     }
 
+    actual suspend fun saveCustomerEmail(customerEmail: String) {
+        userDefault.setObject(customerEmail, "customerEmail")
+    }
+
+    actual fun getCustomerEmail(): Flow<String> = flow {
+        val s = userDefault.stringForKey("customerEmail")
+        emit(s.toString())
+    }
+
+    actual suspend fun saveCustomerPhone(phone: String) {
+        userDefault.setObject(phone, "customerPhone")
+    }
+
+    actual fun getCustomerPhone(): Flow<String> = flow{
+        val s = userDefault.stringForKey("customerPhone")
+        emit(s.toString())
+    }
+
+    actual suspend fun saveCustomerAddressId(addressId: String) {
+        userDefault.setObject(addressId, "customerAddressId")
+    }
+
+    actual fun getCustomerAddressId(): Flow<String> = flow {
+        val s = userDefault.stringForKey("customerAddressId")
+        emit(s.toString())
+    }
+
 
 }

@@ -69,7 +69,7 @@ val viewModelModule = module {
     factory { HomeViewModel(get()) }
     factory { ProductDetailViewModel(get()) }
     factory { SignUpViewModel(get()) }
-    factory { SignInViewModel(get()) }
+    factory { SignInViewModel(get(), get()) }
     factory { ForgotPasswordViewModel(get()) }
     single { CartViewModel(get(), get(), get(), get(), get(), get()) }
     factory { AddAddressViewModel(get(), get()) }

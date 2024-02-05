@@ -57,4 +57,18 @@ class AddressListViewModel(
             }
         }
     }
+
+    fun saveAddressId(addressId: String) {
+        coroutineScope.launch {
+            cachingManager.saveCustomerAddressId(addressId)
+        }
+    }
+
+    fun savePhone(phone: String) {
+        coroutineScope.launch {
+            cachingManager.saveCustomerPhone(phone)
+        }
+    }
+
+
 }

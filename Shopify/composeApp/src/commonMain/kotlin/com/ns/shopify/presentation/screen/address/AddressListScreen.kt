@@ -1,5 +1,6 @@
 package com.ns.shopify.presentation.screen.address
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,9 @@ class AddressListScreen : Screen, KoinComponent {
     @Composable
     override fun Content() {
 
+        val addressListViewModel = getScreenModel<AddressListViewModel>()
+        val addressState = addressListViewModel.addressState.collectAsState()
+
         val navigation = LocalNavigator.current
 
         val onBackPress: () -> Unit = {
@@ -54,8 +58,13 @@ class AddressListScreen : Screen, KoinComponent {
             navigation?.push(AddAddressScreen())
         }
 
-        val addressListViewModel = getScreenModel<AddressListViewModel>()
-        val addressState = addressListViewModel.addressState.collectAsState()
+        val onItemClick : (GetAddressQuery.Node)-> Unit = {
+            addressListViewModel.saveAddressId(it.id)
+            it.phone?.let { it1 -> addressListViewModel.savePhone(it1) }
+            onBackPress()
+        }
+
+
 
         LaunchedEffect(true) {
             addressListViewModel.getAddressList()
@@ -120,13 +129,15 @@ class AddressListScreen : Screen, KoinComponent {
                     } else if (addressState.value.error.isNotEmpty()) {
                         AddressListError(addressState.value.error)
                     } else if (addressState.value.isLoaded) {
-                        AddressListContent(addressState.value.addresses)
+                        AddressListContent(addressState.value.addresses, onItemClick)
                     }
                 }
             })
 
-
     }
+
+
+
 
     @Composable
     fun AddressListLoading() {
@@ -158,14 +169,14 @@ class AddressListScreen : Screen, KoinComponent {
     }
 
     @Composable
-    fun AddressListContent(addresses: List<GetAddressQuery.Node>) {
+    fun AddressListContent(addresses: List<GetAddressQuery.Node>, onItemClick: (GetAddressQuery.Node) -> Unit) {
         val addressRev = addresses.reversed()
         if (addresses.isEmpty()) {
             AddressListEmpty()
         } else {
             LazyColumn {
                 items(addressRev.size, itemContent = { index ->
-                    AddressItem(addressRev[index])
+                    AddressItem(addressRev[index], onItemClick = onItemClick)
                     Divider(thickness = 1.dp, color = Color.Gray)
                 })
                 item{
@@ -176,7 +187,7 @@ class AddressListScreen : Screen, KoinComponent {
     }
 
     @Composable
-    fun AddressItem(address: GetAddressQuery.Node) {
+    fun AddressItem(address: GetAddressQuery.Node, onItemClick: (GetAddressQuery.Node) -> Unit) {
         val addressLine1 = address.address1
         val addressLine2 = address.address2
         val city = address.city
@@ -191,14 +202,19 @@ class AddressListScreen : Screen, KoinComponent {
         val addressString =
             "Address : $addressLine1, $addressLine2, $city, $province, $country, $zip, $province Mobile : $phone"
 
-        Text(
-            text = addressString,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxWidth(0.4f)
-                .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
-            textAlign = TextAlign.Start,
-            fontWeight = FontWeight.Bold
-        )
+        Box(modifier = Modifier.fillMaxWidth().clickable{
+            onItemClick(address)
+        }) {
+            Text(
+                text = addressString,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.fillMaxWidth(0.4f)
+                    .padding(start = 16.dp, top = 8.dp, bottom = 2.dp),
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Bold,
+
+                )
+        }
     }
 
 

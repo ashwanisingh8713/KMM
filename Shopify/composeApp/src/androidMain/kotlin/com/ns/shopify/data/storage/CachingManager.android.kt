@@ -24,6 +24,12 @@ actual class CachingManager(private val context: Context) {
     private val checkoutUrl_key = stringPreferencesKey("checkoutUrl_key")
     private val cartCount_key = intPreferencesKey("cartCount_key")
     private val customerAccessToken_key = stringPreferencesKey("customerAccessToken_key")
+    private val customerEmail_key = stringPreferencesKey("customerEmail_key")
+    private val customerPhone_key = stringPreferencesKey("customerPhone_key")
+    private val customerAddressId_key = stringPreferencesKey("customerAddressId_key")
+
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the theme index
     actual suspend fun saveThemeIndex(index: Int) {
         context.dataStore.edit {
             it[theme_key] = index
@@ -34,6 +40,8 @@ actual class CachingManager(private val context: Context) {
         it[theme_key] ?: 0
     }
 
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the logged in status
     actual suspend fun saveLoggedInStatus(isLoggedIn: Boolean) {
         context.dataStore.edit {
             it[loggedInStatus_key] = isLoggedIn
@@ -44,6 +52,8 @@ actual class CachingManager(private val context: Context) {
         it[loggedInStatus_key] ?: false
     }
 
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the cart id
     actual suspend fun saveCartId(cartId: String) {
         context.dataStore.edit {
             it[cartId_key] = cartId
@@ -51,12 +61,15 @@ actual class CachingManager(private val context: Context) {
         }
     }
 
+    // Get the cart id
     actual fun getCartId() = context.dataStore.data.map {
         val cartId = it[cartId_key] ?: ""
         printLog("Get Cart - Id :: $cartId")
         cartId
     }
 
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the checkout url
     actual suspend fun saveCheckoutUrl(checkoutUrl: String) {
         context.dataStore.edit {
             it[checkoutUrl_key] = checkoutUrl
@@ -64,16 +77,15 @@ actual class CachingManager(private val context: Context) {
         }
     }
 
+    // Get the checkout url
     actual fun getCheckoutUrl(): Flow<String> = context.dataStore.data.map {
         val checkoutUrl = it[checkoutUrl_key] ?: ""
         printLog("Get Cart - Checkout Url :: $checkoutUrl")
         checkoutUrl
     }
 
-    /*actual val cartId: Flow<String?>
-        get() = context.dataStore.data.map { it ->
-            it[cartId_key]
-        }*/
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the cart count
     actual suspend fun saveCartCount(count: Int) {
         context.dataStore.edit {
             it[cartCount_key] = count
@@ -81,12 +93,15 @@ actual class CachingManager(private val context: Context) {
         }
     }
 
+    // Get the cart count
     actual fun getCartCount(): Flow<Int> = context.dataStore.data.map {
         val cartCount = it[cartCount_key] ?: 0
         printLog("Get Cart - Count :: $cartCount")
         cartCount
     }
 
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the customer access token
     actual suspend fun saveCustomerAccessToken(customerAccessToken: String) {
         context.dataStore.edit {
             it[customerAccessToken_key] = customerAccessToken
@@ -94,10 +109,50 @@ actual class CachingManager(private val context: Context) {
         }
     }
 
+    // Get the customer access token
     actual fun getCustomerAccessToken(): Flow<String> = context.dataStore.data.map {
         val customerAccessToken = it[customerAccessToken_key] ?: ""
         printLog("CustomerAccessToken :: $customerAccessToken")
         customerAccessToken
     }
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the customer email
+    actual suspend fun saveCustomerEmail(customerEmail: String) {
+        context.dataStore.edit {
+            it[customerEmail_key] = customerEmail
+        }
+    }
+
+    // Get the customer email
+    actual fun getCustomerEmail(): Flow<String> = context.dataStore.data.map {
+        it[customerEmail_key] ?: ""
+    }
+
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the customer phone
+    actual suspend fun saveCustomerPhone(phone: String) {
+        context.dataStore.edit {
+            it[customerPhone_key] = phone
+        }
+    }
+
+    // Get the customer phone
+    actual fun getCustomerPhone(): Flow<String> = context.dataStore.data.map {
+        it[customerPhone_key] ?: ""
+    }
+
+    // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+    // Saves the customer address id
+    actual suspend fun saveCustomerAddressId(addressId: String) {
+        context.dataStore.edit {
+            it[customerAddressId_key] = addressId
+        }
+    }
+
+    // Get the customer address id
+    actual fun getCustomerAddressId(): Flow<String> = context.dataStore.data.map {
+        it[customerAddressId_key] ?: ""
+    }
+
 
 }

@@ -27,4 +27,13 @@ expect class CachingManager {
     suspend fun saveCustomerAccessToken(customerAccessToken: String)
     fun getCustomerAccessToken(): Flow<String>
 
+    suspend fun saveCustomerEmail(customerEmail: String)
+    fun getCustomerEmail(): Flow<String>
+
+    suspend fun saveCustomerPhone(phone: String)
+    fun getCustomerPhone(): Flow<String>
+
+    suspend fun saveCustomerAddressId(addressId: String)
+    fun getCustomerAddressId(): Flow<String>
+
 }

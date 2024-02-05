@@ -62,7 +62,7 @@ internal class UserScreen : Screen {
                     .clickable {
 
                     }
-                    .padding(5.dp),
+                    .padding(start = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

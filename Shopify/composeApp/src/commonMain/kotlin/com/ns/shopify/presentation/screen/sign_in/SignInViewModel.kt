@@ -2,6 +2,7 @@ package com.ns.shopify.presentation.screen.sign_in
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
+import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.type.CustomerAccessTokenCreateInput
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 11,December,2023.
  */
-class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : ScreenModel,
+class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase, private val cachingManager: CachingManager) : ScreenModel,
     KoinComponent {
 
     private val _state = MutableStateFlow(SignInState())
@@ -42,6 +43,8 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase) : Scr
                                 success = it1
                             )
                         }
+                        // On success saving customer email
+                        cachingManager.saveCustomerEmail(email)
                     }
                 }.onFailure { error ->
                     _state.update {

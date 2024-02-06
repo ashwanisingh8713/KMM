@@ -4,17 +4,26 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
+import com.ns.shopify.adapter.CartBuyerIdentityUpdateMutation_ResponseAdapter
+import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
+import com.ns.shopify.domain.usecase.cart.CartBuyerIdentityUpdateUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
 import com.ns.shopify.domain.usecase.cart.CartUpdateUseCase
 import com.ns.shopify.presentation.settings.SettingsViewModel
+import com.ns.shopify.type.CartBuyerIdentityInput
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 import com.ns.shopify.type.CartLineUpdateInput
+import com.ns.shopify.type.CountryCode
+import com.ns.shopify.type.DeliveryAddressInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -28,8 +37,9 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                     private val cartCountUseCase: CartCountUsecase,
                     private val cartQueryUseCase: CartQueryUseCase,
                     private val cartUpdateUseCase: CartUpdateUseCase,
-                    private val settingsViewModel: SettingsViewModel
-    ): ScreenModel, KoinComponent {
+                    private val cartBuyerIdentityUpdateUseCase: CartBuyerIdentityUpdateUseCase,
+                    private val settingsViewModel: CachingManager
+) : ScreenModel, KoinComponent {
 
     private val _cartCreateState = MutableStateFlow(CreateCartState())
     val cartCreateState = _cartCreateState.asStateFlow()
@@ -43,15 +53,21 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
     private val _cartQueryState = MutableStateFlow(CartScreenStateMapper())
     val cartQueryState = _cartQueryState.asStateFlow()
 
+    private val _cartBuyerIdentityUpdateState = MutableStateFlow(CartBuyerIdentityUpdateState())
+    val cartBuyerIdentityUpdateState = _cartBuyerIdentityUpdateState.asStateFlow()
 
-    fun addToCart(merchandiseId: String, quantity : Optional.Present<Int>, cartId: String) {
+
+    fun addToCart(merchandiseId: String, quantity: Optional.Present<Int>, cartId: String) {
         printLog("Add to Cart Merchandise Id is $merchandiseId")
         coroutineScope.launch {
             printLog("Cart Id is $cartId")
-            if(cartId.isEmpty() || cartId == "null") {
+            if (cartId.isEmpty() || cartId == "null") {
                 cartCreate(merchandiseId, quantity)
             } else {
-                addMerchandise(cartId, CartLineInput(merchandiseId = merchandiseId, quantity = quantity))
+                addMerchandise(
+                    cartId,
+                    CartLineInput(merchandiseId = merchandiseId, quantity = quantity)
+                )
             }
         }
     }
@@ -59,38 +75,58 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
     /**
      * This method is used to create cart
      */
-    private fun cartCreate(merchandiseId: String, quantity : Optional.Present<Int>) {
+    private fun cartCreate(merchandiseId: String, quantity: Optional.Present<Int>) {
 //        val quantity : Optional.Present<Int> = Optional.Present(1)
 //        val cartLineInput = CartLineInput(merchandiseId = merchandiseId, quantity = quantity)
 //        val lines : Optional.Present<List<CartLineInput>> = Optional.Present(listOf(cartLineInput))
 //        val cartInput = CartInput(lines = lines)
-            coroutineScope.launch {
-                val cartInput = CartInput(lines = Optional.Present(listOf(CartLineInput(merchandiseId = merchandiseId, quantity = quantity))))
-                cartCreateUseCase(cartInput)
-                    .onSuccess {
-                        val error = it.errors
-                        if(error != null && error.isNotEmpty()) {
-                            _cartCreateState.update { it.copy(isLoading = false, error = error[0].message) }
-                        } else {
-                            val cart = it.data?.cartCreate?.cart
+        coroutineScope.launch {
+            val cartInput = CartInput(
+                lines = Optional.Present(
+                    listOf(
+                        CartLineInput(
+                            merchandiseId = merchandiseId,
+                            quantity = quantity
+                        )
+                    )
+                )
+            )
+            cartCreateUseCase(cartInput)
+                .onSuccess {
+                    val error = it.errors
+                    if (error != null && error.isNotEmpty()) {
+                        _cartCreateState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message
+                            )
+                        }
+                    } else {
+                        val cart = it.data?.cartCreate?.cart
 
+                        _cartCreateState.update {
+                            it.copy(isLoading = false, success = cart, isLoaded = true)
+                        }
+                        cart?.let { it1 ->
                             _cartCreateState.update {
-                                it.copy(isLoading = false, success = cart, isLoaded = true)
+                                it.copy(
+                                    success = cart,
+                                    isLoaded = true,
+                                    isLoading = false
+                                )
                             }
-                            cart?.let {it1->
-                                _cartCreateState.update { it.copy(success = cart, isLoaded = true, isLoading = false) }
 //                                val checkoutUrl = it1.checkoutUrl as String
 //                                val cartId = cart.id
 //                                cachingManager.saveCartId(cartId)
 //                                cachingManager.saveCheckoutUrl(checkoutUrl)
-                            }
                         }
+                    }
 
-                    }
-                    .onFailure {it1->
-                        _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
-                    }
-            }
+                }
+                .onFailure { it1 ->
+                    _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
+                }
+        }
     }
 
     /**
@@ -100,10 +136,15 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
         coroutineScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
             addMerchandiseUseCase(pair)
-                .onSuccess {it1->
+                .onSuccess { it1 ->
                     val error = it1.errors
-                    if(error != null && error.isNotEmpty()) {
-                        _addMerchandiseState.update { it.copy(isLoading = false, error = error[0].message) }
+                    if (error != null && error.isNotEmpty()) {
+                        _addMerchandiseState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message
+                            )
+                        }
                     } else {
                         val cart = it1.data?.cartLinesAdd?.cart
                         /*_addMerchandiseState.update {
@@ -118,7 +159,7 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 
                     }
                 }
-                .onFailure {it1->
+                .onFailure { it1 ->
                     _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
                 }
         }
@@ -133,15 +174,25 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
             cartCountUseCase(cartId)
                 .onSuccess {
                     val error = it.errors
-                    if(error != null && error.isNotEmpty()) {
-                        _cartCountState.update { it.copy(isLoading = false, error = error[0].message) }
+                    if (error != null && error.isNotEmpty()) {
+                        _cartCountState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message
+                            )
+                        }
                     } else {
                         val totalQuantity = it.data?.cart?.totalQuantity
-                        _cartCountState.update { it.copy(isLoading = false, count = totalQuantity ?: 0) }
+                        _cartCountState.update {
+                            it.copy(
+                                isLoading = false,
+                                count = totalQuantity ?: 0
+                            )
+                        }
                     }
 
                 }
-                .onFailure {it1->
+                .onFailure { it1 ->
                     _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
                 }
         }
@@ -150,10 +201,15 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
     fun cartQuery(cartId: String) {
         coroutineScope.launch {
             cartQueryUseCase(cartId)
-                .onSuccess { response->
+                .onSuccess { response ->
                     val error = response.errors
-                    if(error != null && error.isNotEmpty()) {
-                        _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
+                    if (error != null && error.isNotEmpty()) {
+                        _cartQueryState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message
+                            )
+                        }
                     } else {
 //                        val totalQuantity = response.data?.cart?.totalQuantity
 //                        val checkoutUrl = response.data?.cart?.checkoutUrl
@@ -185,22 +241,37 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val amount = rawAmount.toDoubleOrNull() ?: 0.0
                                 val imageUrl = onProductVariant?.image?.url ?: ""
                                 val productId = onProductVariant?.id ?: ""
-                                val userCartUiData = UserCartUiData(productId = productId,
-                                    price = amount, quantity = quantity, title = title,
-                                    imageUrl = imageUrl as String, lineId = lineId, currencyCode = currencyCode)
+                                val userCartUiData = UserCartUiData(
+                                    productId = productId,
+                                    price = amount,
+                                    quantity = quantity,
+                                    title = title,
+                                    imageUrl = imageUrl as String,
+                                    lineId = lineId,
+                                    currencyCode = currencyCode
+                                )
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list, isLoaded = true,
-                                totalAmount = totalAmount,
-                                subTotalAmount = subTotalAmount,
-                                taxAmount = taxAmount,
-                                currencyCode = currencyCode) }
+                            _cartQueryState.update {
+                                it.copy(
+                                    isLoading = false, success = list, isLoaded = true,
+                                    totalAmount = totalAmount,
+                                    subTotalAmount = subTotalAmount,
+                                    taxAmount = taxAmount,
+                                    currencyCode = currencyCode
+                                )
+                            }
                         }
                     }
 
                 }
-                .onFailure {it1->
-                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message ?: "Error Occurred!") }
+                .onFailure { it1 ->
+                    _cartQueryState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = it1.message ?: "Error Occurred!"
+                        )
+                    }
                 }
         }
     }
@@ -210,10 +281,15 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
         coroutineScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
             cartUpdateUseCase(pair)
-                .onSuccess {it1->
+                .onSuccess { it1 ->
                     val error = it1.errors
-                    if(error != null && error.isNotEmpty()) {
-                        _cartQueryState.update { it.copy(isLoading = false, error = error[0].message) }
+                    if (error != null && error.isNotEmpty()) {
+                        _cartQueryState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message
+                            )
+                        }
                     } else {
                         val cart = it1.data?.cartLinesUpdate?.cart
                         val rawTotalAmount = cart?.cost?.totalAmount?.amount as String
@@ -238,16 +314,26 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val amount = rawAmount.toDoubleOrNull() ?: 0.0
                                 val imageUrl = onProductVariant?.image?.url ?: ""
                                 val productId = onProductVariant?.id ?: ""
-                                val userCartUiData = UserCartUiData(productId = productId,
-                                    price = amount, quantity = quantity, title = title,
-                                    imageUrl = imageUrl as String, lineId = lineId, currencyCode = currencyCode )
+                                val userCartUiData = UserCartUiData(
+                                    productId = productId,
+                                    price = amount,
+                                    quantity = quantity,
+                                    title = title,
+                                    imageUrl = imageUrl as String,
+                                    lineId = lineId,
+                                    currencyCode = currencyCode
+                                )
                                 list.add(userCartUiData)
                             }
-                            _cartQueryState.update { it.copy(isLoading = false, success = list,
-                                isLoaded = true,
-                                totalAmount = totalAmount,
-                                subTotalAmount = subTotalAmount,
-                                taxAmount = taxAmount, currencyCode = currencyCode) }
+                            _cartQueryState.update {
+                                it.copy(
+                                    isLoading = false, success = list,
+                                    isLoaded = true,
+                                    totalAmount = totalAmount,
+                                    subTotalAmount = subTotalAmount,
+                                    taxAmount = taxAmount, currencyCode = currencyCode
+                                )
+                            }
 
                             cart.let {
                                 val checkoutUrl = cart.checkoutUrl
@@ -258,13 +344,96 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                         }
                     }
                 }
-                .onFailure {it1->
-                    _cartQueryState.update { it.copy(isLoading = false, error = it1.message ?: "Error Occurred!") }
+                .onFailure { it1 ->
+                    _cartQueryState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = it1.message ?: "Error Occurred!"
+                        )
+                    }
                 }
         }
 
     }
 
+    fun cartBuyerIdentityUpdate() {
+        coroutineScope.launch {
+
+            settingsViewModel.getCustomerEmail()
+
+            combine(
+                settingsViewModel.getCustomerEmail(), settingsViewModel.getCustomerPhone(),
+                settingsViewModel.getCustomerAddressId(), settingsViewModel.getCartId(),
+                settingsViewModel.getCustomerAccessToken()
+            ) { email, phone, addressId, cartId, customerAccessToken ->
+
+                val deliveryAddressInput = DeliveryAddressInput(
+                    customerAddressId = Optional.present(addressId)
+                )
+
+                val buyerIdentity = CartBuyerIdentityInput(
+                    email = Optional.present(email),
+                    phone = Optional.present(phone),
+                    countryCode = Optional.present(CountryCode.IN),
+                    customerAccessToken = Optional.present(customerAccessToken),
+                    deliveryAddressPreferences = Optional.present(listOf(deliveryAddressInput))
+                )
+
+                val param = Pair(buyerIdentity, cartId)
+
+                cartBuyerIdentityUpdateUseCase(param).onSuccess {
+                    val error = it.errors
+
+                    if (error != null && error.isNotEmpty()) {
+                        _cartBuyerIdentityUpdateState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = error[0].message,
+                                isLoaded = false
+                            )
+                        }
+                    } else {
+                        val data = it.data
+                        val userErrors = data?.cartBuyerIdentityUpdate?.userErrors
+                        if (userErrors != null && userErrors.isNotEmpty()) {
+                            printLog("Error is '${userErrors[0].message}'")
+                            _cartBuyerIdentityUpdateState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = userErrors[0].message,
+                                    isLoaded = false
+                                )
+                            }
+                        } else {
+                            val checkoutUrl = data?.cartBuyerIdentityUpdate?.cart?.checkoutUrl
+                            printLog("Checkout Url is $checkoutUrl")
+                            _cartBuyerIdentityUpdateState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    success = data,
+                                    isLoaded = true
+                                )
+                            }
+                        }
+                    }
+
+                    }
+                    .onFailure { it1 ->
+                        _cartQueryState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = it1.message ?: "Error Occurred!"
+                            )
+                        }
+                    }
+
+            }.stateIn(coroutineScope)
+
+
+
+
+        }
+    }
 
 
 }

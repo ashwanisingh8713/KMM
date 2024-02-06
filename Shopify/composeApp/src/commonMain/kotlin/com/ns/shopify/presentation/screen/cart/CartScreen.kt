@@ -53,11 +53,7 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
         val navigation = LocalNavigator.current
 
         LaunchedEffect(true) {
-            /*if(cartQueryState.value.isLoaded.not()) {
-                cartViewModel.cartQuery(cartId)
-            }*/
             cartViewModel.cartQuery(cartId)
-
         }
 
         val onDecrement: (UserCartUiData) -> Unit = {
@@ -72,8 +68,9 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
             cartViewModel.cartUpdate(cartId, input)
         }
 
+        // On click of place order, we will update the buyer identity
         val onPlaceOrderClicked:() -> Unit = {
-            navigation?.push(PaymentCardScreen())
+            cartViewModel.cartBuyerIdentityUpdate()
         }
 
 

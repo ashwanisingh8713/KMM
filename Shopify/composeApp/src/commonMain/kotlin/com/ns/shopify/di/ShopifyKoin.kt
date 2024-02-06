@@ -17,6 +17,7 @@ import com.ns.shopify.domain.usecase.address.AddAddressUseCase
 import com.ns.shopify.domain.usecase.ShopDetailsUseCase
 import com.ns.shopify.domain.usecase.address.AddressListUseCase
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
+import com.ns.shopify.domain.usecase.cart.CartBuyerIdentityUpdateUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
@@ -71,7 +72,7 @@ val viewModelModule = module {
     factory { SignUpViewModel(get()) }
     factory { SignInViewModel(get(), get()) }
     factory { ForgotPasswordViewModel(get()) }
-    single { CartViewModel(get(), get(), get(), get(), get(), get()) }
+    single { CartViewModel(get(), get(), get(), get(), get(), get(), get()) }
     factory { AddAddressViewModel(get(), get()) }
     factory { AddressListViewModel(get(), get()) }
 }
@@ -88,6 +89,7 @@ val useCasesModule: Module = module {
     factory { CartCreateUseCase(get(), get()) }
     factory { CartUpdateUseCase(get(), get()) }
     factory { CartQueryUseCase(get(), get()) }
+    factory { CartBuyerIdentityUpdateUseCase(get(), get()) }
     factory { AddAddressUseCase(get(), get()) }
     factory { AddressListUseCase(get(), get()) }
 }
@@ -107,7 +109,7 @@ val apolloModule = module {
 //            .serverUrl("https://c498b0-3.myshopify.com/api/2023-10/graphql.json")
 //            .addHttpHeader("X-Shopify-Storefront-Access-Token", "6974ac476e8022a5916eca859872fcf3")
             .serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", "7286faf7ce6313246142ef05ae20f844")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")
 //            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)

@@ -12,3 +12,19 @@ https://stackoverflow.com/questions/56997821/shopify-graphql-checkout-create-mut
 
 Turned your app into a sales channel
     https://shopify.dev/docs/apps/selling-strategies/channels/getting-started
+
+
+https://www.mageplaza.com/insights/shopify-api-checkout.html
+    checkoutCreate
+    checkoutShippingAddressUpdate
+    checkoutBillingAddressUpdate
+    checkoutShippingLineUpdate
+    checkoutCompleteWithPayment
+
+// CheckoutCompleteWithCreditCardV2
+https://shopify.dev/docs/api/storefront/2024-01/mutations/checkoutCompleteWithCreditCardV2
+
+// Shopify FAQ : checkoutCompleteWithCreditCardV2 to complete a checkout without the web url
+1 -  https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkoutcompletewithcreditcardv2-access-denied/td-p/1198543#:~:text=Hey%20@deanlin.%20That's%20correct%20on%20both%20counts.,had%20payment%20processing%20access%20granted%20by%20Shopify.
+2 -  https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkoutcompletewithcreditcardv2-access-denied/td-p/1264364
+

@@ -1,11 +1,13 @@
 package com.ns.shopify.domain.repo.cart
 
 import com.apollographql.apollo3.api.ApolloResponse
+import com.ns.shopify.CartBuyerIdentityUpdateMutation
 import com.ns.shopify.CartCountQuery
 import com.ns.shopify.CartCreateMutation
 import com.ns.shopify.CartLinesAddMutation
 import com.ns.shopify.CartLinesUpdateMutation
 import com.ns.shopify.CartQuery
+import com.ns.shopify.type.CartBuyerIdentityInput
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 import com.ns.shopify.type.CartLineUpdateInput
@@ -24,6 +26,8 @@ interface ICartRepo {
     suspend fun cartCount(cartId: String):ApolloResponse<CartCountQuery.Data>
 
     suspend fun CartQuery(cartId: String):ApolloResponse<CartQuery.Data>
+
+    suspend fun CartBuyerIdentity(buyerIdentity: CartBuyerIdentityInput, cartId: String):ApolloResponse<CartBuyerIdentityUpdateMutation.Data>
 
     suspend fun CartUpdate(cartId: String, cartLineInputs: List<CartLineUpdateInput>): ApolloResponse<CartLinesUpdateMutation.Data>
 }

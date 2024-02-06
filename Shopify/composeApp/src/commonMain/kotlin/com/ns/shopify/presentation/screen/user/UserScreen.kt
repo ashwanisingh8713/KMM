@@ -28,6 +28,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.ns.shopify.presentation.screen.address.AddAddressScreen
 import com.ns.shopify.presentation.screen.address.AddressListScreen
+import com.ns.shopify.presentation.screen.payment.PaymentCardScreen
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import org.koin.compose.rememberKoinInject
 
@@ -52,6 +53,7 @@ internal class UserScreen : Screen {
 
             Spacer(modifier = Modifier.height(30.dp))
 
+            // Cards
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -60,7 +62,7 @@ internal class UserScreen : Screen {
                     .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {
-
+                        navigator.push(PaymentCardScreen())
                     }
                     .padding(start = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -79,7 +81,7 @@ internal class UserScreen : Screen {
 
             Spacer(modifier = Modifier.height(15.dp))
 
-
+            // Purchased History
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -106,25 +108,22 @@ internal class UserScreen : Screen {
 
             Spacer(modifier = Modifier.height(15.dp))
 
-
+            // Address
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-
                     .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {
-
+                        navigator.push(AddressListScreen())
                     }
                     .padding(start = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Text("Address", modifier = Modifier.weight(0.2f).clickable {
-                    navigator.push(AddressListScreen())
-                })
+                Text("Address", modifier = Modifier.weight(0.2f))
                 Icon(
                     painter = rememberVectorPainter(Icons.Default.ArrowForward),
                     contentDescription = null,
@@ -136,6 +135,7 @@ internal class UserScreen : Screen {
             Spacer(modifier = Modifier.height(15.dp))
 
             val vm = rememberKoinInject<SettingsViewModel>()
+
             // Logout
             Row(
                 modifier = Modifier

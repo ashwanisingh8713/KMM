@@ -2,20 +2,29 @@ package com.ns.shopify.presentation.screen.cart
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import com.ns.shopify.CartBuyerIdentityUpdateMutation
 import com.ns.shopify.CartCreateMutation
+import com.ns.shopify.CartLinesAddMutation
 import com.ns.shopify.type.CurrencyCode
 
 /**
  * Created by Ashwani Kumar Singh on 26,December,2023.
  */
 
+
+
 @Stable
-data class CartScreenState(
-    val success: CartCreateMutation.CartCreate? = null,
-    val isLoading: Boolean = false,
-    val error: String = "",
-    val isLoaded: Boolean = false
-)
+data class CreateCartState(val isLoading: Boolean = true,
+                           val success: CartCreateMutation.Cart? = null,
+                           val isLoaded : Boolean = false,
+                           val error: String? = null)
+@Stable
+data class AddMerchandiseState(val isLoading: Boolean = true,
+                               val success: CartLinesAddMutation.Cart? = null,
+                               val isLoaded : Boolean = false,
+                               val error: String? = null)
+@Stable
+data class CartCountState(val isLoading: Boolean = true, val count: Int = 0, val error: String? = null)
 
 @Immutable
 data class CartScreenStateMapper(
@@ -39,3 +48,10 @@ data class UserCartUiData(
     val lineId: String = "",
     val currencyCode: CurrencyCode = CurrencyCode.INR
 )
+
+
+
+data class CartBuyerIdentityUpdateState(val isLoading: Boolean = true,
+                                        val success: CartBuyerIdentityUpdateMutation.Data? = null,
+                                        val isLoaded : Boolean = false,
+                                        val error: String? = null)

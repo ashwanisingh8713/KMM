@@ -1,0 +1,220 @@
+
+CheckoutCompleteWithCreditCardV2Payload returns
+
+Checkout : The checkout on which the payment was applied.
+
+		- appliedGiftCards : The gift cards used on the checkout.
+			- amountUsed : The amount that was taken from the gift card by applying it.
+
+
+
+availableShippingRates : The available shipping rates for this Checkout. Should only be used when checkout requiresShipping is true and the shipping address is valid.
+
+
+
+
+buyerIdentity : The identity of the customer associated with the checkout.
+
+
+
+completedAt : The date and time when the checkout was completed.
+
+createdAt : The date and time when the checkout was created.
+
+currencyCode : The currency code for the checkout.
+
+customAttributes : A list of extra information that's added to the checkout.
+
+email : The email attached to this checkout.
+
+id : A globally-unique Checkout ID.
+
+lineItemsSubtotalPrice : The sum of all the prices of all the items in the checkout. Duties, taxes, shipping and discounts excluded.
+
+note : The note associated with the checkout.
+
+order : The resulting order from a paid checkout.
+	- billingAddress (MailingAddress) : The address associated with the payment method.
+	- cancelReason (OrderCancelReason) : The reason for the order's cancellation. Returns null if the order wasn't canceled.
+
+
+orderStatusUrl : The Order status page for this Checkout, null when checkout isn't completed.
+
+paymentDue (MoneyV2!) : The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards.
+
+ready : Whether or not the Checkout is ready and can be completed. Checkouts may have asynchronous operations that can take time to finish. If you want to complete a checkout or ensure all the fields are populated and up to date, polling is required until the value is true.
+
+requiresShipping : States whether or not the fulfillment requires shipping.
+shippingAddress : The shipping address to where the line items will be shipped.
+
+
+shippingDiscountAllocations : The discounts that have been allocated onto the shipping line by discount applications.
+
+
+shippingLine (ShippingRate) : Once a shipping rate is selected by the customer it's transitioned to a shipping_line object.
+
+
+subtotalPrice (MoneyV2) : The price at checkout before shipping and taxes.
+
+
+taxExempt : Whether the checkout is tax exempt.
+
+taxesIncluded : Whether taxes are included in the line item and shipping line prices.
+
+totalDuties (MoneyV2) : The sum of all the duties applied to the line items in the checkout.
+
+totalPrice (MoneyV2) : The sum of all the prices of all the items in the checkout, including taxes and duties.
+
+totalTax (MoneyV2) : The sum of all the taxes applied to the line items and shipping lines in the checkout.
+
+updatedAt : The date and time when the checkout was last updated.
+
+webUrl (URL) :  The url pointing to the checkout accessible from the web.
+
+Above 1st Params //////////////////////////////////////////////////////////////////////////////////
+---------------------------------------------------------------------------------------------------------------------
+
+checkoutUserErrors (CheckoutUserError) : The list of errors that occurred from executing the mutation.
+		- code
+		- field
+		- message
+
+
+Above 2nd Params //////////////////////////////////////////////////////////////////////////////////
+---------------------------------------------------------------------------------------------------------------------
+
+payment (Payment) : A representation of the attempted payment.
+
+		- amount (MoneyV2) : The amount of the payment.
+
+		- billingAddress (MailingAddress) : The billing address for the payment.
+		
+		- address1 : The first line of the address. Typically the street address or PO Box number.
+
+		- address2 : The second line of the address. Typically the number of the apartment, suite, or unit.
+
+		- city : The name of the city, district, village, or town.
+
+		- company : The name of the customer's company or organization.
+
+		- country : The name of the country.
+
+		- countryCodeV2 : The two-letter code for the country of the address.
+
+		- firstName : The first name of the customer.
+
+		- formatted : A formatted version of the address, customized by the provided arguments.
+
+		- formattedArea : A comma-separated list of the values for city, province, and country.
+
+		- id (ID) : A globally-unique ID.
+
+		- lastName : The last name of the customer.
+
+		- latitude : The latitude coordinate of the customer address.
+
+		- longitude : The longitude coordinate of the customer address.
+
+		- name : The full name of the customer, based on firstName and lastName.
+
+		- phone : A unique phone number for the customer.
+
+		- province : The region of the address, such as the province, state, or district.
+
+		- provinceCode : The two-letter code for the region.
+
+		- zip : The zip or postal code of the address.
+
+		- checkout (Checkout) : The checkout to which the payment belongs.
+
+				- appliedGiftCards [AppliedGiftCard!] : The gift cards used on the checkout.
+							
+				- availableShippingRates (AvailableShippingRates) : The available shipping rates for this Checkout. Should only be used when checkout requiresShipping is true and the shipping address is valid.
+
+				- buyerIdentity (CheckoutBuyerIdentity!) : The identity of the customer associated with the checkout.
+				
+				- completedAt (DateTime) : The date and time when the checkout was completed.
+			
+				- createdAt (DateTime!) : The date and time when the checkout was created.
+				
+				- currencyCode (CurrencyCode!) : The currency code for the checkout.
+
+				- customAttributes ([Attribute!]) : A list of extra information that's added to the checkout.
+
+				- email : The email attached to this checkout.
+				
+				- id (ID!) : A globally-unique ID.
+
+				- lineItemsSubtotalPrice (MoneyV2) : The sum of all the prices of all the items in the checkout. Duties, taxes, shipping and discounts excluded.
+
+				- note : The note associated with the checkout.
+
+				- order (Order) : The resulting order from a paid checkout.
+
+				- orderStatusUrl (URL) : The Order status page for this Checkout, null when checkout isn't completed.
+
+				- paymentDue (MoneyV2!) : The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards.
+
+				- ready : Whether or not the Checkout is ready and can be completed. Checkouts may have asynchronous operations that can take time to finish. If you want to complete a checkout or ensure all the fields are populated and up to date, polling is required until the value is true.
+
+				- requiresShipping : States whether or not the fulfillment requires shipping.
+
+				- shippingAddress (MailingAddress) : The shipping address to where the line items will be shipped.
+
+				- shippingDiscountAllocations ([DiscountAllocation!]) : The discounts that have been allocated onto the shipping line by discount applications.
+
+				- shippingLine (ShippingRate) : Once a shipping rate is selected by the customer it's transitioned to a shipping_line object.
+
+				- subtotalPrice (MoneyV2) : The price at checkout before shipping and taxes.
+
+				- taxExempt : Whether the checkout is tax exempt.
+
+				- taxesIncluded : Whether taxes are included in the line item and shipping line prices.
+
+				- totalDuties (MoneyV2) : The sum of all the duties applied to the line items in the checkout.
+
+				- totalPrice (MoneyV2!) : The sum of all the prices of all the items in the checkout, including taxes and duties.
+
+				- totalTax (MoneyV2!) : The sum of all the taxes applied to the line items and shipping lines in the checkout.
+
+				- updatedAt (DateTime!) : The date and time when the checkout was last updated.
+
+				- webUrl (URL!) : The url pointing to the checkout accessible from the web.
+
+Above 3rd Params //////////////////////////////////////////////////////////////////////////////////
+---------------------------------------------------------------------------------------------------------------------
+
+
+CreditCard : The credit card used for the payment in the case of direct payments.
+
+	- brand : The brand of the credit card.
+	- expiryMonth : The expiry month of the credit card.
+	- expiryYear : The expiry year of the credit card.
+
+	- firstDigits : The credit card's BIN number.
+  	- firstName : The first name of the card holder.
+	- lastDigits : The last 4 digits of the credit card.
+	- lastName : The last name of the card holder.
+
+	- maskedNumber :The masked credit card number with only the last 4 digits displayed.
+
+	- errorMessage : A message describing a processing error during asynchronous processing.
+	
+	- id (ID) : A globally-unique ID.
+
+	- idempotencyKey : A client-side generated token to identify a payment and perform idempotent operations. For more information, refer to Idempotent requests.
+
+	- nextActionUrl : The URL where the customer needs to be redirected so they can complete the 3D Secure payment flow.
+
+	- ready : Whether the payment is still processing asynchronously.
+
+	- test : A flag to indicate if the payment is to be done in test mode for gateways that support it.
+
+	- transaction (Transaction) : The actual transaction recorded by Shopify after having processed the payment with the gateway.
+			- amount (MoneyV2 : The amount of money that the transaction was for.
+			- kind (TransactionKind) : The kind of the transaction.
+			- statusV2 (TransactionStatus) : The status of the transaction.
+			- test (Boolean) : Whether the transaction was done in test mode or not.
+
+
+

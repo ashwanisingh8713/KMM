@@ -1,0 +1,16 @@
+mutation checkoutShippingLineUpdate($checkoutId: ID!, $shippingRateHandle: String!) {
+  checkoutShippingLineUpdate(checkoutId: $checkoutId, shippingRateHandle: $shippingRateHandle) {
+    checkoutUserErrors {
+      code
+      field
+      message
+    }
+    checkout {
+      id
+      webUrl
+      shippingLine {
+        handle
+      }
+    }
+  }
+}

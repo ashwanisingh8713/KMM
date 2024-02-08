@@ -1,0 +1,18 @@
+
+- To use the checkoutCompleteWithCreditCardV2 mutation only with a public app that has been converted into a sales channel and has had payment processing access granted by Shopify.
+- Enabled with Test Mode on for Shopify Payments
+- Create Checkout APIs request with all required information.
+    => checkoutCreate
+    => checkoutCustomerAssociateV2
+    => checkoutShippingLineUpdate
+    => checkoutShippingAddressUpdateV2
+    => checkoutCompleteWithCreditCardV2 (to create a checkout with all required information).
+- Use checkoutCompleteWithTokenizedPaymentV3 with Stripe Token.
+- Use  checkoutCompleteWithCreditCardV2 with the vaultId for credit card data.
+- Get the vaultId / paymentData
+
+
+
+
+
+

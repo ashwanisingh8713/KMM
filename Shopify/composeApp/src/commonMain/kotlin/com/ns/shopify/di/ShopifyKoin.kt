@@ -4,12 +4,14 @@ import com.apollographql.apollo3.ApolloClient
 import com.ns.shopify.data.repo.AddressModuleRepoImpl
 import com.ns.shopify.data.repo.CartRepoImpl
 import com.ns.shopify.data.repo.CategoryCollectionRepoImpl
+import com.ns.shopify.data.repo.CheckoutRepoImpl
 import com.ns.shopify.data.repo.LoginModuleRepoImpl
 import com.ns.shopify.data.repo.ProductDetailRepoImpl
 import com.ns.shopify.data.repo.ShopDetailsRepoImpl
 import com.ns.shopify.domain.repo.IShopDetailsRepo
 import com.ns.shopify.domain.repo.address.IAddressModuleRepo
 import com.ns.shopify.domain.repo.cart.ICartRepo
+import com.ns.shopify.domain.repo.checkout.ICheckoutRepo
 import com.ns.shopify.domain.repo.product.ICategoryCollectionRepo
 import com.ns.shopify.domain.repo.login.ILoginModuleRepo
 import com.ns.shopify.domain.repo.product.IProductDetailRepo
@@ -22,6 +24,11 @@ import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
 import com.ns.shopify.domain.usecase.cart.CartUpdateUseCase
+import com.ns.shopify.domain.usecase.checkout.CheckoutCompleteWithCreditCardUseCase
+import com.ns.shopify.domain.usecase.checkout.CheckoutCreateUseCase
+import com.ns.shopify.domain.usecase.checkout.CheckoutCustomerAssociateUseCase
+import com.ns.shopify.domain.usecase.checkout.CheckoutShippingAddressUpdateUseCase
+import com.ns.shopify.domain.usecase.checkout.CheckoutShippingLineUpdateUseCase
 import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
@@ -30,6 +37,7 @@ import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
 import com.ns.shopify.presentation.screen.address.AddAddressViewModel
 import com.ns.shopify.presentation.screen.address.AddressListViewModel
 import com.ns.shopify.presentation.screen.cart.CartViewModel
+import com.ns.shopify.presentation.screen.checkout.CheckoutViewModel
 import com.ns.shopify.presentation.screen.forgot_password.ForgotPasswordViewModel
 import com.ns.shopify.presentation.screen.home.HomeViewModel
 import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel
@@ -75,6 +83,7 @@ val viewModelModule = module {
     single { CartViewModel(get(), get(), get(), get(), get(), get(), get()) }
     factory { AddAddressViewModel(get(), get()) }
     factory { AddressListViewModel(get(), get()) }
+    factory{ CheckoutViewModel(get(), get(), get(), get(), get()) }
 }
 
 val useCasesModule: Module = module {
@@ -92,6 +101,13 @@ val useCasesModule: Module = module {
     factory { CartBuyerIdentityUpdateUseCase(get(), get()) }
     factory { AddAddressUseCase(get(), get()) }
     factory { AddressListUseCase(get(), get()) }
+
+    factory{ CheckoutCreateUseCase(get(), get()) }
+    factory{ CheckoutCustomerAssociateUseCase(get(), get()) }
+    factory{ CheckoutShippingLineUpdateUseCase(get(), get()) }
+    factory{ CheckoutShippingAddressUpdateUseCase(get(), get()) }
+    factory{ CheckoutCompleteWithCreditCardUseCase(get(), get()) }
+
 }
 
 val repositoryModule = module {
@@ -101,6 +117,7 @@ val repositoryModule = module {
     factory<IProductDetailRepo> { ProductDetailRepoImpl(get()) }
     factory<ICartRepo> { CartRepoImpl(get()) }
     factory<IAddressModuleRepo> { AddressModuleRepoImpl(get()) }
+    factory<ICheckoutRepo> { CheckoutRepoImpl(get()) }
 }
 
 val apolloModule = module {

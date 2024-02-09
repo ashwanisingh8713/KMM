@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.coroutineScope
 import cafe.adriel.voyager.navigator.Navigator
@@ -14,6 +15,7 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.app.util.Other
 import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.storage.UserDataAccess
 import com.ns.shopify.presentation.componets.AnimVisible
 import com.ns.shopify.presentation.componets.CartTabItem
 import com.ns.shopify.presentation.componets.TabItem
@@ -33,6 +35,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.compose.getKoin
 import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
@@ -51,7 +54,12 @@ internal fun App(isDark: Boolean) = AppTheme {
 fun App(
     isDark: Boolean
 ) {
+
+    // Loading/Refreshing User Data Access
+    UserDataAccess.refreshData(rememberCoroutineScope(), getKoin().get<CachingManager>())
+
     Navigator(LaunchScreen(isDark = isDark))
+
     /*val vm = rememberKoinInject<SettingsViewModel>()
     val theme = when(vm.themeIndex) {
         0 -> isDark

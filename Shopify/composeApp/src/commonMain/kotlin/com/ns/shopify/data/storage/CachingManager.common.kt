@@ -1,11 +1,11 @@
 package com.ns.shopify.data.storage
 
 import androidx.compose.runtime.MutableState
+import com.ns.shopify.GetAddressQuery
 import kotlinx.coroutines.flow.Flow
 
 
 expect class CachingManager {
-
 
     suspend fun saveThemeIndex(index: Int)
     fun getThemeIndex(): Flow<Int>
@@ -35,5 +35,8 @@ expect class CachingManager {
 
     suspend fun saveCustomerAddressId(addressId: String)
     fun getCustomerAddressId(): Flow<String>
+
+    suspend fun saveSelectedAddress(addressNode: GetAddressQuery.Node)
+    fun getSelectedAddress(): Flow<String>
 
 }

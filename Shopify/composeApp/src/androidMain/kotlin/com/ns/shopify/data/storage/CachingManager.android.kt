@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.app.printLog
+import com.ns.shopify.GetAddressQuery
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -27,6 +28,7 @@ actual class CachingManager(private val context: Context) {
     private val customerEmail_key = stringPreferencesKey("customerEmail_key")
     private val customerPhone_key = stringPreferencesKey("customerPhone_key")
     private val customerAddressId_key = stringPreferencesKey("customerAddressId_key")
+    private val selectedAddress_key = stringPreferencesKey("selectedAddress_key")
 
     // ->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
     // Saves the theme index
@@ -152,6 +154,18 @@ actual class CachingManager(private val context: Context) {
     // Get the customer address id
     actual fun getCustomerAddressId(): Flow<String> = context.dataStore.data.map {
         it[customerAddressId_key] ?: ""
+    }
+
+    actual suspend fun saveSelectedAddress(addressNode: GetAddressQuery.Node) {
+        val fullAddress =
+            "${addressNode.address1}Address_Delemeter${addressNode.address2}Address_Delemeter${addressNode.city}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.country}Address_Delemeter${addressNode.zip}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.phone}"
+        context.dataStore.edit {
+            it[selectedAddress_key] = fullAddress
+        }
+    }
+
+    actual fun getSelectedAddress(): Flow<String> = context.dataStore.data.map {
+        it[selectedAddress_key] ?: ""
     }
 
 

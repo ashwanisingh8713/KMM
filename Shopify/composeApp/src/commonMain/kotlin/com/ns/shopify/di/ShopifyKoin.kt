@@ -46,6 +46,7 @@ import com.ns.shopify.presentation.screen.sign_up.SignUpViewModel
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.presentation.viewmodel.AccessTokenCreateViewModel
 import com.ns.shopify.presentation.viewmodel.CustomerRecoverViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import org.koin.core.context.startKoin
@@ -83,7 +84,7 @@ val viewModelModule = module {
     single { CartViewModel(get(), get(), get(), get(), get(), get(), get()) }
     factory { AddAddressViewModel(get(), get()) }
     factory { AddressListViewModel(get(), get()) }
-    factory{ CheckoutViewModel(get(), get(), get(), get(), get()) }
+    factory{ CheckoutViewModel(get(), get(), get(), get(), get(), get()) }
 }
 
 val useCasesModule: Module = module {
@@ -139,7 +140,7 @@ val apolloModule = module {
 
 
 val dispatcherModule = module {
-    factory { Dispatchers.Default }
+    factory<CoroutineDispatcher> { Dispatchers.Default }
 }
 
 

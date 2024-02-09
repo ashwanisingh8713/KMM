@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
  * Created by Ashwani Kumar Singh on 04,December,2023.
  */
 
-const val TAG = "IOS_LOG PRINT: "
+const val TAG = "LOG PRINT: "
 
 object Other {
     var isBottomBarVisible by mutableStateOf(true)

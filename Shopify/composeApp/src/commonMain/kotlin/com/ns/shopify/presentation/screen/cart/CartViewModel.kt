@@ -4,24 +4,21 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
-import com.ns.shopify.adapter.CartBuyerIdentityUpdateMutation_ResponseAdapter
 import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.utils.buyerCountry
+import com.ns.shopify.data.utils.cartBuyerIdentityInput
+import com.ns.shopify.data.utils.deliveryAddressInput
 import com.ns.shopify.domain.usecase.cart.AddMerchandiseUseCase
 import com.ns.shopify.domain.usecase.cart.CartBuyerIdentityUpdateUseCase
 import com.ns.shopify.domain.usecase.cart.CartCountUsecase
 import com.ns.shopify.domain.usecase.cart.CartCreateUseCase
 import com.ns.shopify.domain.usecase.cart.CartQueryUseCase
 import com.ns.shopify.domain.usecase.cart.CartUpdateUseCase
-import com.ns.shopify.presentation.settings.SettingsViewModel
-import com.ns.shopify.type.CartBuyerIdentityInput
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
 import com.ns.shopify.type.CartLineUpdateInput
-import com.ns.shopify.type.CountryCode
-import com.ns.shopify.type.DeliveryAddressInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -31,14 +28,14 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 28,December,2023.
  */
-class CartViewModel(/*private val cachingManager: CachingManager,*/
+class CartViewModel(
                     private val cartCreateUseCase: CartCreateUseCase,
                     private val addMerchandiseUseCase: AddMerchandiseUseCase,
                     private val cartCountUseCase: CartCountUsecase,
                     private val cartQueryUseCase: CartQueryUseCase,
                     private val cartUpdateUseCase: CartUpdateUseCase,
                     private val cartBuyerIdentityUpdateUseCase: CartBuyerIdentityUpdateUseCase,
-                    private val settingsViewModel: CachingManager
+                    private val cachingManager: CachingManager
 ) : ScreenModel, KoinComponent {
 
     private val _cartCreateState = MutableStateFlow(CreateCartState())
@@ -153,8 +150,8 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                         cart?.let {
                             val checkoutUrl = cart.checkoutUrl
                             val totalQuantity = cart.totalQuantity
-                            settingsViewModel.saveCartCount(totalQuantity)
-                            settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
+                            cachingManager.saveCartCount(totalQuantity)
+                            cachingManager.saveCheckoutUrl(checkoutUrl as String)
                         }
 
                     }
@@ -239,8 +236,8 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val lineId = node.id
                                 val rawAmount = onProductVariant?.price?.amount as String
                                 val amount = rawAmount.toDoubleOrNull() ?: 0.0
-                                val imageUrl = onProductVariant?.image?.url ?: ""
-                                val productId = onProductVariant?.id ?: ""
+                                val imageUrl = onProductVariant.image?.url ?: ""
+                                val productId = onProductVariant.id
                                 val userCartUiData = UserCartUiData(
                                     productId = productId,
                                     price = amount,
@@ -312,8 +309,8 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                                 val lineId = node.id
                                 val rawAmount = onProductVariant?.price?.amount as String
                                 val amount = rawAmount.toDoubleOrNull() ?: 0.0
-                                val imageUrl = onProductVariant?.image?.url ?: ""
-                                val productId = onProductVariant?.id ?: ""
+                                val imageUrl = onProductVariant.image?.url ?: ""
+                                val productId = onProductVariant.id
                                 val userCartUiData = UserCartUiData(
                                     productId = productId,
                                     price = amount,
@@ -338,8 +335,8 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
                             cart.let {
                                 val checkoutUrl = cart.checkoutUrl
                                 val totalQuantity = cart.totalQuantity
-                                settingsViewModel.saveCartCount(totalQuantity)
-                                settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
+                                cachingManager.saveCartCount(totalQuantity)
+                                cachingManager.saveCheckoutUrl(checkoutUrl as String)
                             }
                         }
                     }
@@ -358,28 +355,26 @@ class CartViewModel(/*private val cachingManager: CachingManager,*/
 
     fun cartBuyerIdentityUpdate() {
         coroutineScope.launch {
-
-            settingsViewModel.getCustomerEmail()
-
+            _cartBuyerIdentityUpdateState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             combine(
-                settingsViewModel.getCustomerEmail(), settingsViewModel.getCustomerPhone(),
-                settingsViewModel.getCustomerAddressId(), settingsViewModel.getCartId(),
-                settingsViewModel.getCustomerAccessToken()
+                cachingManager.getCustomerEmail(), cachingManager.getCustomerPhone(),
+                cachingManager.getCustomerAddressId(), cachingManager.getCartId(),
+                cachingManager.getCustomerAccessToken()
             ) { email, phone, addressId, cartId, customerAccessToken ->
 
-                val deliveryAddressInput = DeliveryAddressInput(
-                    customerAddressId = Optional.present(addressId)
+                val cartBuyerIdentity = cartBuyerIdentityInput(
+                    email = email,
+                    phone = phone,
+                    countryCode = buyerCountry(),
+                    customerAccessToken = customerAccessToken,
+                    deliveryAddressInput = deliveryAddressInput(addressId)
                 )
 
-                val buyerIdentity = CartBuyerIdentityInput(
-                    email = Optional.present(email),
-                    phone = Optional.present(phone),
-                    countryCode = Optional.present(CountryCode.IN),
-                    customerAccessToken = Optional.present(customerAccessToken),
-                    deliveryAddressPreferences = Optional.present(listOf(deliveryAddressInput))
-                )
-
-                val param = Pair(buyerIdentity, cartId)
+                val param = Pair(cartBuyerIdentity, cartId)
 
                 cartBuyerIdentityUpdateUseCase(param).onSuccess {
                     val error = it.errors

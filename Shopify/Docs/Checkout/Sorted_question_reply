@@ -3,20 +3,34 @@
 
 Must convert my application into a sales channel.
 
-// Detail About request params
-https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkoutcompletewithcreditcardv2-access-denied/td-p/1264364
+// Best, It has reply of 'CheckoutCreate', 'checkoutShippingLineUpdate', 'checkoutCompleteWithCreditCardV2'
+https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkout-and-payment/m-p/406745
 
-// Detail About request params
-https://community.shopify.com/c/hydrogen-headless-and-storefront/failed-to-checkoutcompletewithcreditcardv2-and/m-p/1259759
+// Best, Detail about checkoutCompleteWithTokenizedPaymentV3, Auth - Anonymous
+https://community.shopify.com/c/hydrogen-headless-and-storefront/issue-with-mutation-checkoutcompletewithtokenizedpaymentv3/m-p/818010
 
-// Detail About Payment Gateway & Reply on `public Sales Channel`
-https://community.shopify.com/c/hydrogen-headless-and-storefront/convert-existing-private-app-into-sales-channel/m-p/746708
-
-// Detail About request params
+// Detail About request params, Auth - Radovanhodor
 https://community.shopify.com/c/hydrogen-headless-and-storefront/checkout-storefront-api/m-p/2159591
 
-// Detail about checkoutCompleteWithTokenizedPaymentV3
-https://community.shopify.com/c/hydrogen-headless-and-storefront/issue-with-mutation-checkoutcompletewithtokenizedpaymentv3/m-p/818010
+// Replay about checkoutCompleteWithTokenizedPaymentV3, Auth - Sterling_Smith
+https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-orders-not-showing-up-after-calling/m-p/726351
+
+// Detail About request params, Auth - VishalSatwara
+https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkoutcompletewithcreditcardv2-access-denied/td-p/1264364
+
+// Detail About request params, Auth - Tcmleung
+https://community.shopify.com/c/hydrogen-headless-and-storefront/failed-to-checkoutcompletewithcreditcardv2-and/m-p/1259759
+
+// Detail About Payment Gateway & Reply on `public Sales Channel`, Auth - Alex-Spataru
+https://community.shopify.com/c/hydrogen-headless-and-storefront/convert-existing-private-app-into-sales-channel/m-p/746708
+
+
+// CheckoutCompleteWithCreditCard From Android App, Auth - Ansam
+https://community.shopify.com/c/hydrogen-headless-and-storefront/bug-access-denied-calling-checkoutcompletewithcreditcard-from/m-p/637876
+
+
+
+
 
 
 

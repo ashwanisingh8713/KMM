@@ -251,7 +251,9 @@ class CartViewModel(
                             }
                             _cartQueryState.update {
                                 it.copy(
-                                    isLoading = false, success = list, isLoaded = true,
+                                    isLoading = false,
+                                    success = list,
+                                    isLoaded = true,
                                     totalAmount = totalAmount,
                                     subTotalAmount = subTotalAmount,
                                     taxAmount = taxAmount,

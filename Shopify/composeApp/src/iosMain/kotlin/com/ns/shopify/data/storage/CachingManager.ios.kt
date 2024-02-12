@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.app.printLog
 import com.ns.shopify.GetAddressQuery
+import com.ns.shopify.data.utils.fullAddressFormatting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import platform.Foundation.NSUserDefaults
@@ -106,9 +107,7 @@ actual class CachingManager {
     }
 
     actual suspend fun saveSelectedAddress(addressNode: GetAddressQuery.Node) {
-        val fullAddress =
-            "${addressNode.address1}Address_Delemeter${addressNode.address2}Address_Delemeter${addressNode.city}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.country}Address_Delemeter${addressNode.zip}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.phone}"
-        userDefault.setObject(fullAddress, "selectedAddress")
+        userDefault.setObject(fullAddressFormatting(addressNode), "selectedAddress")
     }
 
     actual fun getSelectedAddress(): Flow<String> = flow {

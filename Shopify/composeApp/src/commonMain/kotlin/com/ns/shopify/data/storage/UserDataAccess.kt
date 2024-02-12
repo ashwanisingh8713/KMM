@@ -10,13 +10,19 @@ import org.koin.compose.getKoin
  */
 object UserDataAccess {
 
-    val Address_Delemeter = "##"
+    val Address_Delemeter = "§"
 
     var selectedFullAddress: String = ""
     private set
 
     var customerAddressId: String = ""
     private set
+
+    var email: String = ""
+        private set
+
+    var customerAccessToken: String = ""
+        private set
 
 
     fun refreshData(coroutineScope: CoroutineScope, cachingManager: CachingManager) {
@@ -29,6 +35,18 @@ object UserDataAccess {
         coroutineScope.launch {
             cachingManager.getSelectedAddress().collectLatest {
                 selectedFullAddress = it
+            }
+        }
+
+        coroutineScope.launch {
+            cachingManager.getCustomerEmail().collectLatest {
+                email = it
+            }
+        }
+
+        coroutineScope.launch {
+            cachingManager.getCustomerAccessToken().collectLatest {
+                customerAccessToken = it
             }
         }
 

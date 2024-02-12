@@ -1,2 +1,5 @@
 Android-ci-cd
-https://github.com/maddevsio/android-ci-cd?tab=readme-ov-file
+    https://github.com/maddevsio/android-ci-cd?tab=readme-ov-file
+
+Applying CI/CD Using GitHub Actions for Android
+    https://medium.com/empathyco/applying-ci-cd-using-github-actions-for-android-1231e40cc52f

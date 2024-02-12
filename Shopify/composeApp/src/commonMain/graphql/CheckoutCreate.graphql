@@ -1,13 +1,52 @@
-mutation checkoutCreate($input: CheckoutCreateInput!) {
-  checkoutCreate(input: $input) {
-    checkout {
-      id
-      webUrl
-    }
+mutation CheckoutCreate($input: CheckoutCreateInput!, $queueToken: String) {
+  checkoutCreate(input: $input, queueToken: $queueToken) {
+    queueToken
     checkoutUserErrors {
-      code
-      field
       message
+      field
+      code
+    }
+    checkout {
+      webUrl
+      id
+      updatedAt
+      totalTax {
+        currencyCode
+        amount
+      }
+      totalPrice {
+        currencyCode
+        amount
+      }
+      totalDuties {
+        currencyCode
+        amount
+      }
+      taxesIncluded
+      taxExempt
+      subtotalPrice {
+        currencyCode
+        amount
+      }
+
+      email
+      createdAt
+      buyerIdentity {
+        countryCode
+      }
+      shippingLine {
+        title
+        price {
+          currencyCode
+          amount
+        }
+        handle
+      }
+      paymentDue {
+        amount
+        currencyCode
+      }
+
     }
   }
 }

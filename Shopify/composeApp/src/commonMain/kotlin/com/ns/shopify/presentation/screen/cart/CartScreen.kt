@@ -21,6 +21,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,10 +34,12 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.data.utils.amountFormatter
-import com.ns.shopify.presentation.screen.payment.PaymentCardScreen
+import com.ns.shopify.presentation.screen.checkout.CheckoutScreen
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartLineUpdateInput
 import com.ns.shopify.type.CurrencyCode
@@ -70,9 +76,10 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
 
         // On click of place order, we will update the buyer identity
         val onPlaceOrderClicked:() -> Unit = {
-            cartViewModel.cartBuyerIdentityUpdate()
-        }
+//            cartViewModel.cartBuyerIdentityUpdate()
+            navigation?.push(CheckoutScreen())
 
+        }
 
         if (cartQueryState.value.isLoaded) {
             Scaffold(topBar = {},

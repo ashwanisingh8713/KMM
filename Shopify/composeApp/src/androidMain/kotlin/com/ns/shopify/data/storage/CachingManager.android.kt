@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.app.printLog
 import com.ns.shopify.GetAddressQuery
+import com.ns.shopify.data.utils.fullAddressFormatting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -157,10 +158,9 @@ actual class CachingManager(private val context: Context) {
     }
 
     actual suspend fun saveSelectedAddress(addressNode: GetAddressQuery.Node) {
-        val fullAddress =
-            "${addressNode.address1}Address_Delemeter${addressNode.address2}Address_Delemeter${addressNode.city}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.country}Address_Delemeter${addressNode.zip}Address_Delemeter${addressNode.province}Address_Delemeter${addressNode.phone}"
+
         context.dataStore.edit {
-            it[selectedAddress_key] = fullAddress
+            it[selectedAddress_key] = fullAddressFormatting(addressNode)
         }
     }
 

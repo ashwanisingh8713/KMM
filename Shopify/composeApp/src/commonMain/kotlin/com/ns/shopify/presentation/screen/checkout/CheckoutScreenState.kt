@@ -12,22 +12,27 @@ import com.ns.shopify.CheckoutShippingLineUpdateMutation
  */
 data class CheckoutCreateState(val isLoaded: Boolean = false,
                                val isLoading: Boolean = false,
-                               val success: ApolloResponse<CheckoutCreateMutation.Data>? = null,
+                               val checkoutId: String = "",
+                               val shippingRateHandle: String = "",
                                val error: String = "")
 
 data class CheckoutCustomerAssociateState(val isLoaded: Boolean = false,
                                           val isLoading: Boolean = false,
-                                          val success: ApolloResponse<CheckoutCustomerAssociateV2Mutation.Data>? = null,
+                                          val checkoutId: String = "",
+                                          val webUrl: String? = "",
                                           val error: String = "")
 
 data class CheckoutShippingLineUpdateState(val isLoaded: Boolean = false,
                                            val isLoading: Boolean = false,
-                                           val success: ApolloResponse<CheckoutShippingLineUpdateMutation.Data>? = null,
+                                           val checkoutId: String = "",
+                                           val webUrl: String = "",
+                                           val shippingLineHandle: String = "",
                                            val error: String = "")
 
 data class CheckoutShippingAddressUpdateState(val isLoaded: Boolean = false,
                                               val isLoading: Boolean = false,
-                                              val success: ApolloResponse<CheckoutShippingAddressUpdateV2Mutation.Data>? = null,
+                                              val checkoutId: String = "",
+                                              val success: CheckoutShippingAddressUpdateV2Mutation.ShippingAddress? = null,
                                               val error: String = "")
 
 data class CheckoutCompleteWithCreditCardState(val isLoaded: Boolean = false,

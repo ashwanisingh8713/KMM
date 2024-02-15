@@ -89,7 +89,17 @@ class CheckoutScreen : Screen {
         // 6. Sending Checkout Complete With Credit Card Event
         if(checkoutShippingAddressUpdateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
-                checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutCompleteWithCreditCardEvent(checkoutShippingAddressUpdateState.value.checkoutId))
+                checkoutViewModel.createVaultId()
+            }
+            /*LaunchedEffect(true) {
+                checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutCompleteWithCreditCardEvent(checkoutShippingAddressUpdateState.value.checkoutId, checkoutCreateState.value.totalPrice))
+            }*/
+        }
+
+        // 7. Sending VaultId request
+        if(checkoutCompleteWithCreditCardState.value.checkoutId.isNotEmpty()) {
+            LaunchedEffect(true) {
+                checkoutViewModel.createVaultId()
             }
         }
 

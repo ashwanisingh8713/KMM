@@ -1,0 +1,138 @@
+Hello! I'm your virtual Help Center assistant. I'm here to help you find the answers and resources you need. How can I help with Your account?
+
+Hi There
+
+Hello! How can I assist you with Shopify today?
+
+how to enable public sales channel in shopify?
+
+8 suggested resources for How to enable public sales channel in Shopify?
+To enable a public sales channel, follow these steps:
+
+Go to Settings > Apps and sales channels in your Shopify admin.
+Click Shopify App Store.
+Search for your desired channel and click Add channel.
+For more, see Set up the Shop channel.
+
+I still need help
+
+Hey there! I'd be happy to help you with setting up your public sales channel on Shopify. To make sure I provide the most accurate information, could you please clarify your question a bit more? Here are a few ways you might be asking:
+
+How can I enable a public sales channel on my Shopify store?
+What are the steps to add a new public sales channel in Shopify?
+Can you guide me through the process of setting up a public sales channel on Shopify?
+Can you connect with person?
+
+Got it! Click select a store to connect with a Support Advisor.
+
+Select a store
+Connect with a Support Advisor
+Selected store Quickstart (fe108883)
+
+Would you like to chat with a Support Advisor?
+
+Chat with a Support Advisor
+
+Entered queue. Typical wait time ~5 minutes.
+
+You’re in line to chat with a Support Advisor! I’m still here with you to chat until you get connected. In the last 7 days, I've successfully solved over half of issues before an Advisor became available. When the Advisor comes on I'll summarize everything we talked about so we can help you as quickly as possible.
+
+Hi
+
+Hello! How can I assist you with Shopify today?
+
+An advisor has joined the chat
+Hello, I'm Saurav, your Shopify Support advisor.
+
+I am trying to make mutation "CheckoutCompleteWithCreditCardV2", but for this "vaultId" is required. To get "vaultId" I have made the Post request "https://quickstart-fe108883.myshopify.com/sessions", with card details , but in response I am getting HTML content, But as per documentation it should give in response "vaultId".
+
+I'm currently reviewing the information you've provided so far to ensure I can assist you effectively. I hope you're doing well.
+
+Yes, please look into my above shared query.
+
+Sure
+
+In order to secure the 'vaultId' for the 'CheckoutCompleteWithCreditCardV2' mutation, you need to make a POST request to 'quickstart-fe108883.myshopify.com/sessions', including the card details. Nevertheless, it appears that the response you're getting is HTML content, not the anticipated 'vaultId'.
+
+Yes,
+
+It's important to understand that the CheckoutCompleteWithCreditCardV2 mutation you mentioned is applicable only for private, custom build apps that are intended for usage with Shopify Plus plans, and are subjected to Shopify's Payment API terms and policies.
+
+As the vaulting process goes, the vaultUrl is provided when the checkoutCreate mutation is called. The vaultUrl is then used to vault the credit card information directly and the response will be a creditCardVaultToken, which can be used with the CheckoutCompleteWithCreditCardV2 mutation.
+
+
+
+ok
+
+Remember that vaulting and completing checkouts directly requires access to Shopify's Payment API which is currently available only to private apps/sales channels and requires approval from Shopify.
+
+there is `webUrl` in `checkoutCreate` mutation.
+
+not could not find `vaultUrl`.
+
+let's clarify the vaultId generation process a bit more. When you use the CheckoutCompleteWithCreditCardV2 mutation, the payment is processed via Shopify's Card Vault API and for that, you can only use the tokens (vaultId) you gathered from Shopify's Card Vault operation.
+
+This operation involves vaulting the card details and getting a token or vaultId in return; however, this is not usually handled directly in the Shopify storefront or API. It's common to be vaulted during the native checkout flow and is not exposed in the GraphQL API for checkoutCreate.
+
+For this operation, you would typically send a POST request with the card details to your payment gateway, which would then return a token (the vaultId in this context) that you can use for the CheckoutCompleteWithCreditCardV2 mutation.
+
+Can you send the post request URL along with header and body?
+
+r u there?
+
+While I may not be a coding expert, I can certainly give you a basic template of what your code could possibly resemble. Please note, it's designed not to contain any sensitive information.
+
+You should replace Your_Payment_Gateway_URL, /api_path, and the JSON payload with your actual payment gateway's URL, the specific API path, and the necessary details required by your payment gateway, respectively.
+
+Again, this is a generic representation and will vary based on the payment gateway you use.
+
+Here is the help doc for you Custom storefronts
+
+Please wait let me try with shared request.
+
+2 mins please
+
+Sure, Please take your time.
+
+Method : POST Host : https://quickstart-fe108883.myshopify.com/sessions ------------------------------------ Body : { "credit_card": { "number": "4242424242424242", "first_name": "Ashwani", "last_name": "Gateway", "month": "02", "year": "26", "verification_value": "123" } } ------------------------------------ Headers: X-Shopify-Access-Token = ...... Content-Type = application/json Accept = application/json
+
+It throws error : "Error: Number of redirects hit maximum amount "
+
+The request structure you're attempting to use seems to involve sensitive credit card information, which is not generally handled directly through the Shopify storefront API.
+
+The proper flow would be to vault the credit card using your Gateway's vaulting process, which should provide you with a token (vaultId) for a particular credit card, then you feed the token to Shopify's checkoutCompleteWithCreditCardV2 mutation.
+
+
+
+I using Bogus Credit Card detail,
+
+After using your recent suggestion getting error "Error: Number of redirects hit maximum amount "
+
+It seems like you're encountering a redirection loop error. This could be for a few reasons. This usually means that the URL you're trying to hit is redirecting to another URL, which then redirects back to the original URL.
+
+However, the main concerning point here is that you're trying to make a POST request to quickstart-fe108883.myshopify.com/sessions. Shopify doesn't publicly provide this endpoint /sessions to external users for security reasons.
+
+It mean I have to make this request directly from my app, correct?
+
+Yes,Ravi you are correct.
+
+Ok, then let me try from my App.
+
+I it does not work then again I will connect
+
+Sure, Besides this, is there anything else with which I can assist you?
+
+before leaving can you let me know Is there any direct call line, where I can directly connect with support team over the call ?
+
+I apologize, but the call facility is currently unavailable. We are working to bring this feature live and soon you will be able to utilize this communication channel. However, as of right now, I deeply regret the inconvenience.
+
+OMG
+
+Ok no problem, I will connect via chat only
+
+Thanks for your kind assistance
+
+:)
+
+Thank you for choosing our Shopify merchant service. We appreciate your time and patience. If you have any more questions or require further assistance in the future, please don't hesitate to reach out. Have a great day!
+

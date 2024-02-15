@@ -1,0 +1,109 @@
+Hi Please connect with a person
+
+Got it! Click select a store to connect with a Support Advisor.
+
+Select a store
+Connect with a Support Advisor
+Selected store To check payment
+
+Can you describe what you need help with? We’ll connect you to the right support team.
+
+How to make test payment in Checkout page using Bogus payment getway?
+
+4 suggested resources for How to make a test payment in Checkout page using Bogus payment gateway?
+To make a test payment using the Bogus Gateway, follow these steps:
+
+Go to Settings -> Payments in Shopify Admin.
+Deactivate your current payment provider.
+Choose Bogus Gateway from the list and activate it.
+Place an order as a customer would.
+For more details, check out Testing your B2B setup.
+
+Chat with a Support Advisor
+
+Entered queue. Typical wait time ~5 minutes.
+
+You’re in line to chat with a Support Advisor! I’m still here with you to chat until you get connected. In the last 7 days, I've successfully solved over half of issues before an Advisor became available. When the Advisor comes on I'll summarize everything we talked about so we can help you as quickly as possible.
+
+An advisor has joined the chat
+Hello! My name is Cielo, your Shopify Support Advisor for today!
+
+Hello Cielo
+
+How to make test payment in Checkout page using Bogus payment getway?
+
+Please check with this
+
+https://260029-2.myshopify.com/checkouts/cn/c1-cd7dae9acb2547e75a5770690d66f9c6/
+
+Hi there, Ashwani. I just got your message, and with the help of our Help Center Assistant, it looks like you hav e an inquiry regarding making mock orders using the Bogus payment gateway. I am here to help!
+
+Please
+
+??
+
+Thanks for the checkout link you shared, Ashwani. To make sure that our goal for today would be the same, you wish to test the payments using the Bogus Payment Gateways that Shopify caters, am I right?
+
+Yes
+
+Got it! Thanks for confirming that, Ashwani. What I'll do is check the current bogus gateways we can use to make sure that we can proceed with the mock order. Afterwards, I'll provide you with insights and recommendations on how we can proceed with this. Kindly give me 3-5 minutes for this, Ashwani! Appreciate it!
+
+I will be waiting here only.
+
+Thank you so much for staying with me, Ashwani. What I did was I carefully checked our resources when it comes to using a payment gateway, and I do see why this is something that you wish to try first. I found a resource that provides the credit card numbers that can be used. Can you kindly check if you can access this on your end please? test orders
+
+No rush, Ashwani. I just wanna make sure that we're still connected as the chat ends in a certain amount of time after being inactive. Are you still with me?
+
+I m trying
+
+Here I got error "Enter a valid card number"
+
+Awesome! Thanks for letting me know that we're still connected. :) Just making sure our chat won't be deactivated.
+
+Card number is 4242 4242 4242 4242
+
+Oh! it worked, In Bogus test payment we don't need to give Card Number
+
+instead of card number if we give "1" it accepts
+
+You can use the following codes in place of the credit card number when checking out: 1 - To Simulate an Approved Transaction 2 - To Simulate a Declined Transaction 3 - To Simulate a Gateway Failure
+
+Sweet! Thanks for looping me on this, Ashwani. This would be an awesome thing to know. I learned something new from you today! 😊
+
+May I know if this was sucessful on your end?
+
+one more query I have
+
+Sure thing, Ashwani!
+
+How to generate "vaultId" to make mutation "CheckoutCompleteWithCreditCardV2" GraphQL request?
+
+Please share the step by step points along with code snippet.
+
+I see. Shopify Support Advisors are not trained for coding, Ashwani. However, I found a resource about checkoutCompleteWithCreditCardV2 that may help.
+
+Using this doc link only I did all
+
+But no where I found, how to generate "vaultId" key
+
+"vaultId" keeps User's Credit Card details
+
+Got it. I really understand why this is necessary for the testing you're doing, Ashwani. As much as I would love to, this matter is related to coding. Coding can be quite intricate since it requires compatibility with various themes and precise accuracy in every character of the code to prevent any problems when implementing it. Alternatively, you may also consider hiring a Shopify Expertto assist you with the coding required to achieve your desired outcome.
+
+Ok got it.
+
+I thank you for allowing me to look into this for you, Ashwani. Thank you so much for your kind understanding with this. I can genuinely relate that the outcome may have been outside your expectations, although we would like to assure you that we are relentlessly looking for ways to support. A transcript will be shared along with the ticket ID for reference and a survey form on your Email or Support Inbox. Have a safe day, Ashwani!
+
+Chat ended by advisor
+Left the chat queue
+
+A chat log with your Support Advisor can be accessed in your Support Inbox. It may take up to 15 minutes to appear.
+
+Great I was not aware about this
+
+I'm glad I could help! Remember, you can always come back to your Support Inbox to review your chat logs. If you have any other questions about Shopify, feel free to ask!
+
+Thanks
+
+You're welcome! If you have any other questions in the future, don't hesitate to ask. Have a great day!
+

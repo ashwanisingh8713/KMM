@@ -1,0 +1,26 @@
+Query - 1
+I am trying to make mutation "CheckoutCompleteWithCreditCardV2", but for this "vaultId" is required.
+To get "vaultId" I have made the Post request "https://quickstart-fe108883.myshopify.com/sessions", with card details , but in response I am getting HTML content,
+But as per documentation it should give in response "vaultId".
+
+Query - 2
+How to make app in "Publich Channel", here at my end I am not getting option to enable it.
+
+Query - 3
+I am Shopify plus member.
+Is there any direct call line, where I can directly connect with support team over the call ?
+
+Query - 4
+How to make Development stores to be available for public?
+
+Query - 5
+How to remove the password from development store?
+
+Query - 6
+How to make test payment in Checkout page using Bogus payment getway?
+
+Query - 7
+How to generate "vaultId" to make mutation "CheckoutCompleteWithCreditCardV2" GraphQL request?
+
+Query - 8 Doc ref : https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/checkout/create#get-the-vault-id
+How to create shopify card vault session id?

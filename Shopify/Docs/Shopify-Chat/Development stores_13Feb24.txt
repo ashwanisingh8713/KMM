@@ -1,0 +1,61 @@
+How to make Development stores to sales store?
+
+10 suggested resources for How to convert a development store to a sales store on Shopify?
+To convert a development store to a sales store, you'll need to transfer ownership to your client. Here's how:
+
+Add your client as a staff member.
+Make sure they finish their staff account setup.
+Transfer ownership using this guide: Transferring store ownership.
+Remember, once transferred, you won't have access to the store's financial info.
+
+Chat with a Support Advisor
+
+Entered queue. Typical wait time ~5 minutes.
+
+You’re in line to chat with a Support Advisor! I’m still here with you to chat until you get connected. In the last 7 days, I've successfully solved over half of issues before an Advisor became available. When the Advisor comes on I'll summarize everything we talked about so we can help you as quickly as possible.
+
+How to make Development stores to be available for public?
+
+9 suggested resources for How to make Shopify Development stores available for public?
+To make a Shopify Development store public, remove the password to allow customer access. Check out the guide on Preparing your Shopify store for launch for more details.
+
+An advisor has joined the chat
+Hi, this is Christian, your Support Advisor for today.
+
+Hello Christian
+
+Hello Ravi. Nice meeting you! I'm reading over your conversation with our Help Center Assistant and it looks like you want to know how to convert a development store to a sales store and make it available to the public.
+
+How to make Development stores to be available for public?
+
+I see, Please know that I'm here to assist you and I'll be addressing your concerns.
+
+I will be pulling up your account here on my side and see what we can do to help you with your concern.
+
+sure
+
+I am currently checking it now. One moment.
+
+ok
+
+thank you for patiently waiting. I checked on your current development plan and I can see that you plan cannot be made available to the public or transfer as a sales store. You will nee to create a new account as your current one is only intended to create apps, or again for testing purposes.
+
+Why!! in this account I cannot make public?
+
+Are you still there?
+
+Please give the details...... and How can I make it public?
+
+Oh thanks for responding. Again I have double checked your development plan is a developer preview plan which is used specifically for Partner/Developer use to preview different features & functions, as they are rolled out to partners, or betas. This could include new API versions or new features in Shopify that may interfere with their apps or themes. And with this, this type of development store cannot be transfer to as a sales store.
+
+ok, Thank you so much for you quick respond, let me create & check with new account.
+
+Sure, You are most welcome. I also want to express my gratitude for your time. It has been a pleasure helping you out! Following our chat, you will receive a transcript of our conversation accompanied by a ticket ID. If you have any more queries or need further assistance, please don't hesitate to reply directly to the chat log. Our support team will be standing by to lend a hand.
+
+once again thank you for your kind assistance
+
+Have a good day and take care Ravi! Bye for now.
+
+You too Bye bye
+
+Chat ended by advisor

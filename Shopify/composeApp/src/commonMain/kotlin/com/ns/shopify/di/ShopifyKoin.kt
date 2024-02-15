@@ -126,8 +126,10 @@ val apolloModule = module {
         ApolloClient.Builder()
 //            .serverUrl("https://c498b0-3.myshopify.com/api/2023-10/graphql.json")
 //            .addHttpHeader("X-Shopify-Storefront-Access-Token", "6974ac476e8022a5916eca859872fcf3")
-            .serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")
+            /*.serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")*/
+            .serverUrl("https://260029-2.myshopify.com/api/2023-10/graphql.json")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "5881ded5c88e92bc2d3a0895aedb8f80")
 //            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)

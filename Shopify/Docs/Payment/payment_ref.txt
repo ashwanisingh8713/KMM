@@ -1,0 +1,27 @@
+
+// To get the vault ID to complete a payment
+https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/checkout/create#shopify-card-vault
+
+// Testing orders in development stores
+https://help.shopify.com/en/partners/dashboard/managing-stores/test-orders-in-dev-stores#testing-using-shopify-payments-test-mode
+
+
+// How To Create A Payment Session To Get A Session ID
+https://community.shopify.com/c/payments-shipping-and/how-to-create-a-payment-session-to-get-a-session-id/m-p/1995107/highlight/true
+
+// Help Creating A Customer Payment Method
+https://community.shopify.com/c/subscriptions-apis/help-creating-a-customer-payment-method/m-p/1093803/highlight/true
+
+// Payment Tokenization Guide: Definition and Uses
+https://www.shopify.com/in/retail/payment-tokenization
+
+
+// Testing Spreedly Flow (Spreedly)
+https://gist.github.com/vixdug/dc7b09a828c202bd51c63b0db9f757fc
+
+
+// Tokenize Credit Card With Stripe (Stripe)
+https://community.shopify.com/c/sales-channels-payments-apps-and/tokenize-credit-card-with-stripe/td-p/1891838
+
+// One Time 'Tokenization' To Create A Payment Method. (Shopify's Cardsink)
+https://community.shopify.com/c/subscriptions-apis/one-time-tokenization-to-create-a-payment-method/td-p/2373436

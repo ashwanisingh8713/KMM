@@ -14,6 +14,7 @@ data class CheckoutCreateState(val isLoaded: Boolean = false,
                                val isLoading: Boolean = false,
                                val checkoutId: String = "",
                                val shippingRateHandle: String = "",
+                               val totalPrice: CheckoutCreateMutation.TotalPrice? = null,
                                val error: String = "")
 
 data class CheckoutCustomerAssociateState(val isLoaded: Boolean = false,
@@ -37,6 +38,7 @@ data class CheckoutShippingAddressUpdateState(val isLoaded: Boolean = false,
 
 data class CheckoutCompleteWithCreditCardState(val isLoaded: Boolean = false,
                                                val isLoading: Boolean = false,
+                                               val checkoutId: String = "",
                                                val success: ApolloResponse<CheckoutCompleteWithCreditCardV2Mutation.Data>? = null,
                                                val error: String = "")
 

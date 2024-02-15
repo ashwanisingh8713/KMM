@@ -1,5 +1,6 @@
 
-
+// To get the vault ID to complete a payment
+https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/checkout/create#shopify-card-vault
 
 Must convert my application into a sales channel.
 
@@ -28,6 +29,12 @@ https://community.shopify.com/c/hydrogen-headless-and-storefront/convert-existin
 // CheckoutCompleteWithCreditCard From Android App, Auth - Ansam
 https://community.shopify.com/c/hydrogen-headless-and-storefront/bug-access-denied-calling-checkoutcompletewithcreditcard-from/m-p/637876
 
+// How To Create A Payment Session To Get A Session ID (No solution)
+https://community.shopify.com/c/fulfillment-and-inventory/how-to-create-a-payment-session-to-get-a-session-id/m-p/1957519/highlight/true#M839
+https://community.shopify.com/c/payments-shipping-and/how-to-create-a-payment-session-to-get-a-session-id/m-p/1995107/highlight/true
+
+// Completing a sales channel checkout
+https://shopify.dev/docs/apps/selling-strategies/channels/checkout-api/complete-payment
 
 
 

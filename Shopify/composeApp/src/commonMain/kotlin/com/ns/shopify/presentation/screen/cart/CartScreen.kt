@@ -87,24 +87,54 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
                     BottomBarUIs(onPlaceOrderClicked, cartQueryState.value)
                 },
                 content = {
-                    Box(modifier = Modifier.fillMaxSize().padding(it)) {
-                        CartList(
-                            cartQueryState.value.success,
-                            onIncrement = onIncrement,
-                            onDecrement = onDecrement
-                        )
+                    if(cartQueryState.value.totalAmount == 0.0) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Your cart is empty",
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        Box(modifier = Modifier.fillMaxSize().padding(it)) {
+                            CartList(
+                                cartQueryState.value.success,
+                                onIncrement = onIncrement,
+                                onDecrement = onDecrement
+                            )
+                        }
                     }
                 }
             )
 
 
-        } else {
+        } else if(cartQueryState.value.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Loading...",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }  else if(cartQueryState.value.error.isNotEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = cartQueryState.value.error,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()

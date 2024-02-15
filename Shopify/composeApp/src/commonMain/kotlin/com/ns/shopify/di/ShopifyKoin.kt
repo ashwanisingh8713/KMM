@@ -46,9 +46,17 @@ import com.ns.shopify.presentation.screen.sign_up.SignUpViewModel
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.presentation.viewmodel.AccessTokenCreateViewModel
 import com.ns.shopify.presentation.viewmodel.CustomerRecoverViewModel
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -67,7 +75,8 @@ fun shopifyInitKoin(appDeclaration: KoinAppDeclaration = {}) =
             repositoryModule,
             apolloModule,
             dispatcherModule,
-            platformModule()
+            platformModule(),
+            ktorModule
         )
     }
 
@@ -126,10 +135,10 @@ val apolloModule = module {
         ApolloClient.Builder()
 //            .serverUrl("https://c498b0-3.myshopify.com/api/2023-10/graphql.json")
 //            .addHttpHeader("X-Shopify-Storefront-Access-Token", "6974ac476e8022a5916eca859872fcf3")
-            /*.serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")*/
-            .serverUrl("https://260029-2.myshopify.com/api/2023-10/graphql.json")
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", "5881ded5c88e92bc2d3a0895aedb8f80")
+            .serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")
+            /*.serverUrl("https://260029-2.myshopify.com/api/2023-10/graphql.json")
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", "5881ded5c88e92bc2d3a0895aedb8f80")*/
 //            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)
@@ -138,6 +147,26 @@ val apolloModule = module {
             .build()
     }
 
+}
+
+val ktorModule = module {
+    single<HttpClient> {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        prettyPrint = true
+                        isLenient = true
+                    }
+                )
+            }
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.ALL
+            }
+        }
+    }
 }
 
 

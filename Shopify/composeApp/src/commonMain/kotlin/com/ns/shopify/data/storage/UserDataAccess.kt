@@ -24,6 +24,9 @@ object UserDataAccess {
     var customerAccessToken: String = ""
         private set
 
+    var checkoutUrl: String = ""
+        private set
+
 
     fun refreshData(coroutineScope: CoroutineScope, cachingManager: CachingManager) {
         coroutineScope.launch {
@@ -47,6 +50,12 @@ object UserDataAccess {
         coroutineScope.launch {
             cachingManager.getCustomerAccessToken().collectLatest {
                 customerAccessToken = it
+            }
+        }
+
+        coroutineScope.launch {
+            cachingManager.getCheckoutUrl().collectLatest {
+                checkoutUrl = it
             }
         }
 

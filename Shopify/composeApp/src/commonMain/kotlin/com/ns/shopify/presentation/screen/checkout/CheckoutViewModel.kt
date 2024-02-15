@@ -17,6 +17,10 @@ import com.ns.shopify.domain.usecase.checkout.CheckoutCreateUseCase
 import com.ns.shopify.domain.usecase.checkout.CheckoutCustomerAssociateUseCase
 import com.ns.shopify.presentation.screen.cart.UserCartUiData
 import com.ns.shopify.presentation.screen.checkout.model.CreditCard
+import com.ns.shopify.presentation.screen.checkout.model.NextAction
+import com.ns.shopify.presentation.screen.checkout.model.PaymentCreditCard
+import com.ns.shopify.presentation.screen.checkout.model.PaymentSessionIdBody
+import com.ns.shopify.presentation.screen.checkout.model.Transaction
 import com.ns.shopify.presentation.screen.checkout.model.VaultBody
 import com.ns.shopify.type.CheckoutCreateInput
 import com.ns.shopify.type.CheckoutLineItemInput
@@ -48,7 +52,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 /**
  * Created by Ashwani Kumar Singh on 08,February,2024.
@@ -121,73 +127,73 @@ class CheckoutViewModel(
 
     // Step-1, Create a checkout ID with required details
     private fun checkoutCreateResult(checkoutLineItems: List<CheckoutLineItemInput>) {
-
         _checkoutCreateState.update { it.copy(isLoading = true) }
-        coroutineScope.launch {
-            val checkoutCreateInput = CheckoutCreateInput(
-                email = Optional.present(UserDataAccess.email),
-                lineItems = Optional.present(checkoutLineItems),
-                shippingAddress = Optional.present((checkoutMailingAddressInput())),
-                note = Optional.present("This is note given by user"),
-                customAttributes = Optional.present(listOf()),
-                allowPartialAddresses = Optional.present(true),
-                buyerIdentity = Optional.present(checkoutBuyerIdentityInput())
-            )
 
-            checkoutCreateUC(checkoutCreateInput).onSuccess {
-                val dd = it
-                val data = dd.data
-                val error = it.errors
-                if (error.isNullOrEmpty()) {
-                    val userErrors = data?.checkoutCreate?.checkoutUserErrors
-                    if (userErrors.isNullOrEmpty()) {
-                        val checkoutId = data?.checkoutCreate?.checkout?.id!!
-                        val totalPrice = data.checkoutCreate.checkout.totalPrice
-                        val shippingRateHandle =
-                            data.checkoutCreate.checkout.shippingLine?.handle ?: ""
-                        _checkoutCreateState.update {
-                            it.copy(
-                                isLoading = false,
-                                isLoaded = true,
-                                checkoutId = checkoutId,
-                                shippingRateHandle = shippingRateHandle,
-                                totalPrice = totalPrice
-                            )
+            coroutineScope.launch {
+                val checkoutCreateInput = CheckoutCreateInput(
+                    email = Optional.present(UserDataAccess.email),
+                    lineItems = Optional.present(checkoutLineItems),
+                    shippingAddress = Optional.present((checkoutMailingAddressInput())),
+                    note = Optional.present("This is note given by user"),
+                    customAttributes = Optional.present(listOf()),
+                    allowPartialAddresses = Optional.present(true),
+                    buyerIdentity = Optional.present(checkoutBuyerIdentityInput())
+                )
+
+                checkoutCreateUC(checkoutCreateInput).onSuccess {
+                    val dd = it
+                    val data = dd.data
+                    val error = it.errors
+                    if (error.isNullOrEmpty()) {
+                        val userErrors = data?.checkoutCreate?.checkoutUserErrors
+                        if (userErrors.isNullOrEmpty()) {
+                            val checkoutId = data?.checkoutCreate?.checkout?.id!!
+                            val totalPrice = data.checkoutCreate.checkout.totalPrice
+                            val shippingRateHandle =
+                                data.checkoutCreate.checkout.shippingLine?.handle ?: ""
+                            _checkoutCreateState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isLoaded = true,
+                                    checkoutId = checkoutId,
+                                    shippingRateHandle = shippingRateHandle,
+                                    totalPrice = totalPrice
+                                )
+                            }
+
+                        } else {
+                            printLog("CheckoutCreateEvent Error :: ${userErrors[0].message}")
+
+                            _checkoutCreateState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = userErrors[0].message,
+                                    isLoaded = false
+                                )
+
+                            }
                         }
-
                     } else {
-                        printLog("CheckoutCreateEvent Error :: ${userErrors[0].message}")
-
                         _checkoutCreateState.update {
                             it.copy(
                                 isLoading = false,
-                                error = userErrors[0].message,
+                                error = error[0].message,
                                 isLoaded = false
                             )
-
                         }
                     }
-                } else {
+
+                }.onFailure {
                     _checkoutCreateState.update {
                         it.copy(
                             isLoading = false,
-                            error = error[0].message,
+                            error = it.error,
                             isLoaded = false
                         )
                     }
                 }
-
-            }.onFailure {
-                _checkoutCreateState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = it.error,
-                        isLoaded = false
-                    )
-                }
             }
 
-        }
     }
 
     // Step-2, Associate a customer to the checkout
@@ -364,7 +370,12 @@ class CheckoutViewModel(
                     if (userErrors.isNullOrEmpty()) {
                         val checkoutId = data?.checkoutCompleteWithCreditCardV2?.checkout?.id ?: ""
                         printLog("CheckoutCompleteWithCreditCardEvent Success :: $checkoutId")
-                        _checkoutCompleteWithCreditCardState.update { it.copy(isLoaded = true, checkoutId = checkoutId) }
+                        _checkoutCompleteWithCreditCardState.update {
+                            it.copy(
+                                isLoaded = true,
+                                checkoutId = checkoutId
+                            )
+                        }
                     } else {
                         _checkoutCompleteWithCreditCardState.update {
                             it.copy(
@@ -395,57 +406,120 @@ class CheckoutViewModel(
         }
     }
 
+
+    /**
+     * Create VoultId-Tokenization of Card
+     */
     fun createVaultId() {
         coroutineScope.launch {
-            val client = HttpClient {
-                followRedirects = true
-                install(ContentNegotiation) {
-                    json(
-                        Json {
-                            ignoreUnknownKeys = true
-                            prettyPrint = true
-                            isLenient = true
-                        }
-                    )
-                }
-                install(Logging) {
-                    logger = Logger.DEFAULT
-                    level = LogLevel.ALL
-                }
-            }
-
+            val client = getKoin().get<HttpClient>()
             val body = VaultBody(
                 CreditCard(
                     number = "4242424242424242",
                     first_name = "Ashwani",
                     last_name = "Kumar",
                     month = "12",
-                    year = "26",
+                    year = "2026",
                     verification_value = "123"
                 )
             )
             try {
 
-                val httpResponse = client.post("https://quickstart-fe108883.myshopify.com/sessions") {
-                    contentType(ContentType.Application.Json)
-                    setBody(body)
-                    headers {
-                        append(HttpHeaders.Accept, "application/json")
-                        append(
-                            HttpHeaders.Authorization,
-                            "bearer ${UserDataAccess.customerAccessToken}"
-                        )
-                        append(HttpHeaders.ContentType, "application/json")
-                    }
+                val httpResponse =
+                    client.post("https://quickstart-fe108883.myshopify.com/sessions") {
+                        contentType(ContentType.Application.Json)
+                        setBody(body)
+                        headers {
+                            append(HttpHeaders.Accept, "application/json")
+                            append(
+                                HttpHeaders.Authorization,
+                                "bearer ${UserDataAccess.customerAccessToken}"
+                            )
+                            append(HttpHeaders.ContentType, "application/json")
+                        }
 
-                }
+                    }
 
                 val stringBody: String = httpResponse.body()
 
                 printLog("createVaultId() Success :: $stringBody")
                 printLog("CustomerAccessToken :: ${UserDataAccess.customerAccessToken}")
+            } catch (e: Exception) {
+                printLog("createVaultId() Error :: ${e.printStackTrace()}")
             }
-            catch (e: Exception) {
+
+        }
+
+    }
+
+
+    /**
+     * Create Card's Payment sessionId
+     */
+    fun createSessionId() {
+        coroutineScope.launch {
+            val nextAction = NextAction(redirect_url = UserDataAccess.checkoutUrl)
+            val transaction = Transaction(
+                amount = "111",
+                amount_in = "",
+                amount_out = "",
+                amount_rounding = "",
+                authorization = UserDataAccess.customerAccessToken,
+                created_at = "2024-02-20T15:16:53-04:00",
+                currency = "INR",
+                error_code = "123",
+                gateway = "shopify_payments",
+                id = "1234567890",
+                kind = "sale",
+                message = "This is message",
+                status = "success",
+                test = true
+            )
+
+            val creditCard = PaymentCreditCard(
+                first_name = "Ashwani",
+                last_name = "Singh",
+                first_digits = "4242",
+                last_digits = "4242",
+                brand = "VISA",
+                expiry_month = "12",
+                expiry_year = "2025"
+            )
+            val body = PaymentSessionIdBody(
+                id = "1234567890",
+                credit_card = creditCard,
+                payment_processing_error_message = "Payment Error",
+                next_action = nextAction,
+                unique_token = "ddfjdfkkdfdfkdkfkdf",
+                transaction = transaction
+            )
+
+//            val url = "https://quickstart-fe108883.myshopify.com/admin/api/2024-01/checkouts/7yjf4v2we7gamku6a6h7tvm8h3mmvs4x/payments.json"
+
+            val url = "https://quickstart-fe108883.myshopify.com/admin/api/2024-01/checkouts/275e257406d534b1682b2dcdee2447a3/payments.json"
+
+            val client = getKoin().get<HttpClient>()
+            try {
+                val httpResponse =
+                    client.post(url) {
+                        contentType(ContentType.Application.Json)
+                        setBody(body)
+                        headers {
+                            append(HttpHeaders.Accept, "application/json")
+                            append(
+                                HttpHeaders.Authorization,
+                                "bearer ${UserDataAccess.customerAccessToken}"
+                            )
+                            append(HttpHeaders.ContentType, "application/json")
+                        }
+
+                    }
+
+                val stringBody: String = httpResponse.body()
+
+                printLog("createVaultId() Success :: $stringBody")
+                printLog("CustomerAccessToken :: ${UserDataAccess.customerAccessToken}")
+            } catch (e: Exception) {
                 printLog("createVaultId() Error :: ${e.printStackTrace()}")
             }
 

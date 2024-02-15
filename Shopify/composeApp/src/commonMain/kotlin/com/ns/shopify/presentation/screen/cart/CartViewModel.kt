@@ -200,27 +200,31 @@ class CartViewModel(
             cartQueryUseCase(cartId)
                 .onSuccess { response ->
                     val error = response.errors
-                    if (error != null && error.isNotEmpty()) {
+                    val cart = response.data!!.cart
+                    if (!error.isNullOrEmpty()) {
                         _cartQueryState.update {
                             it.copy(
                                 isLoading = false,
                                 error = error[0].message
                             )
                         }
-                    } else {
+                    } else if(cart != null) {
 //                        val totalQuantity = response.data?.cart?.totalQuantity
 //                        val checkoutUrl = response.data?.cart?.checkoutUrl
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
 //                        cachingManager.saveCartCount(totalQuantity ?: 0 )
-                        val cart = response.data!!.cart
-                        val rawTotalAmount = cart?.cost?.totalAmount?.amount as String
+
+                        val rawTotalAmount = cart.cost.totalAmount.amount as String
                         val totalAmount = rawTotalAmount.toDoubleOrNull() ?: 0.0
 
                         val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
                         val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
 
-                        val rawTaxAmount = cart.cost.totalTaxAmount?.amount as String
-                        val taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+                        var taxAmount =  0.0
+                        if(cart.cost.totalTaxAmount != null) {
+                            val rawTaxAmount = cart.cost.totalTaxAmount.amount as String
+                            taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+                        }
 
                         val currencyCode = cart.cost.totalAmount.currencyCode
                         cart.let {
@@ -261,6 +265,13 @@ class CartViewModel(
                                 )
                             }
                         }
+                    } else {
+                        _cartQueryState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = "Cart is Empty"
+                            )
+                        }
                     }
 
                 }
@@ -282,21 +293,24 @@ class CartViewModel(
             cartUpdateUseCase(pair)
                 .onSuccess { it1 ->
                     val error = it1.errors
-                    if (error != null && error.isNotEmpty()) {
+                    val cart = it1.data?.cartLinesUpdate?.cart
+                    if (!error.isNullOrEmpty()) {
                         _cartQueryState.update {
                             it.copy(
                                 isLoading = false,
                                 error = error[0].message
                             )
                         }
-                    } else {
-                        val cart = it1.data?.cartLinesUpdate?.cart
-                        val rawTotalAmount = cart?.cost?.totalAmount?.amount as String
+                    } else if(cart != null) {
+                        val rawTotalAmount = cart.cost.totalAmount.amount as String
                         val totalAmount = rawTotalAmount.toDoubleOrNull() ?: 0.0
                         val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
                         val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
-                        val rawTaxAmount = cart.cost.totalTaxAmount?.amount as String
-                        val taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+                        var taxAmount =  0.0
+                        if(cart.cost.totalTaxAmount != null) {
+                            val rawTaxAmount = cart.cost.totalTaxAmount.amount as String
+                            taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
+                        }
                         val currencyCode = cart.cost.totalAmount.currencyCode
                         cart.let {
                             val lines = cart.lines

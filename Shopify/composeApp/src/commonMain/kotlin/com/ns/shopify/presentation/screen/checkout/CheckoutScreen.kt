@@ -89,7 +89,7 @@ class CheckoutScreen : Screen {
         // 6. Sending Checkout Complete With Credit Card Event
         if(checkoutShippingAddressUpdateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
-                checkoutViewModel.createVaultId()
+                checkoutViewModel.createSessionId()
             }
             /*LaunchedEffect(true) {
                 checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutCompleteWithCreditCardEvent(checkoutShippingAddressUpdateState.value.checkoutId, checkoutCreateState.value.totalPrice))

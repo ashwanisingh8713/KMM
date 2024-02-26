@@ -1,10 +1,9 @@
 package com.ns.shopify.presentation.screen.address
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.ns.shopify.GetAddressQuery
 import com.ns.shopify.data.storage.CachingManager
-import com.ns.shopify.data.storage.UserDataAccess
 import com.ns.shopify.domain.usecase.address.AddressListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +26,7 @@ class AddressListViewModel(
 
     fun getAddressList() {
         _state.value = AddressListState(isLoading = true)
-        coroutineScope.launch {
+        screenModelScope.launch {
             cachingManager.getCustomerAccessToken().collectLatest { customerAccessToken ->
                 addressListUseCase(customerAccessToken).onSuccess { it ->
                     val data = it.data!!
@@ -60,19 +59,19 @@ class AddressListViewModel(
     }
 
     fun saveAddressId(addressId: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             cachingManager.saveCustomerAddressId(addressId)
         }
     }
 
     fun saveFullAddress(node: GetAddressQuery.Node) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             cachingManager.saveSelectedAddress(node)
         }
     }
 
     fun savePhone(phone: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             cachingManager.saveCustomerPhone(phone)
         }
     }

@@ -1,20 +1,20 @@
 [versions]
 
-kotlin = "1.9.0"
-agp = "8.1.0"
-compose = "1.5.0"
+kotlin = "1.9.21"
+agp = "8.2.2"
+compose = "1.5.11"
 androidx-appcompat = "1.6.1"
-androidx-activityCompose = "1.7.2"
-compose-uitooling = "1.5.0"
+androidx-activityCompose = "1.8.2"
+compose-uitooling = "1.6.2"
 libres = "1.1.8"
-voyager = "1.0.0-rc07"
-composeImageLoader = "1.4.1"
+voyager = "1.0.0"
+composeImageLoader = "1.7.1"
 napier = "2.6.1"
 kotlinx-coroutines = "1.7.3"
 insetsx = "0.1.0-alpha07"
-ktor = "2.3.2"
-kotlinx-serialization = "1.5.1"
-koin = "3.4.3"
+ktor = "2.3.7"
+kotlinx-serialization = "1.6.2"
+koin = "3.5.3"
 koinCompose = "1.0.4"
 sqlDelight = "2.0.0-alpha05"
 appollo-version="3.8.2"
@@ -43,15 +43,20 @@ ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = 
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
+
+
 sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
-sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
+sqlDelight-driver-js = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 sqlDelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
+
+
 apollo3-runtime = {module = "com.apollographql.apollo3:apollo-runtime", version.ref = "appollo-version"}
 apollo3-api = {module = "com.apollographql.apollo3:apollo-api", version.ref = "appollo-version"}
 kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel-image" }

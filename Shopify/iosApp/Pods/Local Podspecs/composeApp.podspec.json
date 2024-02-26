@@ -11,7 +11,7 @@
   "vendored_frameworks": "build/cocoapods/framework/ComposeApp.framework",
   "libraries": "c++",
   "platforms": {
-    "ios": "11.0"
+    "ios": "12.0"
   },
   "pod_target_xcconfig": {
     "KOTLIN_PROJECT_PATH": ":composeApp",

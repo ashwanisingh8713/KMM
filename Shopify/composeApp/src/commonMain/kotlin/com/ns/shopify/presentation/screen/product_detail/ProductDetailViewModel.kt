@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.product_detail
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.app.printLog
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.domain.usecase.product.ProductDetailUsecase
@@ -61,7 +61,7 @@ class ProductDetailViewModel(private val productDetailUsecase: ProductDetailUsec
     }
 
     fun getProductDetail(id: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _state.update {
                 it.copy(
                     isLoading = true,

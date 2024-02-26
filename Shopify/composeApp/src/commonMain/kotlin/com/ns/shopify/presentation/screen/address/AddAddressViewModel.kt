@@ -1,12 +1,10 @@
 package com.ns.shopify.presentation.screen.address
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
-import com.apollographql.apollo3.api.Optional
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.data.utils.mailingAddressInput
 import com.ns.shopify.domain.usecase.address.AddAddressUseCase
-import com.ns.shopify.type.MailingAddressInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +33,7 @@ class AddAddressViewModel(
         zip: String
     ) {
         _state.value = AddAddressState(isLoading = true)
-        coroutineScope.launch {
+        screenModelScope.launch {
             cachingManager.getCustomerAccessToken().collectLatest { userAccessToken ->
                 addressUseCase(
                     Pair(

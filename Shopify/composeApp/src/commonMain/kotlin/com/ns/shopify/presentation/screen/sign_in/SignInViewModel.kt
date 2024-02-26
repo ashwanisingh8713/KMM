@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.sign_in
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.type.CustomerAccessTokenCreateInput
@@ -21,7 +21,7 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase, priva
     val state = _state.asStateFlow()
 
     fun signInRequest(email: String, password: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _state.value = SignInState(isLoading = true)
             signInUseCase(CustomerAccessTokenCreateInput(email, password))
                 .onSuccess {it1->

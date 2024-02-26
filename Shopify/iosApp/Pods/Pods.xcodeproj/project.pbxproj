@@ -337,21 +337,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0DA34B65840590A3E2FB7CC635010EDA /* Release */ = {
+		18F54F73779B24EB0B48FFE32EAB689D /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E92F0AB63D269CD9685265D1E701020A /* composeApp.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/composeApp";
+				IBSC_MODULE = composeApp;
+				INFOPLIST_FILE = "Target Support Files/composeApp/ResourceBundle-LibresComposeApp-composeApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = LibresComposeApp;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
@@ -483,22 +482,23 @@
 			};
 			name = Release;
 		};
-		5E7F6311B2342558352F2566E4111EB6 /* Debug */ = {
+		6C1FCC033B802097CB74981B0F7FF004 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50FD35FE117ECFE01E74CDF884212EF2 /* composeApp.debug.xcconfig */;
+			baseConfigurationReference = E92F0AB63D269CD9685265D1E701020A /* composeApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
 		822516419DD088A3F99712A5BB9017F0 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -538,22 +538,22 @@
 			};
 			name = Release;
 		};
-		CA5E5D87D55388447C602C54AD478AF0 /* Release */ = {
+		D4B0DBBD50CD6C3E5B07BC02CA1E68B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E92F0AB63D269CD9685265D1E701020A /* composeApp.release.xcconfig */;
+			baseConfigurationReference = 50FD35FE117ECFE01E74CDF884212EF2 /* composeApp.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGNING_ALLOWED = NO;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/composeApp";
-				IBSC_MODULE = composeApp;
-				INFOPLIST_FILE = "Target Support Files/composeApp/ResourceBundle-LibresComposeApp-composeApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_NAME = LibresComposeApp;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
 			};
-			name = Release;
+			name = Debug;
 		};
 		DEC9E7629D2E768B0ECD2246C858B6D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -592,7 +592,7 @@
 			};
 			name = Debug;
 		};
-		F534C056FF3A1D42DE1F063984333CA5 /* Debug */ = {
+		F3061B486FDAEF5A9B19669D08FCF7E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FD35FE117ECFE01E74CDF884212EF2 /* composeApp.debug.xcconfig */;
 			buildSettings = {
@@ -600,7 +600,7 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/composeApp";
 				IBSC_MODULE = composeApp;
 				INFOPLIST_FILE = "Target Support Files/composeApp/ResourceBundle-LibresComposeApp-composeApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = LibresComposeApp;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -624,8 +624,8 @@
 		4AA4830D873F4AC3DA92290B4AD3794C /* Build configuration list for PBXAggregateTarget "composeApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5E7F6311B2342558352F2566E4111EB6 /* Debug */,
-				0DA34B65840590A3E2FB7CC635010EDA /* Release */,
+				D4B0DBBD50CD6C3E5B07BC02CA1E68B1 /* Debug */,
+				6C1FCC033B802097CB74981B0F7FF004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -633,8 +633,8 @@
 		6E0C3E70FB9B4D17312DC0BED80251E0 /* Build configuration list for PBXNativeTarget "composeApp-LibresComposeApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F534C056FF3A1D42DE1F063984333CA5 /* Debug */,
-				CA5E5D87D55388447C602C54AD478AF0 /* Release */,
+				F3061B486FDAEF5A9B19669D08FCF7E7 /* Debug */,
+				18F54F73779B24EB0B48FFE32EAB689D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

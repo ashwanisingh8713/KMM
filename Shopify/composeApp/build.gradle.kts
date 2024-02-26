@@ -11,6 +11,7 @@ plugins {
 
 }
 
+
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
@@ -20,6 +21,11 @@ kotlin {
                 jvmTarget = "17"
             }
         }
+    }
+
+    js {
+        browser()
+        binaries.executable()
     }
 
 
@@ -43,7 +49,7 @@ kotlin {
         version = "1.0.0"
         summary = "Compose application framework"
         homepage = "empty"
-        ios.deploymentTarget = "11.0"
+        ios.deploymentTarget = "12.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeApp"
@@ -87,7 +93,10 @@ kotlin {
                 implementation(libs.apollo3.runtime)
                 // implementation(libs.apollo3.api)
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
-                implementation("co.touchlab:kermit:2.0.0-RC5")
+                // implementation("co.touchlab:kermit:2.0.0-RC5")
+
+                // Required by Koin 3.5.3, because this version of Koin uses Stately
+                implementation("co.touchlab:stately-common:2.0.5")
 
 
             }
@@ -111,6 +120,17 @@ kotlin {
                 implementation(libs.datastore.preferences)
                 api("androidx.webkit:webkit:1.8.0")
                 //implementation ("com.shopify.mobilebuysdk:buy3:3.2.3")
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(compose.html.core)
+                implementation(libs.ktor.client.js)
+                implementation(libs.sqlDelight.driver.js)
+                implementation(compose.web.core)
+                implementation(compose.runtime)
+//                implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
             }
         }
 
@@ -152,6 +172,10 @@ android {
     }
 }
 
+compose.experimental {
+    web.application {}
+}
+
 
 // Required By WebView
 fun org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.setUpiOSObserver() {
@@ -176,7 +200,6 @@ sqldelight {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
             packageName.set("com.ns.data_cache.sqldelight")
-            sourceFolders.set(listOf("kotlin"))
         }
     }
 }

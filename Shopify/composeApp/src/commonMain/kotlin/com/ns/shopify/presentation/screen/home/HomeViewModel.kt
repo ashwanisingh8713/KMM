@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.app.printLog
 import com.ns.shopify.domain.usecase.product.CategoryCollectionUsecase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ class HomeViewModel(private val categoryCollectionUsecase: CategoryCollectionUse
     }
 
     fun getCollection() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _state.update {
                 it.copy(
                     isLoading = true,

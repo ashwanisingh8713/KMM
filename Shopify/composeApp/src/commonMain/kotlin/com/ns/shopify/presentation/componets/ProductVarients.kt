@@ -30,8 +30,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apollographql.apollo3.api.Optional
-import com.app.printLog
-import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import com.ns.shopify.ProductDetailQuery
 import com.ns.shopify.presentation.screen.product_detail.NewOptions
 import com.ns.shopify.presentation.screen.product_detail.ProductDetailViewModel

@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.forgot_password
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.ns.shopify.domain.usecase.login.CustomerRecoverUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +24,7 @@ class ForgotPasswordViewModel(private val forgotPasswordUseCase: CustomerRecover
                 isLoaded = false
             )
         }
-        coroutineScope.launch {
+        screenModelScope.launch {
             forgotPasswordUseCase(email)
                 .onSuccess {it1->
                     val errorUser = it1.customerUserErrors

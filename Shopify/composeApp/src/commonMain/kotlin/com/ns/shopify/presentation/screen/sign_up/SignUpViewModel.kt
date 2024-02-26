@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.sign_up
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.apollographql.apollo3.api.Optional
 import com.ns.shopify.domain.usecase.login.CustomerCreateUseCase
 import com.ns.shopify.type.CustomerCreateInput
@@ -22,7 +22,7 @@ class SignUpViewModel(private val signUpViewModel: CustomerCreateUseCase) : Scre
 
     fun signUpRequest(email: String, password: String, firstName: String, lastName: String, phone: String) {
         _state.value = SignUpState(isLoading = true)
-        coroutineScope.launch {
+        screenModelScope.launch {
             signUpViewModel(
                 CustomerCreateInput(
                     email = email,

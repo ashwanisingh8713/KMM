@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.cart
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.data.storage.CachingManager
@@ -56,7 +56,7 @@ class CartViewModel(
 
     fun addToCart(merchandiseId: String, quantity: Optional.Present<Int>, cartId: String) {
         printLog("Add to Cart Merchandise Id is $merchandiseId")
-        coroutineScope.launch {
+        screenModelScope.launch {
             printLog("Cart Id is $cartId")
             if (cartId.isEmpty() || cartId == "null") {
                 cartCreate(merchandiseId, quantity)
@@ -77,7 +77,7 @@ class CartViewModel(
 //        val cartLineInput = CartLineInput(merchandiseId = merchandiseId, quantity = quantity)
 //        val lines : Optional.Present<List<CartLineInput>> = Optional.Present(listOf(cartLineInput))
 //        val cartInput = CartInput(lines = lines)
-        coroutineScope.launch {
+        screenModelScope.launch {
             val cartInput = CartInput(
                 lines = Optional.Present(
                     listOf(
@@ -130,7 +130,7 @@ class CartViewModel(
      * This method is used to add merchandise in cart
      */
     private fun addMerchandise(cartId: String, cartLineInput: CartLineInput) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
             addMerchandiseUseCase(pair)
                 .onSuccess { it1 ->
@@ -167,7 +167,7 @@ class CartViewModel(
      * This method is used to get the cart count
      */
     fun cartCount(cartId: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             cartCountUseCase(cartId)
                 .onSuccess {
                     val error = it.errors
@@ -196,7 +196,7 @@ class CartViewModel(
     }
 
     fun cartQuery(cartId: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             cartQueryUseCase(cartId)
                 .onSuccess { response ->
                     val error = response.errors
@@ -288,7 +288,7 @@ class CartViewModel(
 
 
     fun cartUpdate(cartId: String, cartLineInput: CartLineUpdateInput) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
             cartUpdateUseCase(pair)
                 .onSuccess { it1 ->
@@ -370,7 +370,7 @@ class CartViewModel(
     }
 
     fun cartBuyerIdentityUpdate() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _cartBuyerIdentityUpdateState.update {
                 it.copy(
                     isLoading = true
@@ -438,7 +438,7 @@ class CartViewModel(
                         }
                     }
 
-            }.stateIn(coroutineScope)
+            }.stateIn(screenModelScope)
 
 
 

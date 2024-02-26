@@ -1,7 +1,7 @@
 package com.ns.shopify.presentation.screen.checkout
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.CheckoutCreateMutation
@@ -29,32 +29,17 @@ import com.ns.shopify.type.CurrencyCode
 import com.ns.shopify.type.MoneyInput
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.DEFAULT
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
-import io.ktor.client.request.request
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.utils.EmptyContent.contentType
-import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
-import io.ktor.http.headers
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 
 /**
  * Created by Ashwani Kumar Singh on 08,February,2024.
@@ -129,7 +114,7 @@ class CheckoutViewModel(
     private fun checkoutCreateResult(checkoutLineItems: List<CheckoutLineItemInput>) {
         _checkoutCreateState.update { it.copy(isLoading = true) }
 
-            coroutineScope.launch {
+        screenModelScope.launch {
                 val checkoutCreateInput = CheckoutCreateInput(
                     email = Optional.present(UserDataAccess.email),
                     lineItems = Optional.present(checkoutLineItems),
@@ -198,7 +183,7 @@ class CheckoutViewModel(
 
     // Step-2, Associate a customer to the checkout
     private fun checkoutCustomerAssociateResult(checkoutId: String, customerAccessToken: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _checkoutCustomerAssociateState.update { it.copy(isLoading = true) }
             val pair = Pair(checkoutId, customerAccessToken)
             checkoutCustomerAssociateUC(pair).onSuccess {
@@ -240,7 +225,7 @@ class CheckoutViewModel(
     // Step-3, Shipping rates handle
     // create shipping line update
     private fun checkoutShippingLineUpdateResult(checkoutId: String, shippingRateHandle: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _checkoutShippingLineUpdateState.update { it.copy(isLoading = true) }
             val pair = Pair(checkoutId, shippingRateHandle)
             checkoutShippingLineUpdateUC(pair).onSuccess {
@@ -289,7 +274,7 @@ class CheckoutViewModel(
 
     // Step-4, Update the shipping address on the checkout
     private fun checkoutShippingAddressUpdateResult(checkoutId: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             _checkoutShippingAddressUpdateState.update { it.copy(isLoading = true) }
             val pair = Pair(checkoutId, checkoutMailingAddressInput())
             checkoutShippingAddressUpdateUC(pair).onSuccess {
@@ -347,7 +332,7 @@ class CheckoutViewModel(
         totalPrice: CheckoutCreateMutation.TotalPrice?
     ) {
 
-        coroutineScope.launch {
+        screenModelScope.launch {
             _checkoutCompleteWithCreditCardState.update { it.copy(isLoading = true) }
             val paymentAmount = MoneyInput(
                 amount = totalPrice?.amount ?: "0.0",
@@ -420,7 +405,7 @@ class CheckoutViewModel(
      * Create VoultId-Tokenization of Card
      */
     fun createVaultId() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             val client = getKoin().get<HttpClient>()
             val body = VaultBody(
                 CreditCard(
@@ -466,7 +451,7 @@ class CheckoutViewModel(
      * Create Card's Payment sessionId
      */
     fun createSessionId() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             val creditCard = PaymentCreditCard(
                 first_name = "Ashwani",
                 last_name = "Singh",

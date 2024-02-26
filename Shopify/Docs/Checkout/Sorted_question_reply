@@ -13,10 +13,11 @@ https://community.shopify.com/c/hydrogen-headless-and-storefront/issue-with-muta
 // Detail About request params, Auth - Radovanhodor
 https://community.shopify.com/c/hydrogen-headless-and-storefront/checkout-storefront-api/m-p/2159591
 
-// Replay about checkoutCompleteWithTokenizedPaymentV3, Auth - Sterling_Smith
+//***** Replay about checkoutCompleteWithTokenizedPaymentV3, Auth - Sterling_Smith
 https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-orders-not-showing-up-after-calling/m-p/726351
+https://elb.deposit.shopifycs.com/sessions
 
-// Detail About request params, Auth - VishalSatwara
+// ***** Detail About request params, Auth - VishalSatwara
 https://community.shopify.com/c/hydrogen-headless-and-storefront/storefront-api-checkoutcompletewithcreditcardv2-access-denied/td-p/1264364
 
 // Detail About request params, Auth - Tcmleung
@@ -36,6 +37,11 @@ https://community.shopify.com/c/payments-shipping-and/how-to-create-a-payment-se
 // Completing a sales channel checkout
 https://shopify.dev/docs/apps/selling-strategies/channels/checkout-api/complete-payment
 
+// How To Grant Write_checkouts Permission
+https://community.shopify.com/c/hydrogen-headless-and-storefront/how-to-grant-write-checkouts-permission/td-p/448587
+
+// ***** Payment Processing  capabilities
+https://community.shopify.com/c/hydrogen-headless-and-storefront/documentation-on-checkoutcompletewithtokenizedpaymentv3/m-p/783537/thread-id/441
 
 
 

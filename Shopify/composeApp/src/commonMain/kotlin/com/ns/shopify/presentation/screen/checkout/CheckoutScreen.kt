@@ -49,14 +49,14 @@ class CheckoutScreen : Screen {
         }
 
         // 2. Sending Checkout Create Event
-        if(checkoutViewModel.checkoutLineItemsState.value.isNotEmpty()) {
+        if (checkoutViewModel.checkoutLineItemsState.value.isNotEmpty()) {
             LaunchedEffect(true) {
                 checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutCreateEvent(checkoutViewModel.checkoutLineItemsState.value))
             }
         }
 
         // 3. Sending Checkout Customer Associate Event
-        if(checkoutCreateState.value.checkoutId.isNotEmpty()) {
+        if (checkoutCreateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
                 checkoutViewModel.checkoutEvent(
                     CheckoutEvent.CheckoutCustomerAssociateEvent(
@@ -68,7 +68,7 @@ class CheckoutScreen : Screen {
         }
 
         // 4. Sending Checkout Shipping Line Update Event
-        if(checkoutCustomerAssociateState.value.checkoutId.isNotEmpty()) {
+        if (checkoutCustomerAssociateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
                 checkoutViewModel.checkoutEvent(
                     CheckoutEvent.CheckoutShippingLineUpdateEvent(
@@ -80,29 +80,34 @@ class CheckoutScreen : Screen {
         }
 
         // 5. Sending Checkout Shipping Address Update Event
-        if(checkoutShippingLineUpdateState.value.checkoutId.isNotEmpty()) {
+        if (checkoutShippingLineUpdateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
-                checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutShippingAddressUpdateEvent(checkoutShippingLineUpdateState.value.checkoutId))
+                checkoutViewModel.checkoutEvent(
+                    CheckoutEvent.CheckoutShippingAddressUpdateEvent(
+                        checkoutShippingLineUpdateState.value.checkoutId
+                    )
+                )
             }
         }
 
         // 6. Sending Checkout Complete With Credit Card Event
-        if(checkoutShippingAddressUpdateState.value.checkoutId.isNotEmpty()) {
+        if (checkoutShippingAddressUpdateState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
-                checkoutViewModel.createSessionId()
+                checkoutViewModel.checkoutEvent(
+                    CheckoutEvent.CheckoutCompleteWithCreditCardEvent(
+                        checkoutShippingAddressUpdateState.value.checkoutId,
+                        checkoutCreateState.value.totalPrice
+                    )
+                )
             }
-            /*LaunchedEffect(true) {
-                checkoutViewModel.checkoutEvent(CheckoutEvent.CheckoutCompleteWithCreditCardEvent(checkoutShippingAddressUpdateState.value.checkoutId, checkoutCreateState.value.totalPrice))
-            }*/
         }
 
         // 7. Sending VaultId request
-        if(checkoutCompleteWithCreditCardState.value.checkoutId.isNotEmpty()) {
+        if (checkoutCompleteWithCreditCardState.value.checkoutId.isNotEmpty()) {
             LaunchedEffect(true) {
                 checkoutViewModel.createVaultId()
             }
         }
-
 
 
         val navigation = LocalNavigator.current
@@ -155,7 +160,6 @@ class CheckoutScreen : Screen {
         Loading()
     }
 
-
     @Composable
     fun CheckoutCreate() {
 
@@ -176,10 +180,13 @@ class CheckoutScreen : Screen {
 
     }
 
+
     @Composable
     fun CheckoutCompleteWithCreditCard() {
 
     }
+
+
 
 
 }

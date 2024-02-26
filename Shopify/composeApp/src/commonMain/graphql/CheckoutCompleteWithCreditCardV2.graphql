@@ -1,72 +1,41 @@
-mutation checkoutCompleteWithCreditCardV2($checkoutId: ID!, $payment: CreditCardPaymentInputV2!) {
+mutation CheckoutCompleteWithCreditCardV2($checkoutId: ID!, $payment: CreditCardPaymentInputV2!) {
   checkoutCompleteWithCreditCardV2(checkoutId: $checkoutId, payment: $payment) {
+    payment {
+      id
+      errorMessage
+      checkout {
+        webUrl
+        totalPrice {
+          amount
+          currencyCode
+        }
+      }
+      test
+      creditCard {
+        brand
+        expiryMonth
+        expiryYear
+        firstDigits
+        firstName
+        lastDigits
+        lastName
+        maskedNumber
+      }
+      amount {
+        amount
+        currencyCode
+      }
+      nextActionUrl
+    }
+    checkout {
+      id
+      note
+      webUrl
+    }
     checkoutUserErrors {
       code
       field
       message
     }
-    checkout {
-      id
-      ready
-      completedAt
-      createdAt
-      currencyCode
-      taxesIncluded
-      lineItems(first: 250) {
-        edges {
-          node {
-            title
-            variant {
-              id
-              title
-              priceV2 {
-                amount
-                currencyCode
-              }
-              product {
-                title
-              }
-            }
-            quantity
-          }
-        }
-      }
-      shippingLine {
-        handle
-        title
-        priceV2 {
-          amount
-          currencyCode
-        }
-      }
-      totalPriceV2 {
-        amount
-        currencyCode
-      }
-      totalTaxV2 {
-        amount
-        currencyCode
-      }
-      order {
-        statusUrl
-        customerUrl
-        id
-        orderNumber
-        email
-        phone
-        processedAt
-        totalPriceV2 {
-          amount
-          currencyCode
-        }
-        totalTaxV2 {
-          amount
-          currencyCode
-        }
-
-      }
-    }
   }
 }
-
-

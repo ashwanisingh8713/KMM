@@ -346,6 +346,7 @@ class CheckoutViewModel(
         checkoutId: String,
         totalPrice: CheckoutCreateMutation.TotalPrice?
     ) {
+
         coroutineScope.launch {
             _checkoutCompleteWithCreditCardState.update { it.copy(isLoading = true) }
             val paymentAmount = MoneyInput(
@@ -354,22 +355,30 @@ class CheckoutViewModel(
             )
             val creditCartPaymentInput = CreditCardPaymentInputV2(
                 paymentAmount = paymentAmount,
-                idempotencyKey = "1234567890",
+                idempotencyKey = "0980909r4343d1212zdjJHD",
                 billingAddress = checkoutMailingAddressInput(),
-                vaultId = "",
+                vaultId = "east-833efab84a50266b2463278ce6f1d4e5",
                 test = Optional.present(true),
             )
 
+            printLog("CheckoutCompleteWithCreditCard Sent Checkout Id is :: $checkoutId")
 
-            val pair = Pair(checkoutId, creditCartPaymentInput)
+            val checkoutIdModified = checkoutId
+//            val checkoutIdModified = "gid://shopify/Checkout/cda0db988bbfbccdaf6c6e6ed159d21a"
+
+            val pair = Pair(checkoutIdModified, creditCartPaymentInput)
             checkoutCompleteWithCreditCardUC(pair).onSuccess {
                 val data = it.data
                 val errors = it.errors
                 if (errors.isNullOrEmpty()) {
                     val userErrors = data?.checkoutCompleteWithCreditCardV2?.checkoutUserErrors
                     if (userErrors.isNullOrEmpty()) {
-                        val checkoutId = data?.checkoutCompleteWithCreditCardV2?.checkout?.id ?: ""
-                        printLog("CheckoutCompleteWithCreditCardEvent Success :: $checkoutId")
+                        val recCheckoutId = data?.checkoutCompleteWithCreditCardV2?.checkout?.id
+                        if(checkoutId.isNullOrEmpty()) {
+                            printLog("CheckoutCompleteWithCreditCard Received Checkout Id is Empty")
+                        } else {
+                            printLog("CheckoutCompleteWithCreditCard Received Checkout Id is :: $recCheckoutId")
+                        }
                         _checkoutCompleteWithCreditCardState.update {
                             it.copy(
                                 isLoaded = true,
@@ -458,24 +467,6 @@ class CheckoutViewModel(
      */
     fun createSessionId() {
         coroutineScope.launch {
-            val nextAction = NextAction(redirect_url = UserDataAccess.checkoutUrl)
-            val transaction = Transaction(
-                amount = "111",
-                amount_in = "",
-                amount_out = "",
-                amount_rounding = "",
-                authorization = UserDataAccess.customerAccessToken,
-                created_at = "2024-02-20T15:16:53-04:00",
-                currency = "INR",
-                error_code = "123",
-                gateway = "shopify_payments",
-                id = "1234567890",
-                kind = "sale",
-                message = "This is message",
-                status = "success",
-                test = true
-            )
-
             val creditCard = PaymentCreditCard(
                 first_name = "Ashwani",
                 last_name = "Singh",
@@ -484,6 +475,23 @@ class CheckoutViewModel(
                 brand = "VISA",
                 expiry_month = "12",
                 expiry_year = "2025"
+            )
+            val nextAction = NextAction(redirect_url = UserDataAccess.checkoutUrl)
+            val transaction = Transaction(
+                amount = "111",
+                amount_in = "",
+                amount_out = "",
+                amount_rounding = "",
+                authorization = UserDataAccess.customerAccessToken,
+                created_at = "2024-02-15T15:47:53-04:00",
+                currency = "INR",
+                error_code = "123",
+                gateway = "shopify_payments",
+                id = "1234567890",
+                kind = "sale",
+                message = "This is message",
+                status = "success",
+                test = true
             )
             val body = PaymentSessionIdBody(
                 id = "1234567890",
@@ -496,7 +504,7 @@ class CheckoutViewModel(
 
 //            val url = "https://quickstart-fe108883.myshopify.com/admin/api/2024-01/checkouts/7yjf4v2we7gamku6a6h7tvm8h3mmvs4x/payments.json"
 
-            val url = "https://quickstart-fe108883.myshopify.com/admin/api/2024-01/checkouts/275e257406d534b1682b2dcdee2447a3/payments.json"
+            val url = "https://quickstart-fe108883.myshopify.com/admin/api/2024-01/checkouts/${UserDataAccess.customerAccessToken}/payments.json"
 
             val client = getKoin().get<HttpClient>()
             try {
@@ -506,11 +514,8 @@ class CheckoutViewModel(
                         setBody(body)
                         headers {
                             append(HttpHeaders.Accept, "application/json")
-                            append(
-                                HttpHeaders.Authorization,
-                                "bearer ${UserDataAccess.customerAccessToken}"
-                            )
                             append(HttpHeaders.ContentType, "application/json")
+                            append("X-Shopify-Access-Token", "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")
                         }
 
                     }

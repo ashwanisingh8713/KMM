@@ -12,4 +12,6 @@ config.optimization.minimizer = [
             },
         },
     }),
+
 ];
+

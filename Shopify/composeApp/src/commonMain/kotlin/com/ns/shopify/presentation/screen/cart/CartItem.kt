@@ -38,10 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.ns.MainRes
 import com.ns.shopify.data.utils.amountFormatter
 import com.ns.shopify.presentation.componets.NetworkImage
-import io.github.skeptick.libres.compose.painterResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

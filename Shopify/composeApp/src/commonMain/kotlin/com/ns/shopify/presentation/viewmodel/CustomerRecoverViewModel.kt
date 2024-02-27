@@ -7,7 +7,7 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 01,December,2023.
  */
-class CustomerRecoverViewModel(forgotPassword: CustomerRecoverUseCase) : ScreenModel, KoinComponent {
+class CustomerRecoverViewModel(private val forgotPassword: CustomerRecoverUseCase) : ScreenModel, KoinComponent {
 
 
 }

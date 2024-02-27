@@ -1,10 +1,11 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose)
     alias(libs.plugins.cocoapods)
     alias(libs.plugins.android.application)
-    alias(libs.plugins.libres)
+//    alias(libs.plugins.libres)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.apollo3)
@@ -15,6 +16,8 @@ plugins {
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
+
+    // Android App
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -23,8 +26,17 @@ kotlin {
         }
     }
 
+    // Web App
     js {
-        browser()
+        moduleName = "ShopifyPOC"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "shopifyPOC.js"
+            }
+            distribution {
+                outputDirectory.set(projectDir.resolve("output"))
+            }
+        }
         binaries.executable()
     }
 
@@ -33,6 +45,7 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()*/
 
+    // iOS App
     listOf(
         iosX64(),
         iosArm64(),
@@ -68,7 +81,7 @@ kotlin {
                 implementation(compose.components.resources)
 //                implementation(compose.ui)
                 implementation(compose.animation)
-                implementation(libs.libres)
+//                implementation(libs.libres)
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.tab.navigator)
                 implementation(libs.voyager.transitions)
@@ -126,9 +139,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(compose.html.core)
-                implementation(libs.ktor.client.js)
+//                implementation(libs.ktor.client.js)
                 implementation(libs.sqlDelight.driver.js)
-                implementation(compose.web.core)
                 implementation(compose.runtime)
 //                implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
             }
@@ -162,6 +174,7 @@ android {
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
         res.srcDirs("src/androidMain/resources")
+        resources.srcDirs("src/commonMain/resources")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -171,6 +184,7 @@ android {
         resources.excludes.add("META-INF/**")
     }
 }
+
 
 compose.experimental {
     web.application {}
@@ -210,10 +224,10 @@ apollo {
     }
 }
 
-libres {
+/*libres {
     generatedClassName = "MainRes" // "Res" by default
     generateNamedArguments = true // false by default
     baseLocaleLanguageCode = "en" // "en" by default
     camelCaseNamesForAppleFramework = true // false by default
-}
+}*/
 

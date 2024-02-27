@@ -2,6 +2,7 @@ package com.ns.shopify.presentation.screen.sign_in
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.app.printLog
 import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.domain.usecase.login.AccessTokenCreateUseCase
 import com.ns.shopify.type.CustomerAccessTokenCreateInput
@@ -47,6 +48,7 @@ class SignInViewModel(private val signInUseCase: AccessTokenCreateUseCase, priva
                         cachingManager.saveCustomerEmail(email)
                     }
                 }.onFailure { error ->
+                    printLog("${error.message}")
                     _state.update {
                         it.copy(
                             isLoading = true,

@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "type": "android-app",
+            "name": "Android-app configuration",
+            "module": "Shopify.composeApp.main",
+            "destination": "Pixel 4 API 33",
+        },
+        
+        {
+            "type": "xcode-app",
+            "name": "Xcode-app configuration",
+            "buildTarget": {
+                "project": "iosApp",
+                "target": "iosApp",
+            },
+            "configuration": "Debug",
+            "destination": "iPhone 15 | iOS 17.2",
+        },
+        {
+            "type": "browser",
+            "name": "Browser configuration",
+            "url": "http://localhost:8081/",
+            "workingDir": "jsMain/",
+            "browserKind": "chrome",
+            "environment": {
+             "development":"true"   
+            }
+        },
+        
+        
+    ]
+}

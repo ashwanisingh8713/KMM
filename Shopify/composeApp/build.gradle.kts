@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -26,13 +27,17 @@ kotlin {
         }
     }
 
+    // https://gist.github.com/karlrwjohnson/a631cbda6b2fb316bc0a9f37156eae5d
+    // https://github.com/JetBrains/kotlin/blob/3e251668324f3ac2f0819ca6bef0ce97ca26f39b/libraries/tools/kotlin-gradle-plugin/src/main/kotlin/org/jetbrains/kotlin/gradle/targets/js/webpack/KotlinWebpackConfig.kt
     // Web App
-    js {
+    js(IR) {
         moduleName = "ShopifyPOC"
         browser {
             commonWebpackConfig {
                 outputFileName = "shopifyPOC.js"
+                devServer?.`open` = true
             }
+
             distribution {
                 outputDirectory.set(projectDir.resolve("output"))
             }
@@ -142,7 +147,7 @@ kotlin {
 //                implementation(libs.ktor.client.js)
                 implementation(libs.sqlDelight.driver.js)
                 implementation(compose.runtime)
-//                implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
+                implementation(libs.ktor.client.js)
             }
         }
 

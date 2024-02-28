@@ -6,10 +6,3 @@ module.exports = {
     ],
 }
 
-//config.optimization = config.optimization || {};
-//config.optimization.minimize = true;
-//config.optimization.minimizer = [
-//    new NodePolyfillPlugin()
-//
-//    ];
-

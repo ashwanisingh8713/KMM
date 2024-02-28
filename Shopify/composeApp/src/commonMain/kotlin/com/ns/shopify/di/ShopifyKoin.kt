@@ -1,6 +1,17 @@
 package com.ns.shopify.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloRequest
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Operation
+import com.apollographql.apollo3.api.http.HttpRequest
+import com.apollographql.apollo3.api.http.HttpResponse
+import com.apollographql.apollo3.interceptor.ApolloInterceptor
+import com.apollographql.apollo3.interceptor.ApolloInterceptorChain
+import com.apollographql.apollo3.network.http.DefaultHttpEngine
+import com.apollographql.apollo3.network.http.HttpEngine
+import com.apollographql.apollo3.network.http.HttpInterceptor
+import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.ns.shopify.data.repo.AddressModuleRepoImpl
 import com.ns.shopify.data.repo.CartRepoImpl
 import com.ns.shopify.data.repo.CategoryCollectionRepoImpl
@@ -56,6 +67,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -130,24 +142,28 @@ val repositoryModule = module {
     factory<ICheckoutRepo> { CheckoutRepoImpl(get()) }
 }
 
+
+
+
 val apolloModule = module {
+
+
+
+
     single {
         ApolloClient.Builder()
-
-//            .serverUrl("https://c498b0-3.myshopify.com/api/2023-10/graphql.json")
-//            .addHttpHeader("X-Shopify-Storefront-Access-Token", "6974ac476e8022a5916eca859872fcf3")
             .serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
             .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")
-//            .addHttpHeader("Access-Control-Allow-Credentials", "*")
-            .addHttpHeader("Access-Control-Allow-Origin", "*")
-
-            /*.serverUrl("https://260029-2.myshopify.com/api/2023-10/graphql.json")
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", "5881ded5c88e92bc2d3a0895aedb8f80")*/
-//            .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
+//            .addInterceptor(OriginInterceptor())
+            .addHttpHeader("Access-Control-Allow-Origin", "false")
+//            .addHttpHeader("Access-Control-Allow-Headers", "*")
+//            .addHttpHeader("Access-Control-Allow-Credentials", "true")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)
                 true
             }
+
+
             .build()
     }
 

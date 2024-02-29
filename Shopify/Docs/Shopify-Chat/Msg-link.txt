@@ -1,2 +1,0 @@
-// Shopify Msg Link
-https://help.shopify.com/en/messages/

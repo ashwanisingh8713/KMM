@@ -1,0 +1,5 @@
+// Shopify Msg Link
+https://help.shopify.com/en/messages/
+
+Support for Shopify Partners
+https://help.shopify.com/en/support/partners/org-select

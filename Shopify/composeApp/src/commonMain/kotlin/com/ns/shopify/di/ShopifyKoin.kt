@@ -8,6 +8,7 @@ import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.interceptor.ApolloInterceptor
 import com.apollographql.apollo3.interceptor.ApolloInterceptorChain
+import com.apollographql.apollo3.network.http.ApolloClientAwarenessInterceptor
 import com.apollographql.apollo3.network.http.DefaultHttpEngine
 import com.apollographql.apollo3.network.http.HttpEngine
 import com.apollographql.apollo3.network.http.HttpInterceptor
@@ -153,11 +154,16 @@ val apolloModule = module {
     single {
         ApolloClient.Builder()
             .serverUrl("https://quickstart-fe108883.myshopify.com/api/2023-10/graphql.json")
+            .addHttpInterceptor(ApolloClientAwarenessInterceptor("com.ns.shopify", "1.0.0"))
             .addHttpHeader("X-Shopify-Storefront-Access-Token", "bcac730a26f46b1a15585da5b45f7d92")
 //            .addInterceptor(OriginInterceptor())
-            .addHttpHeader("Access-Control-Allow-Origin", "false")
-//            .addHttpHeader("Access-Control-Allow-Headers", "*")
-//            .addHttpHeader("Access-Control-Allow-Credentials", "true")
+            .addHttpHeader("Access-Control-Allow-Origin", "http://192.168.14.2:8080/")
+            .addHttpHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+            .addHttpHeader("Access-Control-Headers", "*")
+//            .addHttpHeader("Access-Control-Allow-Headers", "Content-Type,Authorization")
+//            .addHttpHeader("Access-Control-Expose-Headers", "Content-Range,X-Content-Range")
+            .addHttpHeader("Access-Control-Allow-Credentials", "true")
+//            .addHttpHeader("Access-Control-Max-Age", "999999999999999999999")
             .webSocketReopenWhen { throwable, attempt ->
                 delay(attempt * 1000)
                 true

@@ -226,6 +226,11 @@ sqldelight {
 apollo {
     service("service") {
         packageName.set("com.ns.shopify")
+        // Enable generation of metadata for use by downstream modules
+        generateApolloMetadata.set(true)
+
+        // define options that must be shared between all modules using this schema
+        generateDataBuilders.set(true)
     }
 }
 

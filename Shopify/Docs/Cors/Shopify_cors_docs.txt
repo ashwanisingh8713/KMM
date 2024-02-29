@@ -1,0 +1,10 @@
+Using APIs From A Different Origin/Domain
+https://community.shopify.com/c/online-store-and-theme/using-apis-from-a-different-origin-domain/td-p/502781
+
+Using APIs From A Browser
+https://community.shopify.com/c/online-store-and-theme/using-apis-from-a-different-origin-domain/m-p/667082/highlight/true#M6746
+
+
+https://community.shopify.com/c/authentication-and-access/cors-error-while-opening-local-url-generated-by-shopify-cli/m-p/2265297
+
+https://community.shopify.com/c/online-store-and-theme/cors-issue-when-requesting-data-from-shopify-app-remix-template/m-p/2262083

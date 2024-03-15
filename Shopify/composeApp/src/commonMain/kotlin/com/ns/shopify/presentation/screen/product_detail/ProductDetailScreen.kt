@@ -44,8 +44,6 @@ import com.ns.shopify.presentation.componets.VariantsP
 import com.ns.shopify.presentation.componets.VerticalScrollLayout
 import com.ns.shopify.presentation.screen.cart.CartViewModel
 import com.ns.shopify.presentation.settings.SettingsViewModel
-import com.ns.shopify.type.CartInput
-import com.ns.shopify.type.CartLineInput
 import org.koin.compose.getKoin
 
 /**
@@ -68,29 +66,26 @@ class NewProductDetailScreen(private val productId: String):
         val cartViewModel = getScreenModel<CartViewModel>()
 
 
-        val state: State<ProductDetailStates> = viewModel.state.collectAsState()
+        val detailStatesState: State<ProductDetailStates> = viewModel.state.collectAsState()
 
         val popBack: () -> Unit = {
             navigation?.pop()
         }
 
+        // Merchandise Add State
         cartViewModel.addMerchandiseState.collectAsState().value.let {
             printLog("Add Merchandise State is ${it.success}")
             val cart = it.success
             // TODO, show alert msg item is added into cart successfully
-            /*cart?.let {
-                val checkoutUrl = it.checkoutUrl
-                val totalQuantity = it.totalQuantity
-                settingsViewModel.saveCartCount(totalQuantity)
-                settingsViewModel.saveCheckoutUrl(checkoutUrl as String)
-            }*/
+            // Refreshing User Data Access, Because CartId is updated
+            UserDataAccess.refreshData(rememberCoroutineScope(), getKoin().get<CachingManager>())
         }
 
+        // Cart Create State
         cartViewModel.cartCreateState.collectAsState().value.let {
-            printLog("Cart Created State is ${it.success}")
+            printLog("New Cart is created, State is ${it.success}")
             val cart = it.success
             cart?.let {
-                settingsViewModel.saveCartId(it.id)
                 // Refreshing User Data Access, Because CartId is updated
                 UserDataAccess.refreshData(rememberCoroutineScope(), getKoin().get<CachingManager>())
             }
@@ -101,7 +96,7 @@ class NewProductDetailScreen(private val productId: String):
             cartViewModel.addToCart(merchandiseId, quantity, UserDataAccess.cartId)
         }
 
-        if (state.value.isLoaded) {
+        if (detailStatesState.value.isLoaded) {
             VerticalScrollLayout(
                 modifier = Modifier,
                 ChildLayout(

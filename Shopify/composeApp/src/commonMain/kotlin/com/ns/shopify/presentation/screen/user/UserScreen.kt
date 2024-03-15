@@ -81,6 +81,31 @@ internal class UserScreen : Screen {
 
             Spacer(modifier = Modifier.height(15.dp))
 
+            // User Profile
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+
+                    }
+                    .padding(start = 15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("User Profile", modifier = Modifier.weight(0.2f))
+                Icon(
+                    painter = rememberVectorPainter(Icons.Default.ArrowForward),
+                    contentDescription = null,
+                    modifier = Modifier.weight(0.05f),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
             // Purchased History
             Row(
                 modifier = Modifier

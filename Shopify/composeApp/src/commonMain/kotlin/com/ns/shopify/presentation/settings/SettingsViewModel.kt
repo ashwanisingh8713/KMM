@@ -56,32 +56,6 @@ class SettingsViewModel(
 
     }
 
-    fun saveThemeIndex(index: Int) {
-        screenModelScope.launch {
-            cachingManager.saveThemeIndex(index)
-        }
-    }
-
-    fun saveCartCount(count: Int) {
-        screenModelScope.launch {
-            cachingManager.saveCartCount(count)
-            observerValue()
-        }
-    }
-
-    fun saveCartId(cartId: String) {
-        screenModelScope.launch {
-            cachingManager.saveCartId(cartId)
-            observerValue()
-        }
-
-    }
-    fun saveCheckoutUrl(checkoutUrl: String) {
-        screenModelScope.launch {
-            cachingManager.saveCheckoutUrl(checkoutUrl)
-            observerValue()
-        }
-    }
 
     fun saveLoggedInStatus(isLoggedIn: Boolean) {
         screenModelScope.launch(appDispatcher) {

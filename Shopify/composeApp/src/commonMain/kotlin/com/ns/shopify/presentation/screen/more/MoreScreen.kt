@@ -51,17 +51,15 @@ class MoreScreen:Screen, KoinComponent {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-
                     .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {
 
                     }
-                    .padding(5.dp),
+                    .padding(start = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text("Notification", modifier = Modifier.weight(0.2f))
                 Icon(
                     painter = rememberVectorPainter(Icons.Default.ArrowForward),
@@ -79,7 +77,6 @@ class MoreScreen:Screen, KoinComponent {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-
                     .background(Color(0x8DB3B0B0), shape = RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {

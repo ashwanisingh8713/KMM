@@ -125,6 +125,7 @@ class CartViewModel(
                             it.copy(isLoading = false, success = cart, isLoaded = true)
                         }
                         cart?.let { it1 ->
+
                             _cartCreateState.update {
                                 it.copy(
                                     success = cart,
@@ -132,6 +133,16 @@ class CartViewModel(
                                     isLoading = false
                                 )
                             }
+
+                            cart.let {
+                                val checkoutUrl = cart.checkoutUrl
+                                val totalQuantity = cart.totalQuantity
+                                val latestCartId = cart.id
+                                cachingManager.saveCartCount(totalQuantity)
+                                cachingManager.saveCheckoutUrl(checkoutUrl as String)
+                                cachingManager.saveCartId(latestCartId)
+                            }
+
 //                                val checkoutUrl = it1.checkoutUrl as String
 //                                val cartId = cart.id
 //                                cachingManager.saveCartId(cartId)
@@ -164,20 +175,22 @@ class CartViewModel(
                         }
                     } else {
                         val cart = it1.data?.cartLinesAdd?.cart
-                        /*_addMerchandiseState.update {
+                        _addMerchandiseState.update {
                             it.copy(isLoading = false, success = cart, isLoaded = true)
-                        }*/
+                        }
                         cart?.let {
                             val checkoutUrl = cart.checkoutUrl
                             val totalQuantity = cart.totalQuantity
+                            val latestCartId = cart.id
                             cachingManager.saveCartCount(totalQuantity)
                             cachingManager.saveCheckoutUrl(checkoutUrl as String)
+                            cachingManager.saveCartId(latestCartId)
                         }
 
                     }
                 }
                 .onFailure { it1 ->
-                    _cartCreateState.update { it.copy(isLoading = false, error = it1.message) }
+                    _addMerchandiseState.update { it.copy(isLoading = false, error = it1.message) }
                 }
         }
     }

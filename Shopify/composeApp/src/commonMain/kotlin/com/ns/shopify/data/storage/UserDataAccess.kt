@@ -1,5 +1,9 @@
 package com.ns.shopify.data.storage
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -21,11 +25,24 @@ object UserDataAccess {
     var email: String = ""
         private set
 
+    var phone: String = ""
+        private set
+
     var customerAccessToken: String = ""
         private set
 
     var checkoutUrl: String = ""
         private set
+
+    var cartCount by mutableStateOf(0)
+        private set
+
+    var cartId by mutableStateOf("")
+        private set
+
+    var addressId by mutableStateOf("")
+        private set
+
 
 
     fun refreshData(coroutineScope: CoroutineScope, cachingManager: CachingManager) {
@@ -48,6 +65,12 @@ object UserDataAccess {
         }
 
         coroutineScope.launch {
+            cachingManager.getCustomerPhone().collectLatest {
+                phone = it
+            }
+        }
+
+        coroutineScope.launch {
             cachingManager.getCustomerAccessToken().collectLatest {
                 customerAccessToken = it
             }
@@ -58,6 +81,25 @@ object UserDataAccess {
                 checkoutUrl = it
             }
         }
+
+        coroutineScope.launch {
+            cachingManager.getCartCount().collectLatest {
+                cartCount = it
+            }
+        }
+
+        coroutineScope.launch {
+            cachingManager.getCartId().collectLatest {
+                cartId = it
+            }
+        }
+
+        coroutineScope.launch {
+            cachingManager.getCustomerAddressId().collectLatest {
+                addressId = it
+            }
+        }
+
 
     }
 

@@ -31,7 +31,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.screen.cart.CartViewModel
 
-actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String): Screen {
+actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String, cartId: String): Screen {
 
     @Composable
     override fun Content() {

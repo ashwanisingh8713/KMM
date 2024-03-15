@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.storage.UserDataAccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,10 +25,6 @@ class SettingsViewModel(
     var cartCount by mutableStateOf(0)
         private set
 
-    var cartId by mutableStateOf("")
-        private set
-    var checkoutUrl by mutableStateOf("")
-        private set
 
     var index by mutableStateOf(0)
         private set
@@ -56,17 +53,6 @@ class SettingsViewModel(
             }
         }
 
-        screenModelScope.launch {
-            cachingManager.getCartId().collectLatest {
-                cartId = it
-            }
-        }
-
-        screenModelScope.launch {
-            cachingManager.getCheckoutUrl().collectLatest {
-                checkoutUrl = it
-            }
-        }
 
     }
 
@@ -88,6 +74,7 @@ class SettingsViewModel(
             cachingManager.saveCartId(cartId)
             observerValue()
         }
+
     }
     fun saveCheckoutUrl(checkoutUrl: String) {
         screenModelScope.launch {

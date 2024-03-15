@@ -27,10 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -45,14 +42,12 @@ import androidx.compose.ui.window.Dialog
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
+import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.storage.UserDataAccess
 import com.ns.shopify.data.utils.amountFormatter
-import com.ns.shopify.presentation.screen.checkout.CheckoutScreen
 import com.ns.shopify.presentation.screen.checkout.CheckoutWebPageScreen
-import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartLineUpdateInput
 import com.ns.shopify.type.CurrencyCode
 import org.koin.core.component.KoinComponent
@@ -60,37 +55,41 @@ import org.koin.core.component.KoinComponent
 /**
  * Created by Ashwani Kumar Singh on 18,December,2023.
  */
-class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinComponent {
+class CartScreen : Screen, KoinComponent {
     @Composable
     override fun Content() {
-        val settingsViewModel = getScreenModel<SettingsViewModel>()
+        UserDataAccess.refreshData(
+            rememberCoroutineScope(), org.koin.compose.getKoin().get<CachingManager>())
+        printLog("Ashwani : CartScreen : Content ")
+        val cartViewModel = getScreenModel<CartViewModel>()
         val cartQueryState = cartViewModel.cartQueryState.collectAsState()
         val cartBuyerIdentityState = cartViewModel.cartBuyerIdentityUpdateState.collectAsState()
 
-        val cartId = settingsViewModel.cartId
 
         val navigation = LocalNavigator.current
 
-        LaunchedEffect(true) {
-            cartViewModel.cartQuery(cartId)
+        LaunchedEffect(key1 = UserDataAccess.cartId) {
+            cartViewModel.cartQuery(UserDataAccess.cartId)
+            printLog("Ashwani : CartScreen : LaunchedEffect : PageRefreshRequired")
         }
 
         val onDecrement: (UserCartUiData) -> Unit = {
             val input =
                 CartLineUpdateInput(id = it.lineId, quantity = Optional.Present((it.quantity - 1)))
-            cartViewModel.cartUpdate(cartId, input)
+            cartViewModel.cartUpdate(UserDataAccess.cartId, input)
         }
 
         val onIncrement: (UserCartUiData) -> Unit = {
             val input =
                 CartLineUpdateInput(id = it.lineId, quantity = Optional.Present((it.quantity + 1)))
-            cartViewModel.cartUpdate(cartId, input)
+            cartViewModel.cartUpdate(UserDataAccess.cartId, input)
         }
 
         // On click of place order.
         val onPlaceOrderClicked: () -> Unit = {
             // It updates the buyer identity in Checkout Web-Page URL
-            cartViewModel.cartBuyerIdentityUpdate()
+            // Once updated, it will trigger "isLoaded" and open the checkout web-page screen
+            cartViewModel.cartBuyerIdentityUpdate(UserDataAccess.cartId)
             // It Opens new screen, which has implementation for `CheckoutCompleteWithCreditCardV2`
             // navigation?.push(CheckoutScreen())
 
@@ -98,9 +97,12 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
 
 
         if (cartQueryState.value.isLoaded) {
+            printLog("Ashwani : CartScreen : Content : cartQueryState.value.isLoaded ")
             Scaffold(topBar = {},
                 bottomBar = {
-                    BottomBarUIs(onPlaceOrderClicked, cartQueryState.value)
+                    if (cartQueryState.value.totalAmount > 0.0) {
+                        BottomBarUIs(onPlaceOrderClicked, cartQueryState.value)
+                    }
                 },
                 content = {
                     if (cartQueryState.value.totalAmount == 0.0) {
@@ -116,6 +118,7 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
                                     .padding(16.dp),
                                 textAlign = TextAlign.Center
                             )
+
                         }
                     } else {
                         Box(modifier = Modifier.fillMaxSize().padding(it)) {
@@ -130,7 +133,8 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
             )
 
 
-        } else if (cartQueryState.value.isLoading) {
+        }
+        else if (cartQueryState.value.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -144,13 +148,21 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
                     textAlign = TextAlign.Center
                 )
             }
-        } else if (cartQueryState.value.error.isNotEmpty()) {
+        }
+        else if (cartQueryState.value.error.isNotEmpty()) {
+            printLog("Ashwani : CartScreen : Content : cartQueryState.value.Error ")
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
+                var cartError = cartQueryState.value.error
+                if(cartError.contains("cartId of type ID")){
+                    cartError = "Your cart is empty"
+                } else {
+                    cartError = "Error!! $cartError"
+                }
                 Text(
-                    text = "Error! ${cartQueryState.value.error}",
+                    text = cartError,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -162,20 +174,19 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
 
         // Cart Buyer Identity Update State
         if (cartBuyerIdentityState.value.isLoaded) {
+            printLog("Ashwani : CartScreen : Content : cartBuyerIdentityState.value.isLoaded ")
             LaunchedEffect(true) {
                 val checkoutUrl =
                     cartBuyerIdentityState.value.success?.cartBuyerIdentityUpdate?.cart?.checkoutUrl
                 checkoutUrl?.let {
-                    navigation?.push(CheckoutWebPageScreen(checkoutUrl as String))
+                    navigation?.push(CheckoutWebPageScreen(checkoutUrl as String, UserDataAccess.cartId))
                 }
-
             }
-
-        } else if (cartBuyerIdentityState.value.error.isNotEmpty()) {
+        }
+        else if (cartBuyerIdentityState.value.error.isNotEmpty()) {
+            printLog("Ashwani : CartScreen : Content : cartBuyerIdentityState.value.Error ")
             Dialog(onDismissRequest = {
-
             }) {
-
                 Box(modifier = Modifier
                     .border(width = 1.dp, color = Gray, shape = RoundedCornerShape(16.dp))
                     .fillMaxWidth()
@@ -210,9 +221,6 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
 
                         }
 
-
-
-
                         Text(
                             text = errorBuildAnnotated,
                             modifier = Modifier.padding(16.dp),
@@ -242,6 +250,12 @@ class CartScreen(private val cartViewModel: CartViewModel) : Screen, KoinCompone
             }
         }
     }
+}
+
+
+@Composable
+fun CartBuyerIndentityUpdate() {
+
 }
 
 

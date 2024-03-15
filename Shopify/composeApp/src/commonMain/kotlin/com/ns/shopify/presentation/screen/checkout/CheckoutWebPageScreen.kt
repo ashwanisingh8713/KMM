@@ -39,5 +39,5 @@ import com.ns.shopify.presentation.screen.cart.CartViewModel
 
 
 
-expect class CheckoutWebPageScreen(checkoutWebUrl: String): Screen
+expect class CheckoutWebPageScreen(checkoutWebUrl: String, cartId: String): Screen
 

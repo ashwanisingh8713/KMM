@@ -6,6 +6,7 @@ import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.CartBuyerIdentityUpdateMutation
 import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.storage.UserDataAccess
 import com.ns.shopify.data.utils.buyerCountry
 import com.ns.shopify.data.utils.cartBuyerIdentityInput
 import com.ns.shopify.data.utils.deliveryAddressInput
@@ -30,13 +31,13 @@ import org.koin.core.component.KoinComponent
  * Created by Ashwani Kumar Singh on 28,December,2023.
  */
 class CartViewModel(
-                    private val cartCreateUseCase: CartCreateUseCase,
-                    private val addMerchandiseUseCase: AddMerchandiseUseCase,
-                    private val cartCountUseCase: CartCountUsecase,
-                    private val cartQueryUseCase: CartQueryUseCase,
-                    private val cartUpdateUseCase: CartUpdateUseCase,
-                    private val cartBuyerIdentityUpdateUseCase: CartBuyerIdentityUpdateUseCase,
-                    private val cachingManager: CachingManager
+    private val cartCreateUseCase: CartCreateUseCase,
+    private val addMerchandiseUseCase: AddMerchandiseUseCase,
+    private val cartCountUseCase: CartCountUsecase,
+    private val cartQueryUseCase: CartQueryUseCase,
+    private val cartUpdateUseCase: CartUpdateUseCase,
+    private val cartBuyerIdentityUpdateUseCase: CartBuyerIdentityUpdateUseCase,
+    private val cachingManager: CachingManager
 ) : ScreenModel, KoinComponent {
 
     private val _cartCreateState = MutableStateFlow(CreateCartState())
@@ -55,8 +56,24 @@ class CartViewModel(
     val cartBuyerIdentityUpdateState = _cartBuyerIdentityUpdateState.asStateFlow()
 
 
+    fun clearCartId() {
+        screenModelScope.launch {
+            cachingManager.saveCartId("")
+        }
 
+    }
+    fun refreshCartQueryState() {
+        _cartQueryState.update {
+            it.copy(
+                success = emptyList(),
+                isLoaded = false,
+            )
+        }
+    }
 
+    /**
+     * This method is used to add merchandise in cart
+     */
     fun addToCart(merchandiseId: String, quantity: Optional.Present<Int>, cartId: String) {
         printLog("Add to Cart Merchandise Id is $merchandiseId")
         screenModelScope.launch {
@@ -205,6 +222,7 @@ class CartViewModel(
         screenModelScope.launch {
             cartQueryUseCase(cartId)
                 .onSuccess { response ->
+                    printLog("Ashwani : CartScreen : Success : $response")
                     val error = response.errors
                     val cart = response.data?.cart
                     if (!error.isNullOrEmpty()) {
@@ -214,7 +232,7 @@ class CartViewModel(
                                 error = error[0].message
                             )
                         }
-                    } else if(cart != null) {
+                    } else if (cart != null) {
 //                        val totalQuantity = response.data?.cart?.totalQuantity
 //                        val checkoutUrl = response.data?.cart?.checkoutUrl
 //                        cachingManager.saveCheckoutUrl(checkoutUrl as String)
@@ -226,8 +244,8 @@ class CartViewModel(
                         val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
                         val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
 
-                        var taxAmount =  0.0
-                        if(cart.cost.totalTaxAmount != null) {
+                        var taxAmount = 0.0
+                        if (cart.cost.totalTaxAmount != null) {
                             val rawTaxAmount = cart.cost.totalTaxAmount.amount as String
                             taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
                         }
@@ -282,6 +300,7 @@ class CartViewModel(
 
                 }
                 .onFailure { it1 ->
+                    printLog("Ashwani : CartScreen : onFailure : $it1")
                     _cartQueryState.update {
                         it.copy(
                             isLoading = false,
@@ -309,13 +328,13 @@ class CartViewModel(
                                 error = error[0].message
                             )
                         }
-                    } else if(cart != null) {
+                    } else if (cart != null) {
                         val rawTotalAmount = cart.cost.totalAmount.amount as String
                         val totalAmount = rawTotalAmount.toDoubleOrNull() ?: 0.0
                         val rawSubTotalAmount = cart.cost.subtotalAmount.amount as String
                         val subTotalAmount = rawSubTotalAmount.toDoubleOrNull() ?: 0.0
-                        var taxAmount =  0.0
-                        if(cart.cost.totalTaxAmount != null) {
+                        var taxAmount = 0.0
+                        if (cart.cost.totalTaxAmount != null) {
                             val rawTaxAmount = cart.cost.totalTaxAmount.amount as String
                             taxAmount = rawTaxAmount.toDoubleOrNull() ?: 0.0
                         }
@@ -380,25 +399,19 @@ class CartViewModel(
     /**
      * To update the Buyer Identity in Checkout WebUrl
      */
-    fun cartBuyerIdentityUpdate() {
+    fun cartBuyerIdentityUpdate(cartId: String) {
         screenModelScope.launch {
             _cartBuyerIdentityUpdateState.update {
                 it.copy(
                     isLoading = true
                 )
             }
-            combine(
-                cachingManager.getCustomerEmail(), cachingManager.getCustomerPhone(),
-                cachingManager.getCustomerAddressId(), cachingManager.getCartId(),
-                cachingManager.getCustomerAccessToken()
-            ) { email, phone, addressId, cartId, customerAccessToken ->
-
                 val cartBuyerIdentity = cartBuyerIdentityInput(
-                    email = email,
-                    phone = "+91$phone",
+                    email = UserDataAccess.email,
+                    phone = "+91${UserDataAccess.phone}",
                     countryCode = buyerCountry(),
-                    customerAccessToken = customerAccessToken,
-                    deliveryAddressInput = deliveryAddressInput(addressId),
+                    customerAccessToken = UserDataAccess.customerAccessToken,
+                    deliveryAddressInput = deliveryAddressInput(UserDataAccess.addressId),
                 )
 
                 printLog("$cartBuyerIdentity")
@@ -440,10 +453,8 @@ class CartViewModel(
                             }
                         }
                     }
-
-                    }
-                    .onFailure { it1 ->
-                        _cartQueryState.update {
+                }.onFailure { it1 ->
+                        _cartBuyerIdentityUpdateState.update {
                             it.copy(
                                 isLoading = false,
                                 error = it1.message ?: "Error Occurred!"
@@ -451,7 +462,6 @@ class CartViewModel(
                         }
                     }
 
-            }.stateIn(screenModelScope)
         }
     }
 

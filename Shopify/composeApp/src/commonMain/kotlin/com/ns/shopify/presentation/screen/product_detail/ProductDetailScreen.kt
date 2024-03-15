@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
 import com.ns.shopify.ProductDetailQuery
+import com.ns.shopify.data.storage.CachingManager
+import com.ns.shopify.data.storage.UserDataAccess
 import com.ns.shopify.presentation.componets.ChildLayout
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.componets.NetworkImage
@@ -43,6 +46,7 @@ import com.ns.shopify.presentation.screen.cart.CartViewModel
 import com.ns.shopify.presentation.settings.SettingsViewModel
 import com.ns.shopify.type.CartInput
 import com.ns.shopify.type.CartLineInput
+import org.koin.compose.getKoin
 
 /**
  * Created by Ashwani Kumar Singh on 12,December,2023.
@@ -55,13 +59,14 @@ class NewProductDetailScreen(private val productId: String):
 
     @Composable
     override fun Content() {
+        UserDataAccess.refreshData(rememberCoroutineScope(), getKoin().get<CachingManager>())
+
         val navigation = LocalNavigator.current
 
         val viewModel = getScreenModel<ProductDetailViewModel>()
         val settingsViewModel = getScreenModel<SettingsViewModel>()
         val cartViewModel = getScreenModel<CartViewModel>()
 
-        var cartId = settingsViewModel.cartId
 
         val state: State<ProductDetailStates> = viewModel.state.collectAsState()
 
@@ -86,13 +91,14 @@ class NewProductDetailScreen(private val productId: String):
             val cart = it.success
             cart?.let {
                 settingsViewModel.saveCartId(it.id)
-                cartId = it.id
+                // Refreshing User Data Access, Because CartId is updated
+                UserDataAccess.refreshData(rememberCoroutineScope(), getKoin().get<CachingManager>())
             }
         }
 
         // Making API request to save merchandise into Cart
         val addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit = { merchandiseId, quantity ->
-            cartViewModel.addToCart(merchandiseId, quantity, cartId)
+            cartViewModel.addToCart(merchandiseId, quantity, UserDataAccess.cartId)
         }
 
         if (state.value.isLoaded) {

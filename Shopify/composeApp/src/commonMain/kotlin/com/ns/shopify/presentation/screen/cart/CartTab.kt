@@ -29,9 +29,9 @@ internal object CartTab : Tab {
 
     @Composable
     override fun Content() {
-        val cartViewModel = getScreenModel<CartViewModel>()
+
         Navigator(
-            screen = CartScreen(cartViewModel),
+            screen = CartScreen(),
         ) { navigator ->
             SlideTransition(navigator) { screen ->
                 screen.Content()

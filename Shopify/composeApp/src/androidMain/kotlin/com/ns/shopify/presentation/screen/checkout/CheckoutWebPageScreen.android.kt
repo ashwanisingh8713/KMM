@@ -37,12 +37,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.app.printLog
 import com.ns.shopify.presentation.componets.DefaultBackArrow
 import com.ns.shopify.presentation.screen.cart.CartViewModel
 import java.io.ByteArrayInputStream
 
 
-actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String): Screen {
+actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String, val cartId: String): Screen {
 
     private var webView: WebView? = null
 
@@ -56,6 +57,7 @@ actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String
 
         val cartViewModel = getScreenModel<CartViewModel>()
         val cartBuyerIdentityState = cartViewModel.cartBuyerIdentityUpdateState.collectAsState()
+        val cartQueryState = cartViewModel.cartQueryState.collectAsState()
 
         val onBackPress: () -> Unit = {
             cartViewModel.cartBuyerCancel()
@@ -67,9 +69,15 @@ actual class CheckoutWebPageScreen actual constructor(val checkoutWebUrl: String
         }
 
         val onWebPageFinished:(String)->Unit = {url->
+            printLog("onWebPageFinished URL: $url")
             if(isReloaded == false && url.contains("https://quickstart-fe108883.myshopify.com/checkouts")) {
                 isReloaded = true
-                cartViewModel.cartBuyerIdentityUpdate()
+                cartViewModel.cartBuyerIdentityUpdate(cartId)
+            } else if(url.contains("thank_you")) {
+                // Clear the cartId from Caching Manager
+                cartViewModel.clearCartId()
+                cartViewModel.cartBuyerCancel()
+                cartViewModel.refreshCartQueryState()
             }
 
         }

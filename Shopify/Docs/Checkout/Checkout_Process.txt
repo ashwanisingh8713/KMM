@@ -6,7 +6,8 @@ custom build apps that are intended for usage
 with Shopify Plus plans, and are subjected to
 Shopify's Payment API terms and policies.***/
 
-- To use the checkoutCompleteWithCreditCardV2 mutation only with a public app that has been converted into a sales channel and has had payment processing access granted by Shopify.
+- To use the checkoutCompleteWithCreditCardV2 mutation only with a public app
+that has been converted into a sales channel and has had payment processing access granted by Shopify.
 - Enabled with Test Mode on for Shopify Payments
 - Create Checkout APIs request with all required information.
     => checkoutCreate
@@ -17,6 +18,15 @@ Shopify's Payment API terms and policies.***/
 - Use checkoutCompleteWithTokenizedPaymentV3 with Stripe Token.
 - Use  checkoutCompleteWithCreditCardV2 with the vaultId for credit card data.
 - Get the vaultId / paymentData
+
+
+Checkout Google Form Fillup link
+https://docs.google.com/forms/d/e/1FAIpQLSfITYeAj7e830_Am0IVQfu3qBbY2AwoJcpEH4240vMkb9zkaA/viewform?pli=1
+
+/*** Checkout Web URL does not show the `CartBuyerIdentityUpdate`
+data when `checkoutUrl` is once used some another place/browser/webview.
+So for this case, `checkoutBuyerIdentityUpdate` -> `checkoutUrl` should be immediately used in
+respective platform's webview/browser. ***/
 
 
 

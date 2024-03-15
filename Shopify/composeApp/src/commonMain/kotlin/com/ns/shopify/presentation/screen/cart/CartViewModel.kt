@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.apollographql.apollo3.api.Optional
 import com.app.printLog
+import com.ns.shopify.CartBuyerIdentityUpdateMutation
 import com.ns.shopify.data.storage.CachingManager
 import com.ns.shopify.data.utils.buyerCountry
 import com.ns.shopify.data.utils.cartBuyerIdentityInput
@@ -52,6 +53,8 @@ class CartViewModel(
 
     private val _cartBuyerIdentityUpdateState = MutableStateFlow(CartBuyerIdentityUpdateState())
     val cartBuyerIdentityUpdateState = _cartBuyerIdentityUpdateState.asStateFlow()
+
+
 
 
     fun addToCart(merchandiseId: String, quantity: Optional.Present<Int>, cartId: String) {
@@ -195,12 +198,15 @@ class CartViewModel(
         }
     }
 
+    /**
+     * To get the cart product list with Amount types.
+     */
     fun cartQuery(cartId: String) {
         screenModelScope.launch {
             cartQueryUseCase(cartId)
                 .onSuccess { response ->
                     val error = response.errors
-                    val cart = response.data!!.cart
+                    val cart = response.data?.cart
                     if (!error.isNullOrEmpty()) {
                         _cartQueryState.update {
                             it.copy(
@@ -286,7 +292,9 @@ class CartViewModel(
         }
     }
 
-
+    /**
+     * It updates the product quantity in Cart
+     */
     fun cartUpdate(cartId: String, cartLineInput: CartLineUpdateInput) {
         screenModelScope.launch {
             val pair = Pair(cartId, listOf(cartLineInput))
@@ -369,6 +377,9 @@ class CartViewModel(
 
     }
 
+    /**
+     * To update the Buyer Identity in Checkout WebUrl
+     */
     fun cartBuyerIdentityUpdate() {
         screenModelScope.launch {
             _cartBuyerIdentityUpdateState.update {
@@ -384,11 +395,13 @@ class CartViewModel(
 
                 val cartBuyerIdentity = cartBuyerIdentityInput(
                     email = email,
-                    phone = phone,
+                    phone = "+91$phone",
                     countryCode = buyerCountry(),
                     customerAccessToken = customerAccessToken,
-                    deliveryAddressInput = deliveryAddressInput(addressId)
+                    deliveryAddressInput = deliveryAddressInput(addressId),
                 )
+
+                printLog("$cartBuyerIdentity")
 
                 val param = Pair(cartBuyerIdentity, cartId)
 
@@ -439,12 +452,20 @@ class CartViewModel(
                     }
 
             }.stateIn(screenModelScope)
-
-
-
-
         }
     }
 
+    fun cartBuyerCancel() {
+        screenModelScope.launch {
+            _cartBuyerIdentityUpdateState.update {
+                it.copy(
+                    isLoading = false,
+                    success = null,
+                    isLoaded = false,
+                    error = ""
+                )
+            }
+        }
+    }
 
 }

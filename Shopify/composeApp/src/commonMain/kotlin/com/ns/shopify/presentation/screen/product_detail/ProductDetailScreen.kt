@@ -90,6 +90,7 @@ class NewProductDetailScreen(private val productId: String):
             }
         }
 
+        // Making API request to save merchandise into Cart
         val addToCartEvent:(merchandiseId: String, quantity : Optional.Present<Int>) -> Unit = { merchandiseId, quantity ->
             cartViewModel.addToCart(merchandiseId, quantity, cartId)
         }

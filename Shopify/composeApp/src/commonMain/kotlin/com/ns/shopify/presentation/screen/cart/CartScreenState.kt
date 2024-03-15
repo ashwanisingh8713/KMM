@@ -54,4 +54,4 @@ data class UserCartUiData(
 data class CartBuyerIdentityUpdateState(val isLoading: Boolean = true,
                                         val success: CartBuyerIdentityUpdateMutation.Data? = null,
                                         val isLoaded : Boolean = false,
-                                        val error: String? = null)
+                                        val error: String = "")
